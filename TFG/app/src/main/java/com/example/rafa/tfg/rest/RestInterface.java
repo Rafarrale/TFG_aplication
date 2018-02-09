@@ -21,8 +21,8 @@ public interface RestInterface {
     @GET("/api/users/id/{idusuario}")
     Call<List<usuAdapter>> getUsuario(@Path("idusuario") int idusuario);
 
-    @GET("/api/usu/checklogin/{email}/{pass}")
-    Call<usuAdapter> checkLogin(@Path("email") String email, @Path("pass") String pass);
+    @GET("/usuario/giveUsu/{usu}/{pass}")
+    Call<usuAdapter> checkLogin(@Path("usu") String email, @Path("pass") String pass);
 
     @PUT("/api/users/new")
     Call<usuAdapter> addUsuario(@Body usuAdapter user);

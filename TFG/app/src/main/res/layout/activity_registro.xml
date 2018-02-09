@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Alta Habitante Casa"
+        android:text="@string/reg_titl"
         android:layout_gravity="center"
         android:textSize="25dp"/>
     <EditText
@@ -18,47 +18,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="Usuario"/>
+        android:hint="@string/reg_usu"/>
 
     <EditText
         android:id="@+id/edt_pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="Password"/>
+        android:hint="@string/reg_pass"/>
 
     <EditText
         android:id="@+id/edt_nombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="Nombre"/>
+        android:hint="@string/reg_nom"/>
 
     <EditText
         android:id="@+id/edt_apellidos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="Apellidos"/>
+        android:hint="@string/reg_apell"/>
 
     <EditText
         android:id="@+id/edt_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="Email"/>
+        android:hint="@string/reg_email"/>
 
     <EditText
         android:id="@+id/edt_pass_casa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="Contraseña casa"/>
+        android:hint="@string/reg_contr"/>
 
     <Button
         android:id="@+id/btn_reg_alta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="registro"/>
+        android:text="@string/reg_reg"/>
 </LinearLayout>

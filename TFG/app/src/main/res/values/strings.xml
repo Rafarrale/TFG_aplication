@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">TFG</string>
+    <string name="log_usu">Usuario</string>
+    <string name="log_cod_casa">Código Seguridad Casa</string>
+    <string name="log">Login</string>
+    <string name="log_reg">Registrar Usuario</string>
+    <string name="log_no_rec">No recuerdo mi contraseña</string>
+    <string name="log_contr">Contraseña</string>
+    <string name="reg_titl">Alta Habitante Casa</string>
+    <string name="reg_usu">Usuario</string>
+    <string name="reg_pass">Password</string>
+    <string name="reg_nom">Nombre</string>
+    <string name="reg_apell">Apellidos</string>
+    <string name="reg_email">Email</string>
+    <string name="reg_contr">Contraseña Casa</string>
+    <string name="reg_reg">Registro</string>
 </resources>

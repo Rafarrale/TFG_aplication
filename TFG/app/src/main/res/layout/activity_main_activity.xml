@@ -16,11 +16,26 @@
         android:paddingBottom="20dp"
         android:src="@drawable/casa_main" />
 
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
+    <EditText
+        android:id="@+id/logUsu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/log_usu"
+        android:inputType="textPassword" />
+
     <EditText
         android:id="@+id/edt_cod_seg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Código Seguridad Casa"
+        android:hint="@string/log_contr"
         android:inputType="textPassword" />
 
     <Button
@@ -28,19 +43,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="login" />
+        android:text="@string/log"
+        android:onClick="onClickLog"/>
 
     <Button
         android:id="@+id/btn_registrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Registrar usuario" />
+        android:text="@string/log_reg" />
 
     <TextView
         android:id="@+id/tv_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No recuerdo el código"
+        android:text="@string/log_no_rec"
         android:layout_gravity="center"/>
 </LinearLayout>
