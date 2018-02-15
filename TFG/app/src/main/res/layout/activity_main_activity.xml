@@ -24,12 +24,12 @@
         android:visibility="gone"
         android:layout_gravity="center"/>
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/logUsu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/log_usu"
-        android:inputType="textPassword" />
+        android:inputType="textAutoComplete" />
 
     <EditText
         android:id="@+id/edt_cod_seg"

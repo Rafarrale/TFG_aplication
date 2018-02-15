@@ -6,12 +6,13 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.rafa.tfg.rest.RestImpl;
@@ -20,7 +21,6 @@ import com.example.rafa.tfg.rest.usuAdapter;
 
 import java.io.IOException;
 
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -28,12 +28,18 @@ public class MainActivity extends AppCompatActivity {
     Button btn_registrar;
     private View mProgressView;
     private UserLoginTask mUserLoginTask = null;
+    private UserLoginTask mAuthTask = null;
+    private AutoCompleteTextView mUsuarioView;
+    private EditText mPasswordView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
 
         mProgressView = findViewById(R.id.login_progress);
+        mUsuarioView = findViewById(R.id.logUsu);
+        mPasswordView = findViewById(R.id.edt_cod_seg);
 
         //Metodo OnClickListener Registrar
         btn_registrar = findViewById(R.id.btn_registrar);
@@ -45,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Pruebas del progressBar
+
+
+
+        //<editor-fold desc="Pruebas del progressBar">
+        /*
         showProgress(true);
 
         Handler handler = new Handler();
@@ -56,10 +66,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 5000);
 
-
-
-
-
+        */
+        //</editor-fold>
         //<editor-fold desc="Avisamos que la actividad esta creada">
     /*
         Toast.makeText(this, "OnCreate", Toast.LENGTH_SHORT).show();
@@ -108,12 +116,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-   /* //<editor-fold desc="attemptLogin">
-    *//**
+    //<editor-fold desc="attemptLogin">
+    /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
-     *//*
+     */
 
     private void attemptLogin() {
         if (mAuthTask != null) {
@@ -121,11 +129,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Reset errors.
-        mEmailView.setError(null);
+        mUsuarioView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
+        String usuario = mUsuarioView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -133,22 +141,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(getString(R.string.error_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        // Check for a valid usuario
+        if (TextUtils.isEmpty(usuario)) {
+            mUsuarioView.setError(getString(R.string.error_field_required));
+            focusView = mUsuarioView;
             cancel = true;
         }
-
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -157,12 +160,15 @@ public class MainActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(usuario, password);
             mAuthTask.execute((Void) null);
         }
     }
-    //</editor-fold>*/
+    //</editor-fold>
 
+    private boolean isPasswordValid(String password) {
+        return password.length() >= 6;
+    }
 
 
 
@@ -171,12 +177,11 @@ public class MainActivity extends AppCompatActivity {
         //Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
         //MainActivity.this.startActivity(intent);
 
-        mUserLoginTask = new UserLoginTask("Rafael","miprimeraprueba");
-        mUserLoginTask.execute();
+        attemptLogin();
 
     }
 
-    protected class UserLoginTask extends AsyncTask<Void,Void,usuAdapter>{
+    protected class UserLoginTask extends AsyncTask<Void,Void,String>{
 
         private final String usuario;
         private final String password;
@@ -187,14 +192,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected usuAdapter doInBackground(Void... params) {
-            usuAdapter res = null;
+        protected String doInBackground(Void... params) {
+            String res = "";
             RestInterface rest = RestImpl.getRestInstance();
 
-            Call<usuAdapter> restCheckCredentials = rest.checkLogin(usuario,password);
+            Call<String> restCheckCredentials = rest.checkLogin(usuario,password);
 
             try{
-                Response<usuAdapter> response = restCheckCredentials.execute();
+                Response<String> response = restCheckCredentials.execute();
                 if(response.isSuccessful()){
                     res = response.body();
 
@@ -207,12 +212,26 @@ public class MainActivity extends AppCompatActivity {
             return res;
         }
 
-        protected void onPostExecute(final usuAdapter user){
-            if(user != null) {
-                Toast.makeText(getApplicationContext(), "Se recibio", Toast.LENGTH_SHORT).show();
+        protected void onPostExecute(final String user){
+            mAuthTask = null;
+            showProgress(false);
+
+            if(user != "") {
+                Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
+                //intent.putExtra("USER", user.toJson());
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(getApplicationContext(), "No Se recibio", Toast.LENGTH_SHORT).show();
+                mPasswordView.setError(getString(R.string.error_incorrect_password_Usu));
+                mPasswordView.requestFocus();
+                Toast.makeText(getApplicationContext(), "Login Incorrecto", Toast.LENGTH_SHORT).show();
             }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+            showProgress(false);
         }
     }
 

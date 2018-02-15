@@ -14,4 +14,18 @@
     <string name="reg_email">Email</string>
     <string name="reg_contr">Contraseña Casa</string>
     <string name="reg_reg">Registro</string>
+    <string name="error_password">Contraseña no válida</string>
+    <string name="error_field_required">Campo requerido</string>
+    <string name="error_incorrect_password_Usu">Contraseña o Usuario Incorrecta</string>
+
+    <string name="princ_bloq">Armar </string>
+    <string name="princ_bloq_sub">Activar la Alarma</string>
+    <string name="princ_desbloq">Desarmar </string>
+    <string name="princ_desbloq_sub">Desactivar la Alarma</string>
+    <string name="princ_casa">Casa </string>
+    <string name="princ_casa_sub">Activar cuando se encuentre en casa</string>
+    <string name="princ_disp">Dispositivos</string>
+    <string name="princ_disp_sub">Gestionar Dispositivos</string>
+    <string name="princ_panic">Alarma</string>
+    <string name="princ_panic_sub">Activar la Alarma, de dos toques</string>
 </resources>
