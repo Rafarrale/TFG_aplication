@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.fragments.AmarilloFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.GreenFragment;
@@ -48,10 +49,14 @@ public class NavPrincActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        //--- Establecemos el Contenedor Fragment como vista principal al ejecutarse la activity principal
-        Fragment fragment = new ContenedorFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.content_main,fragment).commit();
-        //---
+        if(Utilidades.validaPantalla ){
+            //--- Establecemos el Contenedor Fragment como vista principal al ejecutarse la activity principal
+            Fragment fragment = new ContenedorFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();
+            Utilidades.validaPantalla = false;
+            //---
+        }
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.rafa.tfg.R;
 import com.example.rafa.tfg.adapters.SeccionesAdapter;
+import com.example.rafa.tfg.clases.Utilidades;
 
 
 /**
@@ -64,33 +65,42 @@ public class ContenedorFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_cotenedor, container, false);
 
-        View parent = (View) container.getParent();
-        if (appBar == null){
-            appBar = parent.findViewById(R.id.appBar);
-            pestañas = new TabLayout(getActivity());
-            pestañas.setTabTextColors(Color.parseColor("#FFFFFFFF"),Color.parseColor("#FFFFFFFF"));
-            appBar.addView(pestañas);
 
-            viewPager = vista.findViewById(R.id.idViewPagerInformacion);
-            llenarViewPager(viewPager);
+        if(Utilidades.rotacion == 0){
+            View parent = (View) container.getParent();
+            if (appBar == null){
+                appBar = parent.findViewById(R.id.appBar);
+                pestañas = new TabLayout(getActivity());
+                pestañas.setTabTextColors(Color.parseColor("#FFFFFFFF"),Color.parseColor("#FFFFFFFF"));
+                appBar.addView(pestañas);
 
-            viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                }
-            });
-            pestañas.setupWithViewPager(viewPager);
+                viewPager = vista.findViewById(R.id.idViewPagerInformacion);
+                llenarViewPager(viewPager);
 
+                viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                        super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                    }
+                });
+                pestañas.setupWithViewPager(viewPager);
+                pestañas.setTabGravity(TabLayout.GRAVITY_FILL);
+
+            }else{
+                Utilidades.rotacion = 1;
+            }
         }
+
+
+
         return vista;
     }
 
     private void llenarViewPager(ViewPager viewPager) {
         SeccionesAdapter adapter = new SeccionesAdapter(getFragmentManager());
         adapter.addFragment(new AmarilloFragment(),"Control");
-        adapter.addFragment(new GreenFragment(),"Verde");
-        adapter.addFragment(new RojoFragment(),"Rojo");
+        adapter.addFragment(new GreenFragment(),"Historial Uso");
+        adapter.addFragment(new RojoFragment(),"Cámaras");
 
         viewPager.setAdapter(adapter);
     }
@@ -100,6 +110,15 @@ public class ContenedorFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(Utilidades.rotacion == 0){
+            appBar.removeView(pestañas);
+        }
+
     }
 
     @Override
