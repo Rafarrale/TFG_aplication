@@ -21,6 +21,12 @@
         <activity android:name=".registro" />
         <activity android:name=".Usuario" />
         <activity android:name=".PrincipalActivity" />
+        <activity
+            android:name=".NavPrincActivity"
+            android:label="@string/title_activity_nav_princ"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ViewPagerActivity" />
+        <activity android:name=".PrincipalMainActivity"></activity>
     </application>
 
 </manifest>

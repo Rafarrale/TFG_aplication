@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
             showProgress(false);
 
             if(user != "") {
-                Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
+                Intent intent = new Intent(MainActivity.this, NavPrincActivity.class);
                 //intent.putExtra("USER", user.toJson());
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_SHORT).show();

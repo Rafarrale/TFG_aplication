@@ -28,4 +28,13 @@
     <string name="princ_disp_sub">Gestionar Dispositivos</string>
     <string name="princ_panic">Alarma</string>
     <string name="princ_panic_sub">Activar la Alarma, de dos toques</string>
+    <string name="title_activity_nav_princ">NavPrincActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
 </resources>
