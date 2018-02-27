@@ -1,10 +1,12 @@
 package com.example.rafa.tfg;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,12 +16,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.fragments.AmarilloFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.GreenFragment;
 import com.example.rafa.tfg.fragments.RojoFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
@@ -78,6 +89,38 @@ public class NavPrincActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav_princ, menu);
+
+        Spinner spinner = findViewById(R.id.spinnerMen);
+        spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Cambia el Color
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+                //Cambia el Tamaño
+                //((TextView) parent.getChildAt(0)).setTextSize(5);
+                // On selecting a spinner item
+                String item = parent.getItemAtPosition(position).toString();
+
+                // Showing selected spinner item
+                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+            }
+
+            public void onNothingSelected(AdapterView <?> arg0){
+
+            }
+        });
+
+        // Elementos en Spinner
+        List<String> values = new ArrayList<String>();
+        values.add("Bormujos");
+        values.add("Playa");
+        values.add("Miami");
+        values.add(Constantes.añadirCasa);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, values);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+
         return true;
     }
 
@@ -114,10 +157,6 @@ public class NavPrincActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
         if(fragmentSeleccionado == true){

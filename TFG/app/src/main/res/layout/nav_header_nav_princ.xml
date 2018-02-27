@@ -32,4 +32,10 @@
         android:layout_height="wrap_content"
         android:text="android.studio@android.com" />
 
+    <Spinner
+        android:id="@+id/spinnerMen"
+        android:layout_width="fill_parent"
+        android:layout_height="20dp" />
+        <!--android:prompt="@string/spinner_title"-->
+
 </LinearLayout>
