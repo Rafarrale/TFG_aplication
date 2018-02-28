@@ -31,10 +31,13 @@ import com.example.rafa.tfg.fragments.AmarilloFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.GreenFragment;
 import com.example.rafa.tfg.fragments.RojoFragment;
+import com.example.rafa.tfg.rest.usuAdapter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.rafa.tfg.clases.Constantes.ESPACIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 
@@ -43,6 +46,10 @@ public class NavPrincActivity extends AppCompatActivity
         AmarilloFragment.OnFragmentInteractionListener,GreenFragment.OnFragmentInteractionListener,
         ContenedorFragment.OnFragmentInteractionListener {
 
+    private usuAdapter usuario;
+    private TextView tUsuario;
+    private TextView tUsuarioEmail;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,7 @@ public class NavPrincActivity extends AppCompatActivity
             }
         });
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -74,10 +82,28 @@ public class NavPrincActivity extends AppCompatActivity
             //---
         }
 
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        String userJson = getIntent().getStringExtra("USER");
+        Gson gson = new Gson();
+        usuario = gson.fromJson(userJson, usuAdapter.class);
+
+        añadeCamposCabecera();
+
+    }
+
+    public void añadeCamposCabecera(){
+        StringBuilder nombreCompleto = new StringBuilder();
+        nombreCompleto.append(usuario.getNombre());
+        nombreCompleto.append(ESPACIO);
+        nombreCompleto.append(usuario.getApellidos());
+        //con esto generamos el usuario y email en el header del menu-------------------------------
+        View hView = navigationView.getHeaderView(0);
+        tUsuario = hView.findViewById(R.id.nav_usuario);
+        tUsuarioEmail = hView.findViewById(R.id.nav_usuario_email);
+        tUsuario.setText(nombreCompleto);
+        tUsuarioEmail.setText(usuario.getEmail());
     }
 
     @Override

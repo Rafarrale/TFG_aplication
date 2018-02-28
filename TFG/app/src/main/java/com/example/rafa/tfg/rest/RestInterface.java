@@ -22,7 +22,7 @@ public interface RestInterface {
     Call<List<usuAdapter>> getUsuario(@Path("idusuario") int idusuario);
 
     @GET("/usuario/giveUsu/{usu}/{pass}")
-    Call<String> checkLogin(@Path("usu") String email, @Path("pass") String pass);
+    Call<usuAdapter> checkLogin(@Path("usu") String email, @Path("pass") String pass);
 
     @PUT("/api/users/new")
     Call<usuAdapter> addUsuario(@Body usuAdapter user);

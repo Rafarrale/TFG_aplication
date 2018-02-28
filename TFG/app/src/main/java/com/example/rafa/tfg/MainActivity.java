@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
+import com.example.rafa.tfg.rest.usuAdapter;
 
 import java.io.IOException;
 
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected class UserLoginTask extends AsyncTask<Void,Void,String>{
+    protected class UserLoginTask extends AsyncTask<Void,Void,usuAdapter>{
 
         private final String usuario;
         private final String password;
@@ -216,14 +217,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(Void... params) {
-            String res = "";
+        protected usuAdapter doInBackground(Void... params) {
+            usuAdapter res = null;
             RestInterface rest = RestImpl.getRestInstance();
 
-            Call<String> restCheckCredentials = rest.checkLogin(usuario,password);
+            Call<usuAdapter> restCheckCredentials = rest.checkLogin(usuario,password);
 
             try{
-                Response<String> response = restCheckCredentials.execute();
+                Response<usuAdapter> response = restCheckCredentials.execute();
                 if(response.isSuccessful()){
                     res = response.body();
 
@@ -236,13 +237,13 @@ public class MainActivity extends AppCompatActivity {
             return res;
         }
 
-        protected void onPostExecute(final String user){
+        protected void onPostExecute(final usuAdapter user){
             mAuthTask = null;
             showProgress(false);
 
-            if(user != "") {
+            if(user != null) {
                 Intent intent = new Intent(MainActivity.this, NavPrincActivity.class);
-                //intent.putExtra("USER", user.toJson());
+                intent.putExtra("USER", user.toJson());
                 guardar_estado_boton();
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_SHORT).show();

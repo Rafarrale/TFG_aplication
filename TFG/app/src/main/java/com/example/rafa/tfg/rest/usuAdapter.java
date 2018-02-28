@@ -7,7 +7,7 @@ import com.google.gson.Gson;
  */
 
 public class usuAdapter {
-    private int oidUsu;
+    private String _id;
     private String user;
     private String nombre;
     private String apellidos;
@@ -15,8 +15,8 @@ public class usuAdapter {
     private String admin;
     private String email;
 
-    public usuAdapter(int oidUsu, String user, String nombre, String apellidos, String pass, String admin, String email){
-        this.oidUsu = oidUsu;
+    public usuAdapter(String _id, String user, String nombre, String apellidos, String pass, String admin, String email){
+        this._id = _id;
         this.user = user;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -38,13 +38,17 @@ public class usuAdapter {
         return gson.fromJson(jsonString,usuAdapter.class);
     }
 
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
     public String toJson(){
         Gson gson = new Gson();
         return gson.toJson(this);
-    }
-
-    public int getOidUsu() {
-        return oidUsu;
     }
 
     public String getUser() {
@@ -69,10 +73,6 @@ public class usuAdapter {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setOidUsu(int oidUsu) {
-        this.oidUsu = oidUsu;
     }
 
     public void setUser(String user) {
@@ -106,40 +106,24 @@ public class usuAdapter {
 
         usuAdapter that = (usuAdapter) o;
 
-        if (oidUsu != that.oidUsu) return false;
-        if (user != null ? !user.equals(that.user) : that.user != null) return false;
-        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
-        if (apellidos != null ? !apellidos.equals(that.apellidos) : that.apellidos != null)
-            return false;
-        if (pass != null ? !pass.equals(that.pass) : that.pass != null) return false;
-        if (admin != null ? !admin.equals(that.admin) : that.admin != null) return false;
-        return email != null ? email.equals(that.email) : that.email == null;
+        if (!_id.equals(that._id)) return false;
+        if (!user.equals(that.user)) return false;
+        if (!nombre.equals(that.nombre)) return false;
+        if (!apellidos.equals(that.apellidos)) return false;
+        if (!pass.equals(that.pass)) return false;
+        if (!admin.equals(that.admin)) return false;
+        return email.equals(that.email);
     }
 
     @Override
     public int hashCode() {
-        int result = oidUsu;
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
-        result = 31 * result + (apellidos != null ? apellidos.hashCode() : 0);
-        result = 31 * result + (pass != null ? pass.hashCode() : 0);
-        result = 31 * result + (admin != null ? admin.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+        int result = _id.hashCode();
+        result = 31 * result + user.hashCode();
+        result = 31 * result + nombre.hashCode();
+        result = 31 * result + apellidos.hashCode();
+        result = 31 * result + pass.hashCode();
+        result = 31 * result + admin.hashCode();
+        result = 31 * result + email.hashCode();
         return result;
     }
-
-    @Override
-    public String toString() {
-        return "usuAdapter{" +
-                "oidUsu=" + oidUsu +
-                ", user='" + user + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", apellidos='" + apellidos + '\'' +
-                ", pass='" + pass + '\'' +
-                ", admin='" + admin + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
-
-
 }
