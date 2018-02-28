@@ -1,5 +1,8 @@
 package com.example.rafa.tfg;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +34,9 @@ import com.example.rafa.tfg.fragments.RojoFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
+import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
@@ -71,7 +77,6 @@ public class NavPrincActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
 
     }
 
@@ -158,7 +163,19 @@ public class NavPrincActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
+        }else if (id == R.id.nav_share) {
+
+        }else if (id == R.id.nav_send) {
+
+        }else if (id == R.id.cerrar_sesion) {
+            //Borra la caracteristica ESTADO_BOTON guardada anteriormente para cerrar sesion
+            SharedPreferences settings = getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
+            settings.edit().remove(ESTADO_BOTON).commit();
+
+            Intent intent = new Intent(NavPrincActivity.this,MainActivity.class);
+            startActivity(intent);
         }
+
         if(fragmentSeleccionado == true){
             getSupportFragmentManager().beginTransaction().replace(R.id.content_main,miFragment).commit();
         }

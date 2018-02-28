@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -12,17 +13,20 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
-import com.example.rafa.tfg.rest.usuAdapter;
 
 import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Response;
+
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
+import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 
 public class MainActivity extends AppCompatActivity {
     Button btn_registrar;
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private UserLoginTask mAuthTask = null;
     private AutoCompleteTextView mUsuarioView;
     private EditText mPasswordView;
+    private CheckBox guardar_pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.login_progress);
         mUsuarioView = findViewById(R.id.logUsu);
         mPasswordView = findViewById(R.id.edt_cod_seg);
+        guardar_pass = findViewById(R.id.guardar_pass);
+
+        if(obtener_estado_boton()){
+            Intent intent = new Intent(MainActivity.this,NavPrincActivity.class);
+            startActivity(intent);
+            MainActivity.this.finish();
+        }
 
         //Metodo OnClickListener Registrar
         btn_registrar = findViewById(R.id.btn_registrar);
@@ -76,6 +88,18 @@ public class MainActivity extends AppCompatActivity {
         //</editor-fold>
     }
 
+    public void guardar_estado_boton(){
+        SharedPreferences settings = getSharedPreferences(PREFS_KEY,MODE_PRIVATE);
+        SharedPreferences.Editor editor;
+        editor = settings.edit();
+        editor.putBoolean(ESTADO_BOTON, guardar_pass.isChecked());
+        editor.apply();
+    }
+
+    public boolean obtener_estado_boton(){
+        SharedPreferences settings = getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
+        return settings.getBoolean(ESTADO_BOTON,false);
+    }
     //<editor-fold desc="ProgressBar">
     /**
      * Shows the progress UI and hides the login form.
@@ -219,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
             if(user != "") {
                 Intent intent = new Intent(MainActivity.this, NavPrincActivity.class);
                 //intent.putExtra("USER", user.toJson());
+                guardar_estado_boton();
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_SHORT).show();
             }else{
