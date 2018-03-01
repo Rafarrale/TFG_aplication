@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -21,6 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -120,8 +123,11 @@ public class NavPrincActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav_princ, menu);
+        List<String> values = new ArrayList<String>();
 
-        Spinner spinner = findViewById(R.id.spinnerMen);
+        final Spinner spinner = findViewById(R.id.spinnerMen);
+        final List<String> finalValues = values;
+
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -131,9 +137,35 @@ public class NavPrincActivity extends AppCompatActivity
                 //((TextView) parent.getChildAt(0)).setTextSize(5);
                 // On selecting a spinner item
                 String item = parent.getItemAtPosition(position).toString();
+                if (item.equals(Constantes.añadirCasa)) {
+                    spinner.setSelection(0); //Selecciona para qeu muestre el valor 0 por defecto
+                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(NavPrincActivity.this);
+                    View mView = getLayoutInflater().inflate(R.layout.set_casa, null);
+                    final EditText mNombreCasa = mView.findViewById(R.id.etNombreCasa);
+                    Button btnAñadeCasa = mView.findViewById(R.id.btAñadeCasa);
+                    mBuilder.setView(mView);
+                    final AlertDialog dialog = mBuilder.create();
+                    dialog.show();
 
-                // Showing selected spinner item
-                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+                    btnAñadeCasa.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!mNombreCasa.getText().toString().isEmpty()) {
+                                spinner.
+                                Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
+                                dialog.hide();
+                            } else {
+                                Toast.makeText(NavPrincActivity.this, "Por favor rellena el campo vacío", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+
+                if (!item.equals(Constantes.añadirCasa)) {
+                    // Showing selected spinner item
+                    Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+                }
             }
 
             public void onNothingSelected(AdapterView <?> arg0){
@@ -142,7 +174,7 @@ public class NavPrincActivity extends AppCompatActivity
         });
 
         // Elementos en Spinner
-        List<String> values = new ArrayList<String>();
+        values = new ArrayList<String>();
         values.add("Bormujos");
         values.add("Playa");
         values.add("Miami");

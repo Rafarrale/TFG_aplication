@@ -40,6 +40,9 @@
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="introduzca_aqu_el_nombre_de_su_casa">Introduzca aquí el nombre de su Casa</string>
+    <string name="nombre">Nombre</string>
+    <string name="a_adir">Añadir</string>
 
 
 </resources>

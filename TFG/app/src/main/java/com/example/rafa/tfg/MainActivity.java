@@ -47,13 +47,13 @@ public class MainActivity extends AppCompatActivity {
         mUsuarioView = findViewById(R.id.logUsu);
         mPasswordView = findViewById(R.id.edt_cod_seg);
         guardar_pass = findViewById(R.id.guardar_pass);
-
+/*
         if(obtener_estado_boton()){
             Intent intent = new Intent(MainActivity.this,NavPrincActivity.class);
             startActivity(intent);
             MainActivity.this.finish();
         }
-
+*/
         //Metodo OnClickListener Registrar
         btn_registrar = findViewById(R.id.btn_registrar);
         btn_registrar.setOnClickListener(new View.OnClickListener() {
