@@ -51,6 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/log"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
         android:onClick="onClickLog"/>
 
     <Button
@@ -58,6 +60,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="3dp"
         android:text="@string/log_reg" />
 
     <TextView

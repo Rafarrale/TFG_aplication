@@ -24,10 +24,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rafa.tfg.adapters.CasaAdapter;
 import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.fragments.AmarilloFragment;
@@ -53,6 +55,8 @@ public class NavPrincActivity extends AppCompatActivity
     private TextView tUsuario;
     private TextView tUsuarioEmail;
     private NavigationView navigationView;
+    ArrayList<String> values = new ArrayList<String>();
+    Spinner spinner = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,10 +127,20 @@ public class NavPrincActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav_princ, menu);
-        List<String> values = new ArrayList<String>();
 
-        final Spinner spinner = findViewById(R.id.spinnerMen);
-        final List<String> finalValues = values;
+        spinner = findViewById(R.id.spinnerMen);
+
+        // Elementos en Spinner
+        values = new ArrayList<String>();
+        values.add("Bormujos");
+        values.add("Playa");
+        values.add("Miami");
+        values.add(Constantes.añadirCasa);
+        values.add(Constantes.eliminarCasa);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, values);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
 
         spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
             @Override
@@ -151,7 +165,7 @@ public class NavPrincActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                             if (!mNombreCasa.getText().toString().isEmpty()) {
-                                spinner.
+                                añadeCasa(values, mNombreCasa.getText().toString());
                                 Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
                                 dialog.hide();
                             } else {
@@ -159,32 +173,71 @@ public class NavPrincActivity extends AppCompatActivity
                             }
                         }
                     });
-                }
+                }else if(item.equals(Constantes.eliminarCasa)) {
+                    ArrayList<String> cValues = new ArrayList<>(values);
+                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(NavPrincActivity.this);
+                    View mView = getLayoutInflater().inflate(R.layout.eliminar_casa, null);
+                    cValues.remove(cValues.size() - 1);
+                    cValues.remove(cValues.size() - 1);
+                    ListView lv = mView.findViewById(R.id.lvListaCasas);
+                    CasaAdapter adapter = new CasaAdapter(NavPrincActivity.this, cValues);
+                    lv.setAdapter(adapter);
 
+                    mBuilder.setView(mView);
+                    final AlertDialog dialog = mBuilder.create();
+                    dialog.show();
+
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            final int pos = position;
+                            values.remove(pos);
+                            eliminaCasa(values);
+                            Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
+                            dialog.hide();
+
+                        }
+                    });
+                }
+/*
                 if (!item.equals(Constantes.añadirCasa)) {
                     // Showing selected spinner item
                     Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
                 }
+*/
+
             }
 
             public void onNothingSelected(AdapterView <?> arg0){
 
             }
+
+
         });
 
-        // Elementos en Spinner
-        values = new ArrayList<String>();
-        values.add("Bormujos");
-        values.add("Playa");
-        values.add("Miami");
-        values.add(Constantes.añadirCasa);
+        return true;
+    }
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, values);
+    public void añadeCasa(List<String> lista, String valor){
+        spinner = findViewById(R.id.spinnerMen);
+        if(lista.size() >= 2){
+            lista.remove(lista.size() - 3);
+        }
+        lista.add(lista.size() - 2, valor);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lista);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
+    }
 
-        return true;
+    public void eliminaCasa(List<String> lista){
+        spinner = findViewById(R.id.spinnerMen);
+        if(lista.size() <= 2){
+            lista.add(lista.size() - 2, Constantes.CASA_VACIO);
+        }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lista);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
     }
 
     @Override

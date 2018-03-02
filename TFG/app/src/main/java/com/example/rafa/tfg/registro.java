@@ -16,7 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class registro extends AppCompatActivity {
+public class Registro extends AppCompatActivity {
     Button btnReg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +43,10 @@ public class registro extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
-                            Toast.makeText(registro.this, "Usuario Registrado Correctamente", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Registro.this, "Usuario Registrado Correctamente", Toast.LENGTH_SHORT).show();
                             Snackbar.make(v, "Nuevo dato añadido", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
-                            registro.this.finish();
+                            Registro.this.finish();
                         } else {
                             Snackbar.make(v, "Se ha producido un error al añadir el dato", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
