@@ -1,6 +1,5 @@
 package com.example.rafa.tfg;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -10,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,14 +27,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.rafa.tfg.adapters.CasaAdapter;
+import com.example.rafa.tfg.adapters.CasaAdapterIni;
+import com.example.rafa.tfg.adapters.CasaAdapterView;
 import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.fragments.AmarilloFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.GreenFragment;
 import com.example.rafa.tfg.fragments.RojoFragment;
-import com.example.rafa.tfg.rest.usuAdapter;
+import com.example.rafa.tfg.adapters.usuAdapter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -55,6 +54,7 @@ public class NavPrincActivity extends AppCompatActivity
     private TextView tUsuario;
     private TextView tUsuarioEmail;
     private NavigationView navigationView;
+    private List<CasaAdapterIni> listaCasas;
     ArrayList<String> values = new ArrayList<String>();
     Spinner spinner = null;
 
@@ -91,13 +91,17 @@ public class NavPrincActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        recuperaDatosExtra();
 
+    }
+
+    private void recuperaDatosExtra() {
         String userJson = getIntent().getStringExtra("USER");
         Gson gson = new Gson();
         usuario = gson.fromJson(userJson, usuAdapter.class);
-
+        Bundle bundle = getIntent().getExtras();
+        listaCasas = bundle.getParcelableArrayList("CASAS");
         añadeCamposCabecera();
-
     }
 
     public void añadeCamposCabecera(){
@@ -132,9 +136,11 @@ public class NavPrincActivity extends AppCompatActivity
 
         // Elementos en Spinner
         values = new ArrayList<String>();
-        values.add("Bormujos");
-        values.add("Playa");
-        values.add("Miami");
+        if(listaCasas.size() != 0){
+            for(CasaAdapterIni aux : listaCasas){
+                values.add(aux.getHomeUsu());
+            }
+        }
         values.add(Constantes.añadirCasa);
         values.add(Constantes.eliminarCasa);
 
@@ -180,7 +186,7 @@ public class NavPrincActivity extends AppCompatActivity
                     cValues.remove(cValues.size() - 1);
                     cValues.remove(cValues.size() - 1);
                     ListView lv = mView.findViewById(R.id.lvListaCasas);
-                    CasaAdapter adapter = new CasaAdapter(NavPrincActivity.this, cValues);
+                    CasaAdapterView adapter = new CasaAdapterView(NavPrincActivity.this, cValues);
                     lv.setAdapter(adapter);
 
                     mBuilder.setView(mView);
@@ -228,6 +234,8 @@ public class NavPrincActivity extends AppCompatActivity
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lista);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
+
+
     }
 
     public void eliminaCasa(List<String> lista){

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,11 +18,15 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.rafa.tfg.adapters.CasaAdapterIni;
+import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
-import com.example.rafa.tfg.rest.usuAdapter;
+import com.example.rafa.tfg.adapters.usuAdapter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -34,9 +39,12 @@ public class MainActivity extends AppCompatActivity {
     private View mProgressView;
     private UserLoginTask mUserLoginTask = null;
     private UserLoginTask mAuthTask = null;
+    private CasaTask mCasaTask = null;
     private AutoCompleteTextView mUsuarioView;
     private EditText mPasswordView;
     private CheckBox guardar_pass;
+    private List<CasaAdapterIni> casasExtra;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
      */
 
     private void attemptLogin() {
+
         if (mAuthTask != null) {
             return;
         }
@@ -185,8 +194,12 @@ public class MainActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
+            mCasaTask = new CasaTask();
+            mCasaTask.execute();
             mAuthTask = new UserLoginTask(usuario, password);
             mAuthTask.execute((Void) null);
+
+
         }
     }
     //</editor-fold>
@@ -197,13 +210,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    //Metodo click del kogin
+    //Metodo click del login
     public void onClickLog(View view) {
-        //Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
-        //MainActivity.this.startActivity(intent);
-
         attemptLogin();
-
     }
 
     protected class UserLoginTask extends AsyncTask<Void,Void,usuAdapter>{
@@ -242,11 +251,18 @@ public class MainActivity extends AppCompatActivity {
             showProgress(false);
 
             if(user != null) {
+
                 Intent intent = new Intent(MainActivity.this, NavPrincActivity.class);
                 intent.putExtra("USER", user.toJson());
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("CASAS", (ArrayList<? extends Parcelable>) casasExtra);
+                intent.putExtras(bundle);
+
                 guardar_estado_boton();
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_SHORT).show();
+
             }else{
                 mPasswordView.setError(getString(R.string.error_incorrect_password_Usu));
                 mPasswordView.requestFocus();
@@ -258,6 +274,40 @@ public class MainActivity extends AppCompatActivity {
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+    }
+
+    protected class CasaTask extends AsyncTask<Void,Void,List<CasaAdapterIni>>{
+
+        @Override
+        protected List<CasaAdapterIni> doInBackground(Void... params) {
+            List<CasaAdapterIni> res = null;
+            RestInterface rest = RestImpl.getRestInstance();
+
+            Call<List<CasaAdapterIni>> restCasas = rest.getCasas();
+
+            try{
+                Response<List<CasaAdapterIni>> responseCasas = restCasas.execute();
+                if(responseCasas.isSuccessful()){
+                    res = responseCasas.body();
+
+                }
+
+            }catch(IOException io){
+
+            }
+
+            return res;
+        }
+
+        protected void onPostExecute(final List<CasaAdapterIni> casas){
+            casasExtra = casas;
+        }
+
+        @Override
+        protected void onCancelled() {
+            Toast.makeText(getApplicationContext(), "No se ha podido recuperar la información", Toast.LENGTH_SHORT).show();
+
         }
     }
 

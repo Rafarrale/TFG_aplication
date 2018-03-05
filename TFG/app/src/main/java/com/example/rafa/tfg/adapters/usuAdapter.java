@@ -1,4 +1,4 @@
-package com.example.rafa.tfg.rest;
+package com.example.rafa.tfg.adapters;
 
 import com.google.gson.Gson;
 

@@ -16,12 +16,12 @@ import java.util.ArrayList;
  * Created by Rafael on 02/03/2018.
  */
 
-public class CasaAdapter extends BaseAdapter {
+public class CasaAdapterView extends BaseAdapter {
 
     protected Activity activity;
     protected ArrayList<String> items;
 
-    public CasaAdapter(Activity activity, ArrayList<String> items) {
+    public CasaAdapterView(Activity activity, ArrayList<String> items) {
         this.activity = activity;
         this.items = items;
     }

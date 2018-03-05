@@ -1,4 +1,8 @@
 package com.example.rafa.tfg.rest;
+import com.example.rafa.tfg.adapters.CasaAdapterIni;
+import com.example.rafa.tfg.adapters.usuAdapter;
+import com.example.rafa.tfg.clases.Casa;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -23,6 +27,9 @@ public interface RestInterface {
 
     @GET("/usuario/giveUsu/{usu}/{pass}")
     Call<usuAdapter> checkLogin(@Path("usu") String email, @Path("pass") String pass);
+
+    @GET("/casa/giveHome2/todasCasas")
+    Call<List<CasaAdapterIni>> getCasas();
 
     @PUT("/api/users/new")
     Call<usuAdapter> addUsuario(@Body usuAdapter user);

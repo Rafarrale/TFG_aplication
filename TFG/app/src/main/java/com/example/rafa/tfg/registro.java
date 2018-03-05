@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
-import com.example.rafa.tfg.rest.usuAdapter;
+import com.example.rafa.tfg.adapters.usuAdapter;
 
 import retrofit2.Call;
 import retrofit2.Callback;
