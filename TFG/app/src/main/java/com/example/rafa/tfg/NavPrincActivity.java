@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -42,6 +43,7 @@ import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -182,12 +184,39 @@ public class NavPrincActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                             if (!mNombreCasa.getText().toString().isEmpty()) {
-                                añadeCasa(values, mNombreCasa.getText().toString());
-                                Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
-                                dialog.hide();
+                                if(!compruebaHomeUsu(mNombreCasa.getText().toString())) {
+                                    añadeCasa(values, mNombreCasa.getText().toString());
+                                    Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
+                                    dialog.hide();
+                                }else{
+                                    Toast.makeText(NavPrincActivity.this, "El nombre ya existe", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 Toast.makeText(NavPrincActivity.this, "Por favor rellena el campo vacío", Toast.LENGTH_SHORT).show();
                             }
+                        }
+
+                        private boolean compruebaHomeUsu(String homeUsu) {
+                            RestInterface rest = RestImpl.getRestInstance();
+                            Call<Void> restCheckCredentials = rest.compruebaHomeUsu(new CasaAdapterIni(homeUsu));
+                            restCheckCredentials.enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        Toast.makeText(NavPrincActivity.this, "Si", Toast.LENGTH_SHORT).show();
+
+                                    } else {
+                                        Toast.makeText(NavPrincActivity.this, "No", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+
+                                }
+                            });
+
+                            return false;
                         }
                     });
                 }else if(item.equals(Constantes.eliminarCasa)) {
@@ -220,20 +249,11 @@ public class NavPrincActivity extends AppCompatActivity
                         }
                     });
                 }
-/*
-                if (!item.equals(Constantes.añadirCasa)) {
-                    // Showing selected spinner item
-                    Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-
-                }
-*/
-
             }
 
             public void onNothingSelected(AdapterView <?> arg0){
 
             }
-
 
         });
 

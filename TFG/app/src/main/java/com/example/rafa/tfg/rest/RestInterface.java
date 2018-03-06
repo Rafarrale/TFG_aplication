@@ -29,7 +29,7 @@ public interface RestInterface {
     @GET("/usuario/giveUsu/{usu}/{pass}")
     Call<usuAdapter> checkLogin(@Path("usu") String email, @Path("pass") String pass);
 
-    @GET("/casa/giveHome2/todasCasas")
+    @GET("/casa/giveHome/todasCasas")
     Call<List<CasaAdapterIni>> getCasas();
 
     @PUT("/api/users/new")
@@ -49,6 +49,9 @@ public interface RestInterface {
 
     @POST("/usuario/insertUsu")
     Call<Void> addUser(@Body usuAdapter user);
+
+    @POST("/casa/giveHomeUsu")
+    Call<Void> compruebaHomeUsu(@Body CasaAdapterIni homeUsu);
     
     @POST("/casa/insertCasa")
     Call<Void> addCasa(@Body CasaAdapterIni casaAdapterIni);
