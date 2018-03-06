@@ -18,6 +18,10 @@ public class CasaAdapterIni implements Parcelable {
         this.homeUsu = homeUsu;
     }
 
+    public CasaAdapterIni(String homeUsu){
+        this.homeUsu = homeUsu;
+    }
+
     protected CasaAdapterIni(Parcel in) {
         _id = in.readString();
         homeUsu = in.readString();

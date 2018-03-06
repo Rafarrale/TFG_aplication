@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -37,8 +38,20 @@ public interface RestInterface {
     @DELETE("/api/users/delete")
     Call<usuAdapter> deleteUsuario(@Body usuAdapter user);
 
+/* No funciona antiguo metodo
+    @DELETE("/casa/eliminaCasa")
+    Call<Void> eliminaCasa(@Body CasaAdapterIni casaAdapterIni);
+*/
+
+    @HTTP(method = "DELETE", path = "/casa/eliminaCasa", hasBody = true)
+    Call<Void> eliminaCasa(@Body CasaAdapterIni casaAdapterIni);
+
+
     @POST("/usuario/insertUsu")
     Call<Void> addUser(@Body usuAdapter user);
+    
+    @POST("/casa/insertCasa")
+    Call<Void> addCasa(@Body CasaAdapterIni casaAdapterIni);
 
     @GET("/api/usu/getAlergenoDataId/{idusuario}")
     Call<List<usuAdapter>> getAlergenoDataId(@Path("idusuario") int idusuario);

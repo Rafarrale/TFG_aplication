@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 
 import com.example.rafa.tfg.adapters.CasaAdapterIni;
 import com.example.rafa.tfg.adapters.CasaAdapterView;
+import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.fragments.AmarilloFragment;
@@ -36,10 +38,16 @@ import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.GreenFragment;
 import com.example.rafa.tfg.fragments.RojoFragment;
 import com.example.rafa.tfg.adapters.usuAdapter;
+import com.example.rafa.tfg.rest.RestImpl;
+import com.example.rafa.tfg.rest.RestInterface;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.example.rafa.tfg.clases.Constantes.ESPACIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
@@ -136,10 +144,12 @@ public class NavPrincActivity extends AppCompatActivity
 
         // Elementos en Spinner
         values = new ArrayList<String>();
-        if(listaCasas.size() != 0){
+        if(listaCasas != null){
             for(CasaAdapterIni aux : listaCasas){
                 values.add(aux.getHomeUsu());
             }
+        }else{
+            values.add(Constantes.CASA_VACIO);
         }
         values.add(Constantes.añadirCasa);
         values.add(Constantes.eliminarCasa);
@@ -156,6 +166,7 @@ public class NavPrincActivity extends AppCompatActivity
                 //Cambia el Tamaño
                 //((TextView) parent.getChildAt(0)).setTextSize(5);
                 // On selecting a spinner item
+
                 String item = parent.getItemAtPosition(position).toString();
                 if (item.equals(Constantes.añadirCasa)) {
                     spinner.setSelection(0); //Selecciona para qeu muestre el valor 0 por defecto
@@ -180,11 +191,15 @@ public class NavPrincActivity extends AppCompatActivity
                         }
                     });
                 }else if(item.equals(Constantes.eliminarCasa)) {
+                    spinner.setSelection(0); //Selecciona para qeu muestre el valor 0 por defecto
                     ArrayList<String> cValues = new ArrayList<>(values);
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(NavPrincActivity.this);
                     View mView = getLayoutInflater().inflate(R.layout.eliminar_casa, null);
                     cValues.remove(cValues.size() - 1);
                     cValues.remove(cValues.size() - 1);
+                    if(listaCasas == null){
+                        cValues.remove(cValues.size() - 1);
+                    }
                     ListView lv = mView.findViewById(R.id.lvListaCasas);
                     CasaAdapterView adapter = new CasaAdapterView(NavPrincActivity.this, cValues);
                     lv.setAdapter(adapter);
@@ -197,9 +212,9 @@ public class NavPrincActivity extends AppCompatActivity
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             final int pos = position;
+                            String eliminaEstaCasa = values.get(pos);
                             values.remove(pos);
-                            eliminaCasa(values);
-                            Toast.makeText(parent.getContext(), "Selected: " + pos, Toast.LENGTH_LONG).show();
+                            eliminaCasa(values, eliminaEstaCasa);
                             dialog.hide();
 
                         }
@@ -227,25 +242,67 @@ public class NavPrincActivity extends AppCompatActivity
 
     public void añadeCasa(List<String> lista, String valor){
         spinner = findViewById(R.id.spinnerMen);
-        if(lista.size() >= 2){
+        if(lista.get(0).equals(Constantes.CASA_VACIO)){
             lista.remove(lista.size() - 3);
         }
         lista.add(lista.size() - 2, valor);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lista);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
+/**
+ * Se usa para refrescar el spinner BaseAdapter
+ */
+/*
+        BaseAdapter adapter = (BaseAdapter) spinner.getAdapter();
+        adapter.notifyDataSetChanged();
+*/
+        RestInterface rest = RestImpl.getRestInstance();
+        Call<Void> restAddHome = rest.addCasa(new CasaAdapterIni(valor));
+        restAddHome.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(NavPrincActivity.this, "No fue posible añadir la casa", Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
 
     }
 
-    public void eliminaCasa(List<String> lista){
+    public void eliminaCasa(List<String> lista, String casa){
         spinner = findViewById(R.id.spinnerMen);
-        if(lista.size() <= 2){
+        if(lista.size() <= 2 || lista.equals(null)){
             lista.add(lista.size() - 2, Constantes.CASA_VACIO);
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lista);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
+
+        RestInterface rest = RestImpl.getRestInstance();
+        Call<Void> restDropHome = rest.eliminaCasa(new CasaAdapterIni(null,casa));
+        restDropHome.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(NavPrincActivity.this, "Casa eliminada", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(NavPrincActivity.this, "No fue posible eliminar la casa", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+
     }
 
     @Override
