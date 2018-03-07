@@ -12,6 +12,7 @@ public class Constantes {
     public static  final String ESTADO_BOTON = "estado.boton";
     public static  final String ESPACIO = " ";
     public static final String CASA_VACIO = "Aquí para Añadir Casa";
+    public static final String CASA_VACIO_ELIMINAR = "Añade primero una casa";
 
 
 

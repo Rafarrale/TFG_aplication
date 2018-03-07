@@ -65,6 +65,7 @@ public class NavPrincActivity extends AppCompatActivity
     private TextView tUsuarioEmail;
     private NavigationView navigationView;
     private List<CasaAdapterIni> listaCasas;
+    private boolean pasaHomeUsu = false;
     ArrayList<String> values = new ArrayList<String>();
     Spinner spinner = null;
 
@@ -146,7 +147,7 @@ public class NavPrincActivity extends AppCompatActivity
 
         // Elementos en Spinner
         values = new ArrayList<String>();
-        if(listaCasas != null){
+        if(listaCasas != null && listaCasas.size() != 0){
             for(CasaAdapterIni aux : listaCasas){
                 values.add(aux.getHomeUsu());
             }
@@ -184,29 +185,24 @@ public class NavPrincActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                             if (!mNombreCasa.getText().toString().isEmpty()) {
-                                if(!compruebaHomeUsu(mNombreCasa.getText().toString())) {
-                                    añadeCasa(values, mNombreCasa.getText().toString());
-                                    Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
-                                    dialog.hide();
-                                }else{
-                                    Toast.makeText(NavPrincActivity.this, "El nombre ya existe", Toast.LENGTH_SHORT).show();
-                                }
+                                compruebaHomeUsu(mNombreCasa.getText().toString());
                             } else {
                                 Toast.makeText(NavPrincActivity.this, "Por favor rellena el campo vacío", Toast.LENGTH_SHORT).show();
                             }
                         }
 
-                        private boolean compruebaHomeUsu(String homeUsu) {
+                        private void compruebaHomeUsu(String homeUsu) {
                             RestInterface rest = RestImpl.getRestInstance();
                             Call<Void> restCheckCredentials = rest.compruebaHomeUsu(new CasaAdapterIni(homeUsu));
                             restCheckCredentials.enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
                                     if (response.isSuccessful()) {
-                                        Toast.makeText(NavPrincActivity.this, "Si", Toast.LENGTH_SHORT).show();
-
+                                        Toast.makeText(NavPrincActivity.this, "El nombre ya existe", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Toast.makeText(NavPrincActivity.this, "No", Toast.LENGTH_SHORT).show();
+                                        añadeCasa(values, mNombreCasa.getText().toString());
+                                        Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
+                                        dialog.hide();
                                     }
                                 }
 
@@ -215,8 +211,6 @@ public class NavPrincActivity extends AppCompatActivity
 
                                 }
                             });
-
-                            return false;
                         }
                     });
                 }else if(item.equals(Constantes.eliminarCasa)) {
@@ -226,8 +220,9 @@ public class NavPrincActivity extends AppCompatActivity
                     View mView = getLayoutInflater().inflate(R.layout.eliminar_casa, null);
                     cValues.remove(cValues.size() - 1);
                     cValues.remove(cValues.size() - 1);
-                    if(listaCasas == null){
+                    if(listaCasas == null || values.get(0).equals(Constantes.CASA_VACIO)){
                         cValues.remove(cValues.size() - 1);
+                        cValues.add(Constantes.CASA_VACIO_ELIMINAR);
                     }
                     ListView lv = mView.findViewById(R.id.lvListaCasas);
                     CasaAdapterView adapter = new CasaAdapterView(NavPrincActivity.this, cValues);
@@ -296,7 +291,7 @@ public class NavPrincActivity extends AppCompatActivity
 
     }
 
-    public void eliminaCasa(List<String> lista, String casa){
+    public void eliminaCasa(List<String> lista, final String casa){
         spinner = findViewById(R.id.spinnerMen);
         if(lista.size() <= 2 || lista.equals(null)){
             lista.add(lista.size() - 2, Constantes.CASA_VACIO);
@@ -311,7 +306,9 @@ public class NavPrincActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(NavPrincActivity.this, "Casa eliminada", Toast.LENGTH_SHORT).show();
+                    if(!casa.equals(Constantes.CASA_VACIO)) {
+                        Toast.makeText(NavPrincActivity.this, "Casa eliminada", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(NavPrincActivity.this, "No fue posible eliminar la casa", Toast.LENGTH_SHORT).show();
                 }
