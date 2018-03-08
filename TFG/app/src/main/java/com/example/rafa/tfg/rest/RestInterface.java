@@ -1,5 +1,6 @@
 package com.example.rafa.tfg.rest;
 import com.example.rafa.tfg.adapters.CasaAdapterIni;
+import com.example.rafa.tfg.adapters.estadoAlarmaAdapter;
 import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.clases.Casa;
 
@@ -31,6 +32,9 @@ public interface RestInterface {
 
     @GET("/casa/giveHome/todasCasas")
     Call<List<CasaAdapterIni>> getCasas();
+
+    @GET("/casa/giveEstado/{estadoAlarma}")
+    Call<estadoAlarmaAdapter> estadoAlarmaCasa(@Path("estadoAlarma") String casaAdapterIni);
 
     @PUT("/api/users/new")
     Call<usuAdapter> addUsuario(@Body usuAdapter user);

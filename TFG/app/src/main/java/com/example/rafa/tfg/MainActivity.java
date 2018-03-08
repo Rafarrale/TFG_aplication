@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.rafa.tfg.adapters.CasaAdapterIni;
 import com.example.rafa.tfg.clases.Casa;
+import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 import com.example.rafa.tfg.adapters.usuAdapter;
@@ -212,6 +213,10 @@ public class MainActivity extends AppCompatActivity {
 
     //Metodo click del login
     public void onClickLog(View view) {
+        /**Se pone esta variable a true si estando en la pantalla principal le damos a volver a esta pantalla
+         * para que aplique el contenedor Fragment*/
+        Utilidades.validaPantalla = true;
+        Utilidades.iniciaAplicacion = false;
         attemptLogin();
     }
 

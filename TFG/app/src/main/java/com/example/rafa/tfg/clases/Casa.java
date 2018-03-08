@@ -26,6 +26,18 @@ public class Casa{
         this.logUsuarios = logUsuarios;
     }
 
+    public Casa(String _id, String homeUsu, Configuracion configuracion){
+        super();
+        this._id = _id;
+        this.homeUsu = homeUsu;
+        this.configuracion = configuracion;
+    }
+
+    public Casa(String homeUsu){
+        super();
+        this.homeUsu = homeUsu;
+    }
+
     public String get_id() {
         return _id;
     }

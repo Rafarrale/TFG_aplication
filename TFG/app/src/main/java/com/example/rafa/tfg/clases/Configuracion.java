@@ -18,6 +18,10 @@ public class Configuracion {
         this.sonidoPuerta = sonidoPuerta;
     }
 
+    public Configuracion(){
+
+    }
+
     public String getEstadoAlarma() {
         return estadoAlarma;
     }

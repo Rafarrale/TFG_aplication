@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,7 +21,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -32,6 +31,7 @@ import android.widget.Toast;
 import com.example.rafa.tfg.adapters.CasaAdapterIni;
 import com.example.rafa.tfg.adapters.CasaAdapterView;
 import com.example.rafa.tfg.clases.Casa;
+import com.example.rafa.tfg.clases.Configuracion;
 import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.fragments.AmarilloFragment;
@@ -43,9 +43,11 @@ import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +62,8 @@ public class NavPrincActivity extends AppCompatActivity
         AmarilloFragment.OnFragmentInteractionListener,GreenFragment.OnFragmentInteractionListener,
         ContenedorFragment.OnFragmentInteractionListener {
 
+    private List<Casa> fListCasas = new ArrayList<>();
+    Map<Integer, List<Casa>> fListCasasRes = new HashMap<Integer, List<Casa>>();
     private usuAdapter usuario;
     private TextView tUsuario;
     private TextView tUsuarioEmail;
@@ -68,6 +72,7 @@ public class NavPrincActivity extends AppCompatActivity
     private boolean pasaHomeUsu = false;
     ArrayList<String> values = new ArrayList<String>();
     Spinner spinner = null;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,27 +97,75 @@ public class NavPrincActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        if(Utilidades.validaPantalla ){
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        /**Responder ante la apertura y cierre del navegation View*/
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerLayout.addDrawerListener(
+                new DrawerLayout.DrawerListener() {
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                        // Respond when the drawer's position changes
+                    }
+
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+                        // Respond when the drawer is opened
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        // Respond when the drawer is closed
+
+                        //--- Establecemos el Contenedor Fragment como vista principal al ejecutarse la activity principal
+                        Fragment fragment = new ContenedorFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();
+                        Utilidades.validaPantalla = false;
+                        //---
+                    }
+
+                    @Override
+                    public void onDrawerStateChanged(int newState) {
+                        // Respond when the drawer motion state changes
+                    }
+                }
+        );
+
+        recuperaDatosExtraFromMainActivity();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(Utilidades.validaPantalla && Utilidades.iniciaAplicacion ){
             //--- Establecemos el Contenedor Fragment como vista principal al ejecutarse la activity principal
             Fragment fragment = new ContenedorFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();
             Utilidades.validaPantalla = false;
             //---
         }
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        recuperaDatosExtra();
-
     }
 
-    private void recuperaDatosExtra() {
+    private void recuperaDatosExtraFromMainActivity() {
         String userJson = getIntent().getStringExtra("USER");
         Gson gson = new Gson();
         usuario = gson.fromJson(userJson, usuAdapter.class);
         Bundle bundle = getIntent().getExtras();
         listaCasas = bundle.getParcelableArrayList("CASAS");
+
+        añadeListaFCasa(listaCasas);
         añadeCamposCabecera();
+    }
+
+    private void añadeListaFCasa(List<CasaAdapterIni> lista) {
+        for(CasaAdapterIni aux : lista){
+            Configuracion confAux = new Configuracion();
+            confAux.setEstadoAlarma(aux.getEstadoAlarma());
+            fListCasas.add(new Casa(aux.get_id(),aux.getHomeUsu(), confAux));
+            fListCasasRes.put(0, fListCasas);
+        }
     }
 
     public void añadeCamposCabecera(){
@@ -171,6 +224,7 @@ public class NavPrincActivity extends AppCompatActivity
                 // On selecting a spinner item
 
                 String item = parent.getItemAtPosition(position).toString();
+
                 if (item.equals(Constantes.añadirCasa)) {
                     spinner.setSelection(0); //Selecciona para qeu muestre el valor 0 por defecto
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(NavPrincActivity.this);
@@ -243,6 +297,36 @@ public class NavPrincActivity extends AppCompatActivity
 
                         }
                     });
+                }else{
+
+                    Iterator<Casa> itr = fListCasasRes.get(0).listIterator();
+                    List<Casa> auxList = new ArrayList<>();
+                    List<Casa> auxListRemove = new ArrayList<>();
+                    while (itr.hasNext())
+                    {
+                        Casa data = itr.next();
+                        auxListRemove.add(data);
+                        if(data.getHomeUsu().equals(item)){
+                            auxList.add(data);
+                            if(fListCasasRes.get(1) != null && fListCasasRes.get(1).size() > 0){
+                                auxListRemove.add(fListCasasRes.get(1).get(0));
+                            }
+                            fListCasasRes.put(1, auxList);
+                            auxListRemove.remove(auxListRemove.indexOf(data));
+                        }
+                    }
+                    fListCasasRes.put(0, auxListRemove);
+
+
+                    if(!Utilidades.iniciaAplicacion){
+                        Utilidades.iniciaAplicacion = true;
+                        //--- Establecemos el Contenedor Fragment como vista principal al ejecutarse la activity principal
+                        Fragment fragment = new ContenedorFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();
+                        Utilidades.validaPantalla = false;
+                        //---
+                    }
+
                 }
             }
 
@@ -255,7 +339,7 @@ public class NavPrincActivity extends AppCompatActivity
         return true;
     }
 
-    public void añadeCasa(List<String> lista, String valor){
+    public void añadeCasa(List<String> lista, final String valor){
         spinner = findViewById(R.id.spinnerMen);
         if(lista.get(0).equals(Constantes.CASA_VACIO)){
             lista.remove(lista.size() - 3);
@@ -278,6 +362,9 @@ public class NavPrincActivity extends AppCompatActivity
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
+                    fListCasas.add(new Casa(valor));
+                    fListCasasRes.put(0, fListCasas);
+
                 }else{
                     Toast.makeText(NavPrincActivity.this, "No fue posible añadir la casa", Toast.LENGTH_SHORT).show();
                 }
@@ -308,6 +395,12 @@ public class NavPrincActivity extends AppCompatActivity
                 if(response.isSuccessful()){
                     if(!casa.equals(Constantes.CASA_VACIO)) {
                         Toast.makeText(NavPrincActivity.this, "Casa eliminada", Toast.LENGTH_SHORT).show();
+                        for (Casa aux : fListCasas){
+                            if(aux.getHomeUsu().equals(casa)){
+                                fListCasas.remove(aux);
+                                fListCasasRes.put(0, fListCasas);
+                            }
+                        }
                     }
                 }else{
                     Toast.makeText(NavPrincActivity.this, "No fue posible eliminar la casa", Toast.LENGTH_SHORT).show();
@@ -381,5 +474,13 @@ public class NavPrincActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public usuAdapter getDataUsuarioFragment(){
+        return usuario;
+    }
+
+    public Map<Integer, List<Casa>> getDataListaCasasFragment(){
+        return fListCasasRes;
     }
 }

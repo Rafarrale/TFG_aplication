@@ -12,6 +12,13 @@ import com.google.gson.Gson;
 public class CasaAdapterIni implements Parcelable {
     private String _id;
     private String homeUsu;
+    private String estadoAlarma;
+
+    public CasaAdapterIni(String _id, String homeUsu, String estadoAlarma) {
+        this._id = _id;
+        this.homeUsu = homeUsu;
+        this.estadoAlarma = estadoAlarma;
+    }
 
     public CasaAdapterIni(String _id, String homeUsu) {
         this._id = _id;
@@ -25,6 +32,19 @@ public class CasaAdapterIni implements Parcelable {
     protected CasaAdapterIni(Parcel in) {
         _id = in.readString();
         homeUsu = in.readString();
+        estadoAlarma = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(homeUsu);
+        dest.writeString(estadoAlarma);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<CasaAdapterIni> CREATOR = new Creator<CasaAdapterIni>() {
@@ -55,14 +75,12 @@ public class CasaAdapterIni implements Parcelable {
         this.homeUsu = homeUsu;
     }
 
-    public static  usuAdapter buildFromJson(String jsonString){
-        Gson gson = new Gson();
-        return gson.fromJson(jsonString,usuAdapter.class);
+    public String getEstadoAlarma() {
+        return estadoAlarma;
     }
 
-    public String toJson(){
-        Gson gson = new Gson();
-        return gson.toJson(this);
+    public void setEstadoAlarma(String estadoAlarma) {
+        this.estadoAlarma = estadoAlarma;
     }
 
     @Override
@@ -73,24 +91,35 @@ public class CasaAdapterIni implements Parcelable {
         CasaAdapterIni that = (CasaAdapterIni) o;
 
         if (_id != null ? !_id.equals(that._id) : that._id != null) return false;
-        return homeUsu != null ? homeUsu.equals(that.homeUsu) : that.homeUsu == null;
+        if (homeUsu != null ? !homeUsu.equals(that.homeUsu) : that.homeUsu != null) return false;
+        return estadoAlarma != null ? estadoAlarma.equals(that.estadoAlarma) : that.estadoAlarma == null;
     }
 
     @Override
     public int hashCode() {
         int result = _id != null ? _id.hashCode() : 0;
         result = 31 * result + (homeUsu != null ? homeUsu.hashCode() : 0);
+        result = 31 * result + (estadoAlarma != null ? estadoAlarma.hashCode() : 0);
         return result;
     }
 
     @Override
-    public int describeContents() {
-        return 0;
+    public String toString() {
+        return "CasaAdapterIni{" +
+                "_id='" + _id + '\'' +
+                ", homeUsu='" + homeUsu + '\'' +
+                ", estadoAlarma='" + estadoAlarma + '\'' +
+                '}';
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(_id);
-        dest.writeString(homeUsu);
+    public static  usuAdapter buildFromJson(String jsonString){
+        Gson gson = new Gson();
+        return gson.fromJson(jsonString,usuAdapter.class);
     }
+
+    public String toJson(){
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
 }

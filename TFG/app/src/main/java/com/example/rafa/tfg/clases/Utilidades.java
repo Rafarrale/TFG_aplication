@@ -7,5 +7,7 @@ package com.example.rafa.tfg.clases;
 public class Utilidades {
     public static int rotacion = 0;
     public static boolean validaPantalla = true;
+    public static int CasaSeleccionada = 0;
+    public static boolean iniciaAplicacion = false;
 
 }

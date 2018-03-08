@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,26 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.rafa.tfg.NavPrincActivity;
 import com.example.rafa.tfg.R;
+import com.example.rafa.tfg.adapters.CasaAdapterIni;
+import com.example.rafa.tfg.adapters.estadoAlarmaAdapter;
+import com.example.rafa.tfg.adapters.usuAdapter;
+import com.example.rafa.tfg.clases.Casa;
+import com.example.rafa.tfg.clases.Configuracion;
+import com.example.rafa.tfg.rest.RestImpl;
+import com.example.rafa.tfg.rest.RestInterface;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 
 /**
@@ -27,6 +46,8 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
 
     private CardView card1,card2,card3,card4,card5;
     private int vale1,vale2,vale3,vale4,vale5 = 0;
+    usuAdapter recibeUsu = new usuAdapter();
+    Map<Integer, List<Casa>> fListCasasRes = new HashMap<Integer, List<Casa>>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -73,8 +94,18 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        NavPrincActivity navPrincActivity = (NavPrincActivity) getActivity();
+        recibeUsu = navPrincActivity.getDataUsuarioFragment();
+        fListCasasRes = navPrincActivity.getDataListaCasasFragment();
+
+        CasaTask casaTask = new CasaTask();
+        casaTask.execute();
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_amarillo, container, false);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -99,7 +130,22 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
         card3.setOnClickListener(this);
         card4.setOnClickListener(this);
         card5.setOnClickListener(this);
+/*
+        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals("si")){
+            vale1 = 1;
+        }
+*/
+        vale1 = 1;
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -241,6 +287,7 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -255,4 +302,44 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    protected class CasaTask extends AsyncTask<Void,Void,estadoAlarmaAdapter> {
+
+        @Override
+        protected estadoAlarmaAdapter doInBackground(Void... params) {
+            estadoAlarmaAdapter res = null;
+            RestInterface rest = RestImpl.getRestInstance();
+
+            Call<estadoAlarmaAdapter> restCasas = rest.estadoAlarmaCasa(fListCasasRes.get(1).get(0).getHomeUsu());
+
+            try{
+                Response<estadoAlarmaAdapter> responseCasas = restCasas.execute();
+                if(responseCasas.isSuccessful()){
+                    res = responseCasas.body();
+
+                }
+
+            }catch(IOException io){
+
+            }
+
+            return res;
+        }
+
+        protected void onPostExecute(final estadoAlarmaAdapter casa){
+            if(casa != null){
+                Configuracion confAux = new Configuracion();
+                confAux.setEstadoAlarma(casa.getEstadoAlarma());
+                fListCasasRes.get(1).get(0).setConfiguracion(confAux);
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+
+        }
+    }
+
+
 }

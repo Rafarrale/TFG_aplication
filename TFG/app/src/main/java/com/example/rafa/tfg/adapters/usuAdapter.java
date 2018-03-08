@@ -15,6 +15,11 @@ public class usuAdapter {
     private String admin;
     private String email;
 
+
+    public  usuAdapter(){
+
+    }
+
     public usuAdapter(String _id, String user, String nombre, String apellidos, String pass, String admin, String email){
         this._id = _id;
         this.user = user;
