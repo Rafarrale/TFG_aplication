@@ -1,10 +1,13 @@
 package com.example.rafa.tfg.clases;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Rafael on 04/03/2018.
  */
 
-public class Configuracion {
+public class Configuracion implements Parcelable {
 
     private String estadoAlarma;
     private String cuentaAtrasSonido;
@@ -21,6 +24,38 @@ public class Configuracion {
     public Configuracion(){
 
     }
+
+    protected Configuracion(Parcel in) {
+        estadoAlarma = in.readString();
+        cuentaAtrasSonido = in.readString();
+        volumenSonido = in.readString();
+        sonidoPuerta = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(estadoAlarma);
+        dest.writeString(cuentaAtrasSonido);
+        dest.writeString(volumenSonido);
+        dest.writeString(sonidoPuerta);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Configuracion> CREATOR = new Creator<Configuracion>() {
+        @Override
+        public Configuracion createFromParcel(Parcel in) {
+            return new Configuracion(in);
+        }
+
+        @Override
+        public Configuracion[] newArray(int size) {
+            return new Configuracion[size];
+        }
+    };
 
     public String getEstadoAlarma() {
         return estadoAlarma;

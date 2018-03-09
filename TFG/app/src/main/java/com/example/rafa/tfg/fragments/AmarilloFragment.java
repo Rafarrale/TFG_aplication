@@ -21,6 +21,7 @@ import com.example.rafa.tfg.adapters.estadoAlarmaAdapter;
 import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Configuracion;
+import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 
@@ -98,14 +99,8 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
         NavPrincActivity navPrincActivity = (NavPrincActivity) getActivity();
         recibeUsu = navPrincActivity.getDataUsuarioFragment();
         fListCasasRes = navPrincActivity.getDataListaCasasFragment();
-
-        CasaTask casaTask = new CasaTask();
-        casaTask.execute();
-
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_amarillo, container, false);
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -130,12 +125,27 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
         card3.setOnClickListener(this);
         card4.setOnClickListener(this);
         card5.setOnClickListener(this);
-/*
-        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals("si")){
-            vale1 = 1;
+
+        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.DESARMAR)){
+            activaBoton(R.id.card1);
         }
-*/
-        vale1 = 1;
+
+        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.ARMAR)){
+            activaBoton(R.id.card2);
+        }
+
+        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.CASA)){
+            activaBoton(R.id.card3);
+        }
+
+        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.DISPOSITIVOS)){
+            activaBoton(R.id.card4);
+        }
+
+        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.ALARMA)){
+            activaBoton(R.id.card5);
+        }
+
     }
 
     @Override
@@ -167,126 +177,139 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        Intent i;
-
-        switch(v.getId()){
-            case R.id.card1:
-                if(vale1 == 0) {
-                    card1.setBackgroundColor(Color.parseColor("#8C7C4DFF"));
-                    card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    vale1 = 1;
-                    vale2 = 0;
-                    vale3 = 0;
-                    vale4 = 0;
-                    vale5 = 0;
-                }else{
-                    card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    vale1 = 0;
-                }
-                //i = new Intent(this,MisDatosActivity.class);
-                //startActivity(i);
-                break;
-
-            case R.id.card2:
-
-                if(vale2 == 0) {
-                    card2.setBackgroundColor(Color.parseColor("#8CFF4081"));
-                    card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    vale2 = 1;
-                    vale1 = 0;
-                    vale3 = 0;
-                    vale4 = 0;
-                    vale5 = 0;
-                }else{
-                    card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    vale2 = 0;
-                }
-
-                /*
-                i = new Intent(this,);
-                startActivity(i);
-                */
-                break;
-            case R.id.card3:
-
-                if(vale3 == 0) {
-                    card3.setBackgroundColor(Color.parseColor("#8C00BFA5"));
-                    //i = new Intent(PrincipalActivity.this,sensorActivity.class);
-                    card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    vale3 = 1;
-                    vale1 = 0;
-                    vale2 = 0;
-                    vale4 = 0;
-                    vale5 = 0;
-                }else{
-                    card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    vale3 = 0;
-                }
-
-                /*
-                i = new Intent(this,);
-                startActivity(i);
-                */
-                break;
-            case R.id.card4:
-
-                if(vale4 == 0) {
-                    card4.setBackgroundColor(Color.parseColor("#8CFFB300"));
-                    card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    vale4 = 1;
-                    vale1 = 0;
-                    vale3 = 0;
-                    vale2 = 0;
-                    vale5 = 0;
-                }else{
-                    card4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    vale4 = 0;
-                }
-
-                /*
-                i = new Intent(this,);
-                startActivity(i);
-                */
-                break;
-            case R.id.card5:
-
-                if(vale5 == 0) {
-                    card5.setBackgroundColor(Color.parseColor("#8CFA0008"));
-                    card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    vale5 = 1;
-                    vale1 = 0;
-                    vale3 = 0;
-                    vale4 = 0;
-                    vale2 = 0;
-                }else{
-                    card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                    vale5 = 0;
-                }
-                /*
-                i = new Intent(this,);
-                startActivity(i);
-                */
-                break;
-            default:
-                break;
-        }
+        activaBoton(v.getId());
     }
 
+public void activaBoton(Integer v){
+
+        switch(v){
+        case R.id.card1:
+            if(vale1 == 0) {
+                card1.setBackgroundColor(Color.parseColor("#8C7C4DFF"));
+                card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                vale1 = 1;
+                vale2 = 0;
+                vale3 = 0;
+                vale4 = 0;
+                vale5 = 0;
+                CasaTask casaTask = new CasaTask(Constantes.DESARMAR);
+                casaTask.execute();
+
+            }else{
+                card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                vale1 = 0;
+            }
+            //i = new Intent(this,MisDatosActivity.class);
+            //startActivity(i);
+            break;
+
+        case R.id.card2:
+
+            if(vale2 == 0) {
+                card2.setBackgroundColor(Color.parseColor("#8CFF4081"));
+                card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                vale2 = 1;
+                vale1 = 0;
+                vale3 = 0;
+                vale4 = 0;
+                vale5 = 0;
+                CasaTask casaTask = new CasaTask(Constantes.ARMAR);
+                casaTask.execute();
+            }else{
+                card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                vale2 = 0;
+            }
+
+                /*
+                i = new Intent(this,);
+                startActivity(i);
+                */
+            break;
+        case R.id.card3:
+
+            if(vale3 == 0) {
+                card3.setBackgroundColor(Color.parseColor("#8C00BFA5"));
+                //i = new Intent(PrincipalActivity.this,sensorActivity.class);
+                card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                vale3 = 1;
+                vale1 = 0;
+                vale2 = 0;
+                vale4 = 0;
+                vale5 = 0;
+                CasaTask casaTask = new CasaTask(Constantes.CASA);
+                casaTask.execute();
+            }else{
+                card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                vale3 = 0;
+            }
+
+                /*
+                i = new Intent(this,);
+                startActivity(i);
+                */
+            break;
+        case R.id.card4:
+
+            if(vale4 == 0) {
+                card4.setBackgroundColor(Color.parseColor("#8CFFB300"));
+                card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                vale4 = 1;
+                vale1 = 0;
+                vale3 = 0;
+                vale2 = 0;
+                vale5 = 0;
+                CasaTask casaTask = new CasaTask(Constantes.DISPOSITIVOS);
+                casaTask.execute();
+            }else{
+                card4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                vale4 = 0;
+            }
+
+                /*
+                i = new Intent(this,);
+                startActivity(i);
+                */
+            break;
+        case R.id.card5:
+
+            if(vale5 == 0) {
+                card5.setBackgroundColor(Color.parseColor("#8CFA0008"));
+                card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card4.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                vale5 = 1;
+                vale1 = 0;
+                vale3 = 0;
+                vale4 = 0;
+                vale2 = 0;
+                CasaTask casaTask = new CasaTask(Constantes.ALARMA);
+                casaTask.execute();
+            }else{
+                card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                vale5 = 0;
+            }
+                /*
+                i = new Intent(this,);
+                startActivity(i);
+                */
+            break;
+        default:
+            break;
+    }
+}
 
     /**
      * This interface must be implemented by activities that contain this
@@ -304,13 +327,18 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
     }
 
     protected class CasaTask extends AsyncTask<Void,Void,estadoAlarmaAdapter> {
+        private String estadoAlarma;
+
+        public CasaTask(String estadoAlarma) {
+            this.estadoAlarma = estadoAlarma;
+        }
 
         @Override
         protected estadoAlarmaAdapter doInBackground(Void... params) {
             estadoAlarmaAdapter res = null;
             RestInterface rest = RestImpl.getRestInstance();
 
-            Call<estadoAlarmaAdapter> restCasas = rest.estadoAlarmaCasa(fListCasasRes.get(1).get(0).getHomeUsu());
+            Call<estadoAlarmaAdapter> restCasas = rest.estadoAlarmaCasa(estadoAlarma, fListCasasRes.get(1).get(0).getHomeUsu());
 
             try{
                 Response<estadoAlarmaAdapter> responseCasas = restCasas.execute();
@@ -326,10 +354,9 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
             return res;
         }
 
-        protected void onPostExecute(final estadoAlarmaAdapter casa){
-            if(casa != null){
-                Configuracion confAux = new Configuracion();
-                confAux.setEstadoAlarma(casa.getEstadoAlarma());
+        protected void onPostExecute(final estadoAlarmaAdapter estadoAlarmaCasa){
+            if(estadoAlarmaCasa != null){
+                Configuracion confAux = estadoAlarmaCasa.getConfiguracion();
                 fListCasasRes.get(1).get(0).setConfiguracion(confAux);
             }
         }

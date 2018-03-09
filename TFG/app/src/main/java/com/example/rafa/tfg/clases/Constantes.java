@@ -13,6 +13,11 @@ public class Constantes {
     public static  final String ESPACIO = " ";
     public static final String CASA_VACIO = "Aquí para Añadir Casa";
     public static final String CASA_VACIO_ELIMINAR = "Añade primero una casa";
+    public static final String DESARMAR = "desarmar";
+    public static final String ARMAR = "armar";
+    public static final String CASA = "casa";
+    public static final String DISPOSITIVOS = "dispositivos";
+    public static final String ALARMA = "alarma";
 
 
 

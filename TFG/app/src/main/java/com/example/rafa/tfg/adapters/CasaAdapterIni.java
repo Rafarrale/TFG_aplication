@@ -3,6 +3,7 @@ package com.example.rafa.tfg.adapters;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.rafa.tfg.clases.Configuracion;
 import com.google.gson.Gson;
 
 /**
@@ -12,12 +13,12 @@ import com.google.gson.Gson;
 public class CasaAdapterIni implements Parcelable {
     private String _id;
     private String homeUsu;
-    private String estadoAlarma;
+    private Configuracion configuracion;
 
-    public CasaAdapterIni(String _id, String homeUsu, String estadoAlarma) {
+    public CasaAdapterIni(String _id, String homeUsu, Configuracion configuracion) {
         this._id = _id;
         this.homeUsu = homeUsu;
-        this.estadoAlarma = estadoAlarma;
+        this.configuracion = configuracion;
     }
 
     public CasaAdapterIni(String _id, String homeUsu) {
@@ -32,14 +33,15 @@ public class CasaAdapterIni implements Parcelable {
     protected CasaAdapterIni(Parcel in) {
         _id = in.readString();
         homeUsu = in.readString();
-        estadoAlarma = in.readString();
+        configuracion = in.readParcelable(Configuracion.class.getClassLoader());
     }
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(_id);
         dest.writeString(homeUsu);
-        dest.writeString(estadoAlarma);
+        dest.writeParcelable(configuracion,flags);
     }
 
     @Override
@@ -75,13 +77,15 @@ public class CasaAdapterIni implements Parcelable {
         this.homeUsu = homeUsu;
     }
 
-    public String getEstadoAlarma() {
-        return estadoAlarma;
+
+    public Configuracion getConfiguracion() {
+        return configuracion;
     }
 
-    public void setEstadoAlarma(String estadoAlarma) {
-        this.estadoAlarma = estadoAlarma;
+    public void setConfiguracion(Configuracion configuracion) {
+        this.configuracion = configuracion;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -92,14 +96,14 @@ public class CasaAdapterIni implements Parcelable {
 
         if (_id != null ? !_id.equals(that._id) : that._id != null) return false;
         if (homeUsu != null ? !homeUsu.equals(that.homeUsu) : that.homeUsu != null) return false;
-        return estadoAlarma != null ? estadoAlarma.equals(that.estadoAlarma) : that.estadoAlarma == null;
+        return configuracion != null ? configuracion.equals(that.configuracion) : that.configuracion == null;
     }
 
     @Override
     public int hashCode() {
         int result = _id != null ? _id.hashCode() : 0;
         result = 31 * result + (homeUsu != null ? homeUsu.hashCode() : 0);
-        result = 31 * result + (estadoAlarma != null ? estadoAlarma.hashCode() : 0);
+        result = 31 * result + (configuracion != null ? configuracion.hashCode() : 0);
         return result;
     }
 
@@ -108,7 +112,7 @@ public class CasaAdapterIni implements Parcelable {
         return "CasaAdapterIni{" +
                 "_id='" + _id + '\'' +
                 ", homeUsu='" + homeUsu + '\'' +
-                ", estadoAlarma='" + estadoAlarma + '\'' +
+                ", configuracion=" + configuracion +
                 '}';
     }
 

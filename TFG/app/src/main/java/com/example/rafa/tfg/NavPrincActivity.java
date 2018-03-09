@@ -156,13 +156,16 @@ public class NavPrincActivity extends AppCompatActivity
         listaCasas = bundle.getParcelableArrayList("CASAS");
 
         añadeListaFCasa(listaCasas);
+
         añadeCamposCabecera();
     }
 
     private void añadeListaFCasa(List<CasaAdapterIni> lista) {
         for(CasaAdapterIni aux : lista){
             Configuracion confAux = new Configuracion();
-            confAux.setEstadoAlarma(aux.getEstadoAlarma());
+            if(aux.getConfiguracion() != null) {
+                confAux.setEstadoAlarma(aux.getConfiguracion().getEstadoAlarma());
+            }
             fListCasas.add(new Casa(aux.get_id(),aux.getHomeUsu(), confAux));
             fListCasasRes.put(0, fListCasas);
         }
