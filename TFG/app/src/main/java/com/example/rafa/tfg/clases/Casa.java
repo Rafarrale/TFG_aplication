@@ -101,7 +101,6 @@ public class Casa{
 
         Casa casa = (Casa) o;
 
-        if (!_id.equals(casa._id)) return false;
         if (homeUsu != null ? !homeUsu.equals(casa.homeUsu) : casa.homeUsu != null) return false;
         if (configuracion != null ? !configuracion.equals(casa.configuracion) : casa.configuracion != null)
             return false;

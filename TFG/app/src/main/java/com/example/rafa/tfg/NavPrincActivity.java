@@ -60,7 +60,7 @@ import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
         AmarilloFragment.OnFragmentInteractionListener,GreenFragment.OnFragmentInteractionListener,
-        ContenedorFragment.OnFragmentInteractionListener {
+        ContenedorFragment.OnFragmentInteractionListener{
 
     private List<Casa> fListCasas = new ArrayList<>();
     Map<Integer, List<Casa>> fListCasasRes = new HashMap<Integer, List<Casa>>();
@@ -258,7 +258,6 @@ public class NavPrincActivity extends AppCompatActivity
                                         Toast.makeText(NavPrincActivity.this, "El nombre ya existe", Toast.LENGTH_SHORT).show();
                                     } else {
                                         añadeCasa(values, mNombreCasa.getText().toString());
-                                        Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
                                         dialog.hide();
                                     }
                                 }
@@ -301,24 +300,31 @@ public class NavPrincActivity extends AppCompatActivity
                         }
                     });
                 }else{
-
-                    Iterator<Casa> itr = fListCasasRes.get(0).listIterator();
-                    List<Casa> auxList = new ArrayList<>();
-                    List<Casa> auxListRemove = new ArrayList<>();
-                    while (itr.hasNext())
-                    {
-                        Casa data = itr.next();
-                        auxListRemove.add(data);
-                        if(data.getHomeUsu().equals(item)){
-                            auxList.add(data);
-                            if(fListCasasRes.get(1) != null && fListCasasRes.get(1).size() > 0){
-                                auxListRemove.add(fListCasasRes.get(1).get(0));
-                            }
-                            fListCasasRes.put(1, auxList);
-                            auxListRemove.remove(auxListRemove.indexOf(data));
+                    if(fListCasasRes.get(0) != null) {
+                        Iterator<Casa> itr = fListCasasRes.get(0).listIterator();
+                        if(itr.hasNext() == false){
+                            itr = fListCasasRes.get(1).listIterator();
                         }
+                        List<Casa> auxList = new ArrayList<>();
+                        List<Casa> auxListRemove = new ArrayList<>();
+                        while (itr.hasNext()) {
+                            Casa data = itr.next();
+                            auxListRemove.add(data);
+                            if (data.getHomeUsu().equals(item)) {
+                                auxList.add(data);
+                                if (fListCasasRes.get(1) != null && fListCasasRes.get(1).size() > 0) {
+                                    auxListRemove.add(fListCasasRes.get(1).get(0));
+                                }
+                                fListCasasRes.put(1, auxList);
+                                auxListRemove.remove(auxListRemove.indexOf(data));
+                                if(auxListRemove.contains(data)){
+                                    auxListRemove.remove(auxListRemove.indexOf(data));
+                                }
+                            }
+                        }
+
+                        fListCasasRes.put(0, auxListRemove);
                     }
-                    fListCasasRes.put(0, auxListRemove);
 
 
                     if(!Utilidades.iniciaAplicacion){
@@ -368,8 +374,14 @@ public class NavPrincActivity extends AppCompatActivity
                     fListCasas.add(new Casa(valor));
                     fListCasasRes.put(0, fListCasas);
 
+                    if(fListCasasRes.get(1) == null) {
+                        fListCasasRes.put(1, fListCasas);
+                    }
+
                 }else{
                     Toast.makeText(NavPrincActivity.this, "No fue posible añadir la casa", Toast.LENGTH_SHORT).show();
+                    eliminaCasa(values, valor);
+                    values.remove(valor);
                 }
             }
 
@@ -398,10 +410,28 @@ public class NavPrincActivity extends AppCompatActivity
                 if(response.isSuccessful()){
                     if(!casa.equals(Constantes.CASA_VACIO)) {
                         Toast.makeText(NavPrincActivity.this, "Casa eliminada", Toast.LENGTH_SHORT).show();
-                        for (Casa aux : fListCasas){
+
+                        List<Casa> fListCasasCopy = new ArrayList<>(fListCasas);
+                        Iterator<Casa> itr = fListCasasCopy.listIterator();
+
+                        if(fListCasasCopy.size() == 0){
+                            fListCasasRes = new HashMap<>();
+                        }
+                        while(itr.hasNext()){
+                            Casa aux = itr.next();
+
+                            if(fListCasasRes.get(1).get(0).getHomeUsu().equals(aux.getHomeUsu())){
+                                fListCasas.remove(aux);
+                            }
+
                             if(aux.getHomeUsu().equals(casa)){
                                 fListCasas.remove(aux);
-                                fListCasasRes.put(0, fListCasas);
+                                if(!fListCasasRes.get(1).get(0).getHomeUsu().equals(fListCasasRes.get(0).get(0).getHomeUsu())){
+                                    fListCasasRes.put(0, fListCasas);
+                                }
+                                if(fListCasasRes.get(1).get(0).getHomeUsu().equals(casa)){
+                                    fListCasasRes.put(1,fListCasas);
+                                }
                             }
                         }
                     }
@@ -484,6 +514,7 @@ public class NavPrincActivity extends AppCompatActivity
     }
 
     public Map<Integer, List<Casa>> getDataListaCasasFragment(){
+
         return fListCasasRes;
     }
 }

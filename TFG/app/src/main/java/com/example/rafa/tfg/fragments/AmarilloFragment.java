@@ -99,6 +99,7 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
         NavPrincActivity navPrincActivity = (NavPrincActivity) getActivity();
         recibeUsu = navPrincActivity.getDataUsuarioFragment();
         fListCasasRes = navPrincActivity.getDataListaCasasFragment();
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_amarillo, container, false);
     }
@@ -125,27 +126,31 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
         card3.setOnClickListener(this);
         card4.setOnClickListener(this);
         card5.setOnClickListener(this);
+        try {
+            if (fListCasasRes.get(1) != null && fListCasasRes.get(1).get(0).getConfiguracion() != null) {
+                if (fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.DESARMAR)) {
+                    activaBoton(R.id.card1);
+                }
 
-        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.DESARMAR)){
-            activaBoton(R.id.card1);
-        }
+                if (fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.ARMAR)) {
+                    activaBoton(R.id.card2);
+                }
 
-        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.ARMAR)){
-            activaBoton(R.id.card2);
-        }
+                if (fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.CASA)) {
+                    activaBoton(R.id.card3);
+                }
 
-        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.CASA)){
-            activaBoton(R.id.card3);
-        }
+                if (fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.DISPOSITIVOS)) {
+                    activaBoton(R.id.card4);
+                }
 
-        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.DISPOSITIVOS)){
-            activaBoton(R.id.card4);
-        }
+                if (fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.ALARMA)) {
+                    activaBoton(R.id.card5);
+                }
+            }
+        }catch(IndexOutOfBoundsException e){
 
-        if(fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma() != null && fListCasasRes.get(1).get(0).getConfiguracion().getEstadoAlarma().equals(Constantes.ALARMA)){
-            activaBoton(R.id.card5);
-        }
-
+            }
     }
 
     @Override
