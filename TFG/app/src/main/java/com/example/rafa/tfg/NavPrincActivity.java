@@ -81,6 +81,8 @@ public class NavPrincActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -472,19 +474,17 @@ public class NavPrincActivity extends AppCompatActivity
         Fragment miFragment = null;
         boolean fragmentSeleccionado = false;
 
-        if (id == R.id.nav_camera) {
-            miFragment = new ContenedorFragment();
-            fragmentSeleccionado = true;
 
-        } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
+        if (id == R.id.nav_usuarios) {
+            Intent intent = new Intent(NavPrincActivity.this, UsuariosActivity.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_notificaciones) {
 
-        }else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_micasa) {
 
-        }else if (id == R.id.nav_send) {
+        }else if (id == R.id.nav_chat) {
 
         }else if (id == R.id.cerrar_sesion) {
             //Borra la caracteristica ESTADO_BOTON guardada anteriormente para cerrar sesion

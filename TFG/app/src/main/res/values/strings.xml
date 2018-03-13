@@ -43,6 +43,11 @@
     <string name="introduzca_aqu_el_nombre_de_su_casa">Introduzca aquí el nombre de su Casa</string>
     <string name="nombre">Nombre</string>
     <string name="a_adir">Añadir</string>
+    <string name="usuarios">Usuarios</string>
+    <string name="notificaciones">Notificaciones</string>
+    <string name="mi_casa">Mi Casa</string>
+    <string name="chat">Chat</string>
+    <string name="no_hay_usuarios">No hay usuarios</string>
 
 
 </resources>
