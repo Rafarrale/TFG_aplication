@@ -4,6 +4,7 @@ import com.example.rafa.tfg.adapters.estadoAlarmaAdapter;
 import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.clases.Casa;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,14 +22,14 @@ import retrofit2.http.Path;
 
 public interface RestInterface {
 
-    @GET("/api/users")
-    Call<List<usuAdapter>> getAllUsuarios();
-
     @GET("/api/users/id/{idusuario}")
     Call<List<usuAdapter>> getUsuario(@Path("idusuario") int idusuario);
 
     @GET("/usuario/giveUsu/{usu}/{pass}")
     Call<usuAdapter> checkLogin(@Path("usu") String email, @Path("pass") String pass);
+
+    @GET("/usuario/giveUsuario/todosUsuarios")
+    Call<ArrayList<usuAdapter>> getTodosUsuarios();
 
     @GET("/casa/giveHome/todasCasas")
     Call<List<CasaAdapterIni>> getCasas();
