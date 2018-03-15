@@ -272,7 +272,7 @@ public class NavPrincActivity extends AppCompatActivity
                         }
                     });
                 }else if(item.equals(Constantes.eliminarCasa)) {
-                    spinner.setSelection(0); //Selecciona para qeu muestre el valor 0 por defecto
+                    spinner.setSelection(0); //Selecciona para que muestre el valor 0 por defecto
                     ArrayList<String> cValues = new ArrayList<>(values);
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(NavPrincActivity.this);
                     View mView = getLayoutInflater().inflate(R.layout.eliminar_casa, null);

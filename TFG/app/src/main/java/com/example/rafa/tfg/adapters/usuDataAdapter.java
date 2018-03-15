@@ -1,18 +1,34 @@
 package com.example.rafa.tfg.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.rafa.tfg.NavPrincActivity;
 import com.example.rafa.tfg.R;
+import com.example.rafa.tfg.UsuariosActivity;
+import com.example.rafa.tfg.clases.Constantes;
+import com.example.rafa.tfg.rest.RestImpl;
+import com.example.rafa.tfg.rest.RestInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.support.v4.content.ContextCompat.startActivity;
 
 /**
  * Created by Rafael on 13/03/2018.
@@ -31,6 +47,8 @@ import java.util.List;
             void onItemClick(usuAdapter clickedAppointment);
 
             void onCancelAppointment(usuAdapter canceledAppointment);
+
+            void onModAppointment(usuAdapter ModAppointment);
 
         }
 
@@ -68,30 +86,49 @@ import java.util.List;
             usuAdapter appointment = mItems.get(position);
 
             View statusIndicator = holder.statusIndicator;
-/*
+
             // estado: se colorea indicador según el estado
-            switch (appointment.getStatus()) {
-                case "Activa":
-                    // mostrar botón
-                    holder.cancelButton.setVisibility(View.VISIBLE);
-                    statusIndicator.setBackgroundResource(R.color.activeStatus);
+            switch (appointment.getAdmin()) {
+                case "si":
+                    statusIndicator.setBackgroundResource(R.color.deeppurple);
                     break;
-                case "Cumplida":
-                    // ocultar botón
-                    holder.cancelButton.setVisibility(View.GONE);
-                    statusIndicator.setBackgroundResource(R.color.completedStatus);
-                    break;
-                case "Cancelada":
-                    // ocultar botón
-                    holder.cancelButton.setVisibility(View.GONE);
-                    statusIndicator.setBackgroundResource(R.color.cancelledStatus);
+                case "no":
+                    statusIndicator.setBackgroundResource(R.color.colorPrimary);
                     break;
             }
-*/
-            holder.date.setText(appointment.getNombre());
-            holder.service.setText(appointment.getApellidos());
-            //holder.doctor.setText(appointment.getDoctor());
-            //holder.medicalCenter.setText(appointment.getMedicalCenter());
+
+            StringBuilder usuario = new StringBuilder();
+            usuario.append(Constantes.USUARIO);
+            usuario.append(Constantes.DOS_PUNTOS_ESPACIO);
+            usuario.append(appointment.getUser());
+
+            StringBuilder nomApell = new StringBuilder();
+            nomApell.append(Constantes.NOMBRE);
+            nomApell.append(Constantes.DOS_PUNTOS_ESPACIO);
+            nomApell.append(appointment.getNombre());
+            nomApell.append(Constantes.ESPACIO);
+            nomApell.append(appointment.getApellidos());
+
+            StringBuilder pass = new StringBuilder();
+            pass.append(Constantes.PASSWORD);
+            pass.append(Constantes.DOS_PUNTOS_ESPACIO);
+            pass.append(appointment.getPass());
+
+            StringBuilder admin = new StringBuilder();
+            admin.append(Constantes.ADMIN);
+            admin.append(Constantes.DOS_PUNTOS_ESPACIO);
+            admin.append(appointment.getAdmin());
+
+            StringBuilder email = new StringBuilder();
+            email.append(Constantes.EMAIL);
+            email.append(Constantes.DOS_PUNTOS_ESPACIO);
+            email.append(appointment.getEmail());
+
+            holder.usuario.setText(usuario);
+            holder.nomApell.setText(nomApell);
+            holder.password.setText(pass);
+            holder.admin.setText(admin);
+            holder.email.setText(email);
         }
 
         @Override
@@ -100,29 +137,68 @@ import java.util.List;
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            public TextView date;
-            public TextView service;
-            public TextView doctor;
-            public TextView medicalCenter;
-            public Button cancelButton;
+            public TextView usuario;
+            public TextView nomApell;
+            public TextView password;
+            public TextView admin;
+            public TextView email;
+            public Button deleteButton;
+            public Button modButton;
             public View statusIndicator;
 
             public ViewHolder(View itemView) {
                 super(itemView);
 
                 statusIndicator = itemView.findViewById(R.id.indicator_appointment_status);
-                date = (TextView) itemView.findViewById(R.id.text_appointment_date);
-                service = (TextView) itemView.findViewById(R.id.text_medical_service);
-                doctor = (TextView) itemView.findViewById(R.id.text_doctor_name);
-                medicalCenter = (TextView) itemView.findViewById(R.id.text_medical_center);
-                cancelButton = (Button) itemView.findViewById(R.id.button_cancel_appointment);
+                usuario = itemView.findViewById(R.id.tvUsuarioTodos);
+                nomApell = (TextView) itemView.findViewById(R.id.tvNombreUsuariosTodos);
+                password = (TextView) itemView.findViewById(R.id.tvPasswordUsuariosTodos);
+                admin = (TextView) itemView.findViewById(R.id.tvAdminUsuariosTodos);
+                email = (TextView) itemView.findViewById(R.id.tvEmailUsuariosTodos);
+                deleteButton = (Button) itemView.findViewById(R.id.btDeleteUsuariosTodos);
+                modButton = (Button) itemView.findViewById(R.id.btModUsuariosTodos);
 
-                cancelButton.setOnClickListener(new View.OnClickListener() {
+                // Este metodo ha sido desarrollado en este adapter
+                deleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mOnItemClickListener.onCancelAppointment(mItems.get(position));
+                        }
+
+                        usuAdapter usuario = mItems.get(position);
+                        mItems.remove(position);
+                        RestInterface rest = RestImpl.getRestInstance();
+                        Call<Void> restDropUsu = rest.eliminaUsuario(usuario);
+                        restDropUsu.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if(response.isSuccessful()){
+                                    swapItems(mItems);
+                                    Toast.makeText(v.getContext(), "Usuario eliminado", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(v.getContext(), "No fue posible eliminar el usuario", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+
+                            }
+                        });
+
+
+                    }
+                });
+
+                // Este metodo a sido desarrollado en la activity
+                modButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            mOnItemClickListener.onCancelAppointment(mItems.get(position));
+                            mOnItemClickListener.onModAppointment(mItems.get(position));
                         }
                     }
                 });
@@ -137,5 +213,4 @@ import java.util.List;
                 }
             }
         }
-
     }

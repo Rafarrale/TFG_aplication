@@ -48,6 +48,14 @@
     <string name="mi_casa">Mi Casa</string>
     <string name="chat">Chat</string>
     <string name="no_hay_usuarios">No hay usuarios</string>
+    <string name="datos_de_usuario">Datos De Usuario</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="admin">Admin</string>
+    <string name="usuario">Usuario</string>
+    <string name="actualiza">Actualiza</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
 
 
 </resources>

@@ -40,9 +40,6 @@ public interface RestInterface {
     @PUT("/api/users/new")
     Call<usuAdapter> addUsuario(@Body usuAdapter user);
 
-    @DELETE("/api/users/delete")
-    Call<usuAdapter> deleteUsuario(@Body usuAdapter user);
-
 /* No funciona antiguo metodo
     @DELETE("/casa/eliminaCasa")
     Call<Void> eliminaCasa(@Body CasaAdapterIni casaAdapterIni);
@@ -51,6 +48,8 @@ public interface RestInterface {
     @HTTP(method = "DELETE", path = "/casa/eliminaCasa", hasBody = true)
     Call<Void> eliminaCasa(@Body CasaAdapterIni casaAdapterIni);
 
+    @HTTP(method = "DELETE", path = "/usuario/eliminaUsuario", hasBody = true)
+    Call<Void> eliminaUsuario(@Body usuAdapter usuAdapter);
 
     @POST("/usuario/insertUsu")
     Call<Void> addUser(@Body usuAdapter user);

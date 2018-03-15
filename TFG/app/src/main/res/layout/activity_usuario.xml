@@ -4,91 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     android:orientation="vertical"
     tools:context="com.example.rafa.tfg.Usuario">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bienvenido"
+        android:text="@string/datos_de_usuario"
         android:textSize="25dp"
         android:layout_gravity="center"/>
 
-    <LinearLayout
+        <EditText
+            android:id="@+id/tvUsuarioActualiza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:hint="@string/usuario"
+            android:textSize="22dp"/>
+
+        <EditText
+            android:id="@+id/tvNombreUsuarioActualiza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:hint="@string/reg_nom"
+            android:textSize="22dp" />
+
+        <EditText
+            android:id="@+id/tvPasswordActualiza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:hint="@string/password"
+            android:textSize="22dp"/>
+
+    <EditText
+            android:id="@+id/tvEmailActualiza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:hint="@string/email"
+            android:textSize="22dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/admin"
+        android:textSize="22dp"
+        android:layout_gravity="center"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        >
-        <TextView
+        android:paddingLeft="40dp"
+        tools:context="com.example.rafa.tfg.Usuario">
+
+        <RadioButton
+            android:id="@+id/rbAdminUsuSi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Usuario:"
-            android:textSize="22dp"/>
-        <TextView
-            android:id="@+id/tv_usuario"
+            android:text="@string/si" />
+
+        <RadioButton
+            android:id="@+id/rbAdminUsuNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="22dp"/>
+            android:layout_marginLeft="180dp"
+            android:text="@string/no" />
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btUsuActualiza"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Password:"
-            android:textSize="22dp"/>
-        <TextView
-            android:id="@+id/tv_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="22dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email:"
-            android:textSize="22dp"/>
-        <TextView
-            android:id="@+id/tv_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="22dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Administrador:"
-            android:textSize="22dp"/>
-        <TextView
-            android:id="@+id/tv_admin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="22dp"/>
-
-    </LinearLayout>
-
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:text="@string/actualiza" />
 
 </LinearLayout>

@@ -9,5 +9,6 @@ public class Utilidades {
     public static boolean validaPantalla = true;
     public static int CasaSeleccionada = 0;
     public static boolean iniciaAplicacion = false;
+    public static boolean radioButton = false;
 
 }

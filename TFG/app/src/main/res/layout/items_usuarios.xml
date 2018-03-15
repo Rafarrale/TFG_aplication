@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="170dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardUseCompatPadding="true">
@@ -26,13 +26,13 @@
         android:paddingRight="16dp"
         android:paddingTop="8dp">
 
-        <TextView
-            android:id="@+id/text_appointment_date"
+        <ImageView
+            android:id="@+id/imageViewUsuarios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
-            tools:text="7 Octubre 2017" />
+            android:src="@drawable/ic_face_black_24dp" />
 
         <View
             android:id="@+id/vertical_separator"
@@ -41,12 +41,12 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:layout_toEndOf="@+id/text_appointment_date"
-            android:layout_toRightOf="@+id/text_appointment_date"
+            android:layout_toEndOf="@+id/imageViewUsuarios"
+            android:layout_toRightOf="@+id/imageViewUsuarios"
             android:background="#E0E0E0" />
 
         <TextView
-            android:id="@+id/text_medical_service"
+            android:id="@+id/tvUsuarioTodos"
             style="@style/Base.TextAppearance.AppCompat.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,39 +54,66 @@
             android:layout_marginStart="16dp"
             android:layout_toEndOf="@+id/vertical_separator"
             android:layout_toRightOf="@+id/vertical_separator"
-            tools:text="Consulta Medicina General" />
+            tools:text="Usuario" />
 
         <TextView
-            android:id="@+id/text_doctor_name"
+            android:id="@+id/tvNombreUsuariosTodos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/text_medical_service"
-            android:layout_alignStart="@+id/text_medical_service"
-            android:layout_below="@id/text_medical_service"
-            tools:text="Con Jorge Ramos" />
+            android:layout_alignStart="@+id/tvUsuarioTodos"
+            android:layout_below="@+id/tvUsuarioTodos"
+            tools:text="Nombre y Apellidos" />
+
+
+        <TextView
+            android:id="@+id/tvPasswordUsuariosTodos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvNombreUsuariosTodos"
+            android:layout_alignStart="@+id/tvNombreUsuariosTodos"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Password" />
+
 
         <Button
-            android:id="@+id/button_cancel_appointment"
+            android:id="@+id/btDeleteUsuariosTodos"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/vertical_separator"
-            android:text="Cancelar"
+            android:layout_alignBaseline="@+id/btModUsuariosTodos"
+            android:layout_alignBottom="@+id/btModUsuariosTodos"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:text="Eliminar"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/text_medical_center"
+            android:id="@+id/tvAdminUsuariosTodos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/button_cancel_appointment"
-            android:layout_alignLeft="@+id/text_doctor_name"
-            android:layout_alignStart="@+id/text_doctor_name"
-            android:layout_below="@+id/text_doctor_name"
-            android:ellipsize="end"
-            android:maxLines="1"
-            tools:text="Clínica Central" />
+            android:layout_alignStart="@+id/tvPasswordUsuariosTodos"
+            android:layout_below="@+id/tvPasswordUsuariosTodos"
+            tools:text="Admin" />
+
+        <TextView
+            android:id="@+id/tvEmailUsuariosTodos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvAdminUsuariosTodos"
+            android:layout_below="@+id/tvAdminUsuariosTodos"
+            tools:text="Email" />
+
+        <Button
+            android:id="@+id/btModUsuariosTodos"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvEmailUsuariosTodos"
+            android:layout_below="@+id/tvEmailUsuariosTodos"
+            android:text="Modificar"
+            android:textSize="12sp" />
+
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>
