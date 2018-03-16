@@ -54,14 +54,15 @@ public interface RestInterface {
     @POST("/usuario/insertUsu")
     Call<Void> addUser(@Body usuAdapter user);
 
+    @POST("/usuario/actUsu")
+    Call<Void> actualizaUsuario(@Body usuAdapter usuAdapter);
+
     @POST("/casa/giveHomeUsu")
     Call<Void> compruebaHomeUsu(@Body CasaAdapterIni homeUsu);
-    
+
     @POST("/casa/insertCasa")
     Call<Void> addCasa(@Body CasaAdapterIni casaAdapterIni);
 
-    @GET("/api/usu/getAlergenoDataId/{idusuario}")
-    Call<List<usuAdapter>> getAlergenoDataId(@Path("idusuario") int idusuario);
 
 
 }

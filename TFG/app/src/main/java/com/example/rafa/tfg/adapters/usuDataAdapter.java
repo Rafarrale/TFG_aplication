@@ -87,14 +87,16 @@ import static android.support.v4.content.ContextCompat.startActivity;
 
             View statusIndicator = holder.statusIndicator;
 
-            // estado: se colorea indicador según el estado
-            switch (appointment.getAdmin()) {
-                case "si":
-                    statusIndicator.setBackgroundResource(R.color.deeppurple);
-                    break;
-                case "no":
-                    statusIndicator.setBackgroundResource(R.color.colorPrimary);
-                    break;
+            if(appointment != null) {
+                // estado: se colorea indicador según el estado
+                switch (appointment.getAdmin()) {
+                    case "si":
+                        statusIndicator.setBackgroundResource(R.color.deeppurple);
+                        break;
+                    case "no":
+                        statusIndicator.setBackgroundResource(R.color.colorPrimary);
+                        break;
+                }
             }
 
             StringBuilder usuario = new StringBuilder();
@@ -158,37 +160,15 @@ import static android.support.v4.content.ContextCompat.startActivity;
                 deleteButton = (Button) itemView.findViewById(R.id.btDeleteUsuariosTodos);
                 modButton = (Button) itemView.findViewById(R.id.btModUsuariosTodos);
 
-                // Este metodo ha sido desarrollado en este adapter
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             mOnItemClickListener.onCancelAppointment(mItems.get(position));
+                            mItems.remove(position);
+                            swapItems(mItems);
                         }
-
-                        usuAdapter usuario = mItems.get(position);
-                        mItems.remove(position);
-                        RestInterface rest = RestImpl.getRestInstance();
-                        Call<Void> restDropUsu = rest.eliminaUsuario(usuario);
-                        restDropUsu.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                if(response.isSuccessful()){
-                                    swapItems(mItems);
-                                    Toast.makeText(v.getContext(), "Usuario eliminado", Toast.LENGTH_SHORT).show();
-                                }else{
-                                    Toast.makeText(v.getContext(), "No fue posible eliminar el usuario", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-
-                            }
-                        });
-
-
                     }
                 });
 

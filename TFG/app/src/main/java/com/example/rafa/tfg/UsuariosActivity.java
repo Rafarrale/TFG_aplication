@@ -10,16 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.rafa.tfg.adapters.CasaAdapterIni;
-import com.example.rafa.tfg.adapters.CasaAdapterView;
 import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.adapters.usuDataAdapter;
 import com.example.rafa.tfg.clases.Constantes;
@@ -29,9 +24,9 @@ import com.example.rafa.tfg.rest.RestInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 
@@ -64,7 +59,25 @@ public class UsuariosActivity extends AppCompatActivity {
 
             @Override
             public void onCancelAppointment(usuAdapter canceledAppointment) {
-            //    Toast.makeText(getApplicationContext(),"hola",Toast.LENGTH_SHORT).show();
+                usuAdapter usuario = canceledAppointment;
+
+                RestInterface rest = RestImpl.getRestInstance();
+                Call<Void> restDropUsu = rest.eliminaUsuario(usuario);
+                restDropUsu.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if(response.isSuccessful()){
+                            Toast.makeText(UsuariosActivity.this, "Usuario eliminado", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(UsuariosActivity.this, "No fue posible eliminar el usuario", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
             }
 
             @Override
@@ -77,6 +90,7 @@ public class UsuariosActivity extends AppCompatActivity {
                 View mView = getLayoutInflater().inflate(R.layout.activity_usuario,null);
                 final EditText edtUsuAct = mView.findViewById(R.id.tvUsuarioActualiza);
                 final EditText edtNomAct = mView.findViewById(R.id.tvNombreUsuarioActualiza);
+                final EditText edtApellAct = mView.findViewById(R.id.tvApellidosUsuarioActualiza);
                 final EditText edtPassAct = mView.findViewById(R.id.tvPasswordActualiza);
                 final RadioButton rbAdmnActSi = mView.findViewById(R.id.rbAdminUsuSi);
                 final RadioButton rbAdmnActNo = mView.findViewById(R.id.rbAdminUsuNo);
@@ -92,11 +106,12 @@ public class UsuariosActivity extends AppCompatActivity {
 
                 edtUsuAct.setText(ModAppointment.getUser());
                 edtNomAct.setText(ModAppointment.getNombre());
+                edtApellAct.setText(ModAppointment.getApellidos());
                 edtPassAct.setText(ModAppointment.getPass());
                 edtEmailAct.setText(ModAppointment.getEmail());
 
                 mBuilder.setView(mView);
-                AlertDialog dialog = mBuilder.create();
+                final AlertDialog dialog = mBuilder.create();
                 dialog.show();
                 rbAdmnActNo.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -132,13 +147,34 @@ public class UsuariosActivity extends AppCompatActivity {
                 btActualiza.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(UsuariosActivity.this, "Por favor rellena el campo vacío", Toast.LENGTH_SHORT).show();
                         if (!edtUsuAct.getText().toString().isEmpty()) {
                             res.setUser(edtUsuAct.getText().toString());
                             res.setNombre(edtNomAct.getText().toString());
+                            res.setApellidos(edtApellAct.getText().toString());
                             res.setPass(edtPassAct.getText().toString());
                             res.setEmail(edtEmailAct.getText().toString());
-                            //compruebaHomeUsu(mNombreCasa.getText().toString());
+
+                            RestInterface rest = RestImpl.getRestInstance();
+                            Call<Void> response = rest.actualizaUsuario(res);
+                            response.enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if(response.isSuccessful()){
+                                        Toast.makeText(UsuariosActivity.this,"Usuario actualizado correctamente", Toast.LENGTH_SHORT).show();
+                                        usuariosExecute usuariosExecute = new usuariosExecute();
+                                        usuariosExecute.execute();
+                                        dialog.hide();
+                                    }else{
+                                        Toast.makeText(UsuariosActivity.this,"No fue posible actualizar el usuario",Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+
+                                }
+                            });
+
                         } else {
                             Toast.makeText(UsuariosActivity.this, "Por favor rellena el campo vacío", Toast.LENGTH_SHORT).show();
                         }
