@@ -166,8 +166,6 @@ import static android.support.v4.content.ContextCompat.startActivity;
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             mOnItemClickListener.onCancelAppointment(mItems.get(position));
-                            mItems.remove(position);
-                            swapItems(mItems);
                         }
                     }
                 });

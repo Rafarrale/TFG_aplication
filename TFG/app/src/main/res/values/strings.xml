@@ -57,6 +57,10 @@
     <string name="si">Si</string>
     <string name="no">No</string>
     <string name="apellidos">Apellidos</string>
+    <string name="esta_seguro_que_desea_borrar_su_usuario">¿Esta seguro que desea borrar su usuario</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="advertencia">Advertencia:</string>
+    <string name="si_elimina_su_usuario_se_redirigir_a_la_pantalla_de_login">Si elimina su usuario se redirigirá a la pantalla de login</string>
 
 
 </resources>

@@ -40,12 +40,14 @@ public class UsuariosActivity extends AppCompatActivity {
     private usuDataAdapter usuDataAdapter;
     private RecyclerView mUsuariosRecycler;
     private usuariosExecute usuariosExecute;
-
+    private usuAdapter usuarioActual;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        usuarioActual = bundle.getParcelable("USUARIO_ACTUAL");
         setContentView(R.layout.content_usuarios);
         //Inicialización RecyclerView
         mUsuariosRecycler = findViewById(R.id.recyclerUsuarios);
@@ -59,25 +61,66 @@ public class UsuariosActivity extends AppCompatActivity {
 
             @Override
             public void onCancelAppointment(usuAdapter canceledAppointment) {
-                usuAdapter usuario = canceledAppointment;
+                final usuAdapter usuario = canceledAppointment;
+                if(usuario.get_id().equals(usuarioActual.get_id())){
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(UsuariosActivity.this);
+                    View mView = getLayoutInflater().inflate(R.layout.advertencia_elimina_usuario,null);
+                    Button btElimina = mView.findViewById(R.id.btAdvertenciaUsuario);
+                    alertDialog.setView(mView);
 
-                RestInterface rest = RestImpl.getRestInstance();
-                Call<Void> restDropUsu = rest.eliminaUsuario(usuario);
-                restDropUsu.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if(response.isSuccessful()){
-                            Toast.makeText(UsuariosActivity.this, "Usuario eliminado", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(UsuariosActivity.this, "No fue posible eliminar el usuario", Toast.LENGTH_SHORT).show();
+                    btElimina.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            RestInterface rest = RestImpl.getRestInstance();
+                            Call<Void> restDropUsu = rest.eliminaUsuario(usuario);
+                            restDropUsu.enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        usuariosExecute usuariosExecute = new usuariosExecute();
+                                        usuariosExecute.execute();
+                                        Toast.makeText(UsuariosActivity.this, "Usuario eliminado", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(UsuariosActivity.this, "No fue posible eliminar el usuario", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+
+                                }
+                            });
+
+                            Intent intent = new Intent(UsuariosActivity.this, MainActivity.class);
+                            startActivity(intent);
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
+                    AlertDialog alert = alertDialog.create();
+                    alert.show();
 
-                    }
-                });
+                }else {
+                    RestInterface rest = RestImpl.getRestInstance();
+                    Call<Void> restDropUsu = rest.eliminaUsuario(usuario);
+                    restDropUsu.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                usuariosExecute usuariosExecute = new usuariosExecute();
+                                usuariosExecute.execute();
+                                Toast.makeText(UsuariosActivity.this, "Usuario eliminado", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(UsuariosActivity.this, "No fue posible eliminar el usuario", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+
+                        }
+                    });
+                }
             }
 
             @Override
@@ -201,7 +244,6 @@ public class UsuariosActivity extends AppCompatActivity {
         usuariosExecute.execute();
 
     }
-
     @Override
     protected void onPostResume() {
         super.onPostResume();

@@ -1,12 +1,15 @@
 package com.example.rafa.tfg.adapters;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 
 /**
  * Created by Rafa on 23/01/2018.
  */
 
-public class usuAdapter {
+public class usuAdapter implements Parcelable {
     private String _id;
     private String user;
     private String nombre;
@@ -37,6 +40,44 @@ public class usuAdapter {
         this.pass = pass;
         this.email = email;
     }
+
+    protected usuAdapter(Parcel in) {
+        _id = in.readString();
+        user = in.readString();
+        nombre = in.readString();
+        apellidos = in.readString();
+        pass = in.readString();
+        admin = in.readString();
+        email = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(user);
+        dest.writeString(nombre);
+        dest.writeString(apellidos);
+        dest.writeString(pass);
+        dest.writeString(admin);
+        dest.writeString(email);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<usuAdapter> CREATOR = new Creator<usuAdapter>() {
+        @Override
+        public usuAdapter createFromParcel(Parcel in) {
+            return new usuAdapter(in);
+        }
+
+        @Override
+        public usuAdapter[] newArray(int size) {
+            return new usuAdapter[size];
+        }
+    };
 
     public static  usuAdapter buildFromJson(String jsonString){
         Gson gson = new Gson();

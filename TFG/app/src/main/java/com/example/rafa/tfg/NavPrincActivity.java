@@ -478,6 +478,9 @@ public class NavPrincActivity extends AppCompatActivity
 
         if (id == R.id.nav_usuarios) {
             Intent intent = new Intent(NavPrincActivity.this, UsuariosActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("USUARIO_ACTUAL", usuario);
+            intent.putExtras(bundle);
             startActivity(intent);
 
         } else if (id == R.id.nav_notificaciones) {
