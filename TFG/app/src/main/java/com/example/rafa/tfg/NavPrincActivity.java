@@ -36,6 +36,7 @@ import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.fragments.AmarilloFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
+import com.example.rafa.tfg.fragments.DispositivosFragment;
 import com.example.rafa.tfg.fragments.GreenFragment;
 import com.example.rafa.tfg.fragments.RojoFragment;
 import com.example.rafa.tfg.adapters.usuAdapter;
@@ -60,7 +61,7 @@ import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
         AmarilloFragment.OnFragmentInteractionListener,GreenFragment.OnFragmentInteractionListener,
-        ContenedorFragment.OnFragmentInteractionListener{
+        ContenedorFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener{
 
     private List<Casa> fListCasas = new ArrayList<>();
     Map<Integer, List<Casa>> fListCasasRes = new HashMap<Integer, List<Casa>>();
@@ -141,7 +142,7 @@ public class NavPrincActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        if(Utilidades.validaPantalla && Utilidades.iniciaAplicacion ){
+        if(Utilidades.validaPantalla  ){
             //--- Establecemos el Contenedor Fragment como vista principal al ejecutarse la activity principal
             Fragment fragment = new ContenedorFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();
@@ -149,6 +150,8 @@ public class NavPrincActivity extends AppCompatActivity
             //---
         }
     }
+
+
 
     private void recuperaDatosExtraFromMainActivity() {
         String userJson = getIntent().getStringExtra("USER");
@@ -194,6 +197,8 @@ public class NavPrincActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+        Fragment fragment = new ContenedorFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();
     }
 
     @Override

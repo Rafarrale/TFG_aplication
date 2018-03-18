@@ -10,5 +10,5 @@ public class Utilidades {
     public static int CasaSeleccionada = 0;
     public static boolean iniciaAplicacion = false;
     public static boolean radioButton = false;
-
+    public static boolean regresaDisp = false;
 }

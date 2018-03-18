@@ -68,7 +68,8 @@ public class ContenedorFragment extends Fragment {
 
         if(Utilidades.rotacion == 0){
             View parent = (View) container.getParent();
-            if (appBar == null){
+            if (appBar == null || Utilidades.regresaDisp){
+                Utilidades.regresaDisp = false;
                 appBar = parent.findViewById(R.id.appBar);
                 pestañas = new TabLayout(getActivity());
                 pestañas.setTabTextColors(Color.parseColor("#FFFFFFFF"),Color.parseColor("#FFFFFFFF"));
