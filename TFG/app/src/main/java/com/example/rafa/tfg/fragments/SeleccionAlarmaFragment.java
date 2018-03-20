@@ -1,7 +1,6 @@
 package com.example.rafa.tfg.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -13,11 +12,9 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.rafa.tfg.NavPrincActivity;
 import com.example.rafa.tfg.R;
-import com.example.rafa.tfg.adapters.CasaAdapterIni;
 import com.example.rafa.tfg.adapters.estadoAlarmaAdapter;
 import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.clases.Casa;
@@ -27,7 +24,6 @@ import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,12 +35,12 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AmarilloFragment.OnFragmentInteractionListener} interface
+ * {@link SeleccionAlarmaFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AmarilloFragment#newInstance} factory method to
+ * Use the {@link SeleccionAlarmaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AmarilloFragment extends Fragment implements View.OnClickListener{
+public class SeleccionAlarmaFragment extends Fragment implements View.OnClickListener{
 
     private CardView card1,card2,card3,card4,card5;
     private int vale1,vale2,vale3,vale4,vale5 = 0;
@@ -62,7 +58,7 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
 
     private OnFragmentInteractionListener mListener;
 
-    public AmarilloFragment() {
+    public SeleccionAlarmaFragment() {
         // Required empty public constructor
     }
 
@@ -72,11 +68,11 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AmarilloFragment.
+     * @return A new instance of fragment SeleccionAlarmaFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AmarilloFragment newInstance(String param1, String param2) {
-        AmarilloFragment fragment = new AmarilloFragment();
+    public static SeleccionAlarmaFragment newInstance(String param1, String param2) {
+        SeleccionAlarmaFragment fragment = new SeleccionAlarmaFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -102,7 +98,7 @@ public class AmarilloFragment extends Fragment implements View.OnClickListener{
         fListCasasRes = navPrincActivity.getDataListaCasasFragment();
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_amarillo, container, false);
+        return inflater.inflate(R.layout.fragment_seleccion_alarma, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

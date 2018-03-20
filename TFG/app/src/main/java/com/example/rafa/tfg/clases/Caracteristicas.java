@@ -1,29 +1,51 @@
 package com.example.rafa.tfg.clases;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Rafael on 04/03/2018.
  */
 
-public class Caracteristicas {
+public class Caracteristicas implements Parcelable {
+    private Temperatura temperatura;
 
-    private String activo;
-
-    public Caracteristicas() {
-
+    public Caracteristicas(Temperatura temperatura) {
+        this.temperatura = temperatura;
     }
 
-    public Caracteristicas(String activo) {
-        this.activo = activo;
+    protected Caracteristicas(Parcel in) {
+        temperatura = in.readParcelable(Temperatura.class.getClassLoader());
     }
 
-
-
-    public String getActivo() {
-        return activo;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(temperatura, flags);
     }
 
-    public void setActivo(String activo) {
-        this.activo = activo;
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Caracteristicas> CREATOR = new Creator<Caracteristicas>() {
+        @Override
+        public Caracteristicas createFromParcel(Parcel in) {
+            return new Caracteristicas(in);
+        }
+
+        @Override
+        public Caracteristicas[] newArray(int size) {
+            return new Caracteristicas[size];
+        }
+    };
+
+    public Temperatura getTemperatura() {
+        return temperatura;
+    }
+
+    public void setTemperatura(Temperatura temperatura) {
+        this.temperatura = temperatura;
     }
 
     @Override
@@ -33,11 +55,11 @@ public class Caracteristicas {
 
         Caracteristicas that = (Caracteristicas) o;
 
-        return activo != null ? activo.equals(that.activo) : that.activo == null;
+        return temperatura != null ? temperatura.equals(that.temperatura) : that.temperatura == null;
     }
 
     @Override
     public int hashCode() {
-        return activo != null ? activo.hashCode() : 0;
+        return temperatura != null ? temperatura.hashCode() : 0;
     }
 }

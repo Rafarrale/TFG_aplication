@@ -99,7 +99,7 @@ public class ContenedorFragment extends Fragment {
 
     private void llenarViewPager(ViewPager viewPager) {
         SeccionesAdapter adapter = new SeccionesAdapter(getFragmentManager());
-        adapter.addFragment(new AmarilloFragment(),"Control");
+        adapter.addFragment(new SeleccionAlarmaFragment(),"Control");
         adapter.addFragment(new GreenFragment(),"Historial Uso");
         adapter.addFragment(new RojoFragment(),"Cámaras");
 

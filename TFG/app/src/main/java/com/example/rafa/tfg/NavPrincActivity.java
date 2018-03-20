@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -34,7 +33,7 @@ import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Configuracion;
 import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
-import com.example.rafa.tfg.fragments.AmarilloFragment;
+import com.example.rafa.tfg.fragments.SeleccionAlarmaFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.DispositivosFragment;
 import com.example.rafa.tfg.fragments.GreenFragment;
@@ -60,7 +59,7 @@ import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
-        AmarilloFragment.OnFragmentInteractionListener,GreenFragment.OnFragmentInteractionListener,
+        SeleccionAlarmaFragment.OnFragmentInteractionListener,GreenFragment.OnFragmentInteractionListener,
         ContenedorFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener{
 
     private List<Casa> fListCasas = new ArrayList<>();
@@ -522,7 +521,6 @@ public class NavPrincActivity extends AppCompatActivity
     }
 
     public Map<Integer, List<Casa>> getDataListaCasasFragment(){
-
         return fListCasasRes;
     }
 }

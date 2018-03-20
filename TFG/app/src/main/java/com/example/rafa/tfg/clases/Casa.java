@@ -1,5 +1,7 @@
 package com.example.rafa.tfg.clases;
 
+import com.example.rafa.tfg.adapters.DispositivosAdapter;
+
 /**
  * Created by Rafael on 04/03/2018.
  */
@@ -9,18 +11,18 @@ public class Casa{
     private String _id;
     private String homeUsu;
     private Configuracion configuracion;
-    private Dispositivos dispositivos;
+    private DispositivosAdapter dispositivosAdapter;
     private Camaras camaras;
     private LogSeguridad logSeguridad;
     private LogUsuarios logUsuarios;
 
     public Casa(String _id, String homeUsu, Configuracion configuracion,
-                Dispositivos dispositivos, Camaras camaras, LogSeguridad logSeguridad, LogUsuarios logUsuarios) {
+                DispositivosAdapter dispositivosAdapter, Camaras camaras, LogSeguridad logSeguridad, LogUsuarios logUsuarios) {
         super();
         this._id = _id;
         this.homeUsu = homeUsu;
         this.configuracion = configuracion;
-        this.dispositivos = dispositivos;
+        this.dispositivosAdapter = dispositivosAdapter;
         this.camaras = camaras;
         this.logSeguridad = logSeguridad;
         this.logUsuarios = logUsuarios;
@@ -62,12 +64,12 @@ public class Casa{
         this.configuracion = configuracion;
     }
 
-    public Dispositivos getDispositivos() {
-        return dispositivos;
+    public DispositivosAdapter getDispositivosAdapter() {
+        return dispositivosAdapter;
     }
 
-    public void setDispositivos(Dispositivos dispositivos) {
-        this.dispositivos = dispositivos;
+    public void setDispositivosAdapter(DispositivosAdapter dispositivosAdapter) {
+        this.dispositivosAdapter = dispositivosAdapter;
     }
 
     public Camaras getCamaras() {
@@ -104,7 +106,7 @@ public class Casa{
         if (homeUsu != null ? !homeUsu.equals(casa.homeUsu) : casa.homeUsu != null) return false;
         if (configuracion != null ? !configuracion.equals(casa.configuracion) : casa.configuracion != null)
             return false;
-        if (dispositivos != null ? !dispositivos.equals(casa.dispositivos) : casa.dispositivos != null)
+        if (dispositivosAdapter != null ? !dispositivosAdapter.equals(casa.dispositivosAdapter) : casa.dispositivosAdapter != null)
             return false;
         if (camaras != null ? !camaras.equals(casa.camaras) : casa.camaras != null) return false;
         if (logSeguridad != null ? !logSeguridad.equals(casa.logSeguridad) : casa.logSeguridad != null)
@@ -117,7 +119,7 @@ public class Casa{
         int result = _id.hashCode();
         result = 31 * result + (homeUsu != null ? homeUsu.hashCode() : 0);
         result = 31 * result + (configuracion != null ? configuracion.hashCode() : 0);
-        result = 31 * result + (dispositivos != null ? dispositivos.hashCode() : 0);
+        result = 31 * result + (dispositivosAdapter != null ? dispositivosAdapter.hashCode() : 0);
         result = 31 * result + (camaras != null ? camaras.hashCode() : 0);
         result = 31 * result + (logSeguridad != null ? logSeguridad.hashCode() : 0);
         result = 31 * result + (logUsuarios != null ? logUsuarios.hashCode() : 0);

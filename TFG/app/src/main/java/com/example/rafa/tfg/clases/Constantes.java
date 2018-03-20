@@ -26,6 +26,14 @@ public class Constantes {
     public static final String EMAIL = "Email";
     public static final String SI = "si";
     public static final String NO = "no";
+    public static final String VENTANA = "Ventana";
+    public static final String TEMPERATURA_CONTROL = "Temperatura Control";
+    public static final String COCINA_SEGURIDAD = "Cocina Seguridad";
+    public static final String ID = "Id";
+    public static final String TIPO = "Tipo";
+    public static final String ESTADO = "Estado";
+    public static final String BATERIA = "Batería";
+
 
 
 
