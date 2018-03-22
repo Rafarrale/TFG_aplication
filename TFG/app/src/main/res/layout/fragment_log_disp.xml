@@ -2,9 +2,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardAñadeDisp"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -20,16 +18,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:background="@color/colorPrimary" />
-
-        <View
-            android:id="@+id/indicator_dispositivo_status2"
-            android:layout_width="8dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="right"
-            android:background="@color/colorPrimary" />
+            android:background="#E0E0E0" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -46,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="8dp"
-                android:src="@drawable/ic_control_point_black_24dp" />
+                android:src="@drawable/ic_devices_other_black_24dp" />
 
             <View
                 android:id="@+id/vertical_separator_log"
@@ -62,42 +51,27 @@
                 style="@style/Base.TextAppearance.AppCompat.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:hint="@string/reg_nom"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:textSize="20sp"
-                android:text="@string/a_adir_dispositivos"
-                tools:text="Añadir" />
+                android:layout_toEndOf="@+id/vertical_separator_log"
+                android:layout_toRightOf="@+id/vertical_separator_log"
+                android:hint="@string/reg_nom"
+                tools:text="Nombre" />
 
-            <ImageView
-                android:id="@+id/imageViewUsuarioscenter2"
+            <TextView
+                android:id="@+id/tvIdDispositivoTodos"
+                android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/imageViewUsuarios"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_devices_other_black_24dp" />
-
-            <ImageView
-                android:id="@+id/imageViewUsuarios2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="8dp"
-                android:layout_alignTop="@+id/imageViewUsuarios"
-                android:src="@drawable/ic_control_point_black_24dp" />
-
-            <View
-                android:id="@+id/vertical_separator_log2"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="20dp"
-                android:layout_toStartOf="@+id/imageViewUsuarios2"
-                android:background="#E0E0E0"
-                android:foregroundGravity="right" />
+                android:layout_alignStart="@+id/tvNomDispositivoTodosLog"
+                android:layout_below="@+id/tvNomDispositivoTodosLog"
+                android:hint="@string/Id"
+                tools:text="Id" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -105,22 +79,21 @@
 
         <android.support.v4.widget.SwipeRefreshLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/swipe_refresh_layout_dispositivos"
+            android:id="@+id/swipe_refresh_layout_log_dispositivos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/recyclerDispositivos"
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerLogDispositivos"
+                android:scrollbars="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:scrollbars="vertical"
-                tools:listitem="@layout/items_dispositivos" />
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                tools:listitem = "@layout/items_dispositivos_log"
+                xmlns:tools="http://schemas.android.com/tools" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 </LinearLayout>
-

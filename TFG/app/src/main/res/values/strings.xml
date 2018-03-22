@@ -61,6 +61,9 @@
     <string name="eliminar">Eliminar</string>
     <string name="advertencia">Advertencia:</string>
     <string name="si_elimina_su_usuario_se_redirigir_a_la_pantalla_de_login">Si elimina su usuario se redirigirá a la pantalla de login</string>
+    <string name="Id">Id</string>
+    <string name="a_adir_dispositivos">Añadir Dispositivos</string>
+    <string name="disp">Dispositivos</string>
 
 
 </resources>

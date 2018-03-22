@@ -2,7 +2,6 @@ package com.example.rafa.tfg.fragments;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -12,57 +11,45 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.rafa.tfg.DispositivosActivity;
-import com.example.rafa.tfg.NavPrincActivity;
 import com.example.rafa.tfg.R;
-import com.example.rafa.tfg.Usuario;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
-import com.example.rafa.tfg.clases.Caracteristicas;
+import com.example.rafa.tfg.adapters.DispositivosLogDataAdapter;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Utilidades;
-import com.example.rafa.tfg.rest.RestImpl;
-import com.example.rafa.tfg.rest.RestInterface;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.internal.Util;
-import retrofit2.Call;
-import retrofit2.Response;
-
-import static com.example.rafa.tfg.R.id.*;
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DispositivosFragment.OnFragmentInteractionListener} interface
+ * {@link LogDispFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DispositivosFragment#newInstance} factory method to
+ * Use the {@link LogDispFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DispositivosFragment extends Fragment {
+public class LogDispFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private RecyclerView mDispositivosRecycler;
-    private DispositivosDataAdapter dispositivosDataAdapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private Casa casa;
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
+    private RecyclerView mDispositivosRecycler;
+    private DispositivosLogDataAdapter dispositivosDataAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Map<Integer, List<Casa>> listaCasas;
+    private Casa casa;
+
     private OnFragmentInteractionListener mListener;
 
-    public DispositivosFragment() {
+    public LogDispFragment() {
         // Required empty public constructor
     }
 
@@ -72,11 +59,11 @@ public class DispositivosFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DispositivosFragment.
+     * @return A new instance of fragment LogDispFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DispositivosFragment newInstance(String param1, String param2) {
-        DispositivosFragment fragment = new DispositivosFragment();
+    public static LogDispFragment newInstance(String param1, String param2) {
+        LogDispFragment fragment = new LogDispFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -91,32 +78,18 @@ public class DispositivosFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        DispositivosActivity dispositivosActivity = (DispositivosActivity) getActivity();
-            casa = dispositivosActivity.casaActual();
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_dispositivos, container, false);
+        View v = inflater.inflate(R.layout.fragment_log_disp, container, false);
 
         Utilidades.regresaDisp = true;
-        mDispositivosRecycler = v.findViewById(R.id.recyclerDispositivos);
-        dispositivosDataAdapter = new DispositivosDataAdapter(getContext(), new ArrayList<DispositivosAdapter>());
-        dispositivosDataAdapter.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DispositivosAdapter clickedAppointment) {
-                Fragment fragment = new LogDispFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_main, fragment);
-                transaction.addToBackStack(null); //PAraque vuelva al fragment anterior
-                transaction.commit();
-            }
-        });
-
+        mDispositivosRecycler = v.findViewById(R.id.recyclerLogDispositivos);
+        dispositivosDataAdapter = new DispositivosLogDataAdapter(getContext(), new ArrayList<DispositivosAdapter>());
+/*
         mDispositivosRecycler.setAdapter(dispositivosDataAdapter);
         mDispositivosRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
         swipeRefreshLayout = v.findViewById(R.id.swipe_refresh_layout_dispositivos);
@@ -124,14 +97,16 @@ public class DispositivosFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
-                DispDataTask dispDataTask = new DispDataTask(casa.getHomeUsu());
+                DispositivosFragment.DispDataTask dispDataTask = new DispositivosFragment.DispDataTask(casa.getHomeUsu());
                 dispDataTask.execute();
             }
         });
-        DispDataTask dispDataTask = new DispDataTask(casa.getHomeUsu());
+        DispositivosFragment.DispDataTask dispDataTask = new DispositivosFragment.DispDataTask(casa.getHomeUsu());
         dispDataTask.execute();
-
+*/
         return v;
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -171,45 +146,5 @@ public class DispositivosFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    public class DispDataTask extends AsyncTask<Void,Void,List<DispositivosAdapter>>{
-
-        private String homeUsu;
-
-        public DispDataTask(String homeUsu) {
-            this.homeUsu = homeUsu;
-        }
-
-        @Override
-        protected List<DispositivosAdapter> doInBackground(Void... voids) {
-            List<DispositivosAdapter> res = new ArrayList<>();
-            RestInterface rest = RestImpl.getRestInstance();
-            Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(homeUsu);
-
-            try{
-                Response<List<DispositivosAdapter>> resp = response.execute();
-                if(resp.isSuccessful()){
-                    res = resp.body();
-                }
-            }catch(IOException e){
-
-            }
-
-            return res;
-        }
-
-        @Override
-        protected void onPostExecute(List<DispositivosAdapter> dispositivosAdapters) {
-            super.onPostExecute(dispositivosAdapters);
-            dispositivosDataAdapter.swapItems(dispositivosAdapters);
-            swipeRefreshLayout.setRefreshing(false);
-        }
-
-        @Override
-        protected void onCancelled(List<DispositivosAdapter> dispositivosAdapters) {
-            super.onCancelled(dispositivosAdapters);
-            Toast.makeText(getContext(), "No se ha podido recuperar la información de los dispositivos", Toast.LENGTH_SHORT).show();
-        }
     }
 }

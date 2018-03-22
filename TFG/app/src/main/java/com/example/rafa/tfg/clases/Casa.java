@@ -1,12 +1,15 @@
 package com.example.rafa.tfg.clases;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 
 /**
  * Created by Rafael on 04/03/2018.
  */
 
-public class Casa{
+public class Casa implements Parcelable {
 
     private String _id;
     private String homeUsu;
@@ -39,6 +42,38 @@ public class Casa{
         super();
         this.homeUsu = homeUsu;
     }
+
+    protected Casa(Parcel in) {
+        _id = in.readString();
+        homeUsu = in.readString();
+        configuracion = in.readParcelable(Configuracion.class.getClassLoader());
+        dispositivosAdapter = in.readParcelable(DispositivosAdapter.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(homeUsu);
+        dest.writeParcelable(configuracion, flags);
+        dest.writeParcelable(dispositivosAdapter, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Casa> CREATOR = new Creator<Casa>() {
+        @Override
+        public Casa createFromParcel(Parcel in) {
+            return new Casa(in);
+        }
+
+        @Override
+        public Casa[] newArray(int size) {
+            return new Casa[size];
+        }
+    };
 
     public String get_id() {
         return _id;

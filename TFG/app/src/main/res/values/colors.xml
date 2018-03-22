@@ -10,4 +10,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="deepPurpleLight">#767c4dff</color>
     <color name="deepRedAlerta">#fa0008</color>
+    <color name="deepOrange">#ff8C00</color>
+    <color name="deepVerde">#00FF80</color>
+    <color name="deepNegro">#000000</color>
 </resources>

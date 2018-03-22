@@ -1,6 +1,7 @@
 package com.example.rafa.tfg.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.rafa.tfg.DispositivosActivity;
 import com.example.rafa.tfg.NavPrincActivity;
 import com.example.rafa.tfg.R;
 import com.example.rafa.tfg.adapters.estadoAlarmaAdapter;
@@ -120,11 +122,13 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
         card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new DispositivosFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_main, fragment);
-                transaction.addToBackStack(null); //PAraque vuelva al fragment anterior
-                transaction.commit();
+
+                Intent  intent = new Intent(getActivity(), DispositivosActivity.class);
+                Bundle bundle = new Bundle();
+                Casa casa = fListCasasRes.get(1).get(0);
+                bundle.putParcelable("CASA", casa);
+                intent.putExtras(bundle);
+                getActivity().startActivity(intent);
             }
         });
 

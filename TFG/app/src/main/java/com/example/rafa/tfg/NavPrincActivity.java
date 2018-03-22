@@ -33,6 +33,7 @@ import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Configuracion;
 import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
+import com.example.rafa.tfg.fragments.LogDispFragment;
 import com.example.rafa.tfg.fragments.SeleccionAlarmaFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.DispositivosFragment;
@@ -78,6 +79,7 @@ public class NavPrincActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_princ);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -196,8 +198,12 @@ public class NavPrincActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-        Fragment fragment = new ContenedorFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();
+
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            Fragment fragment = new ContenedorFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();        }
     }
 
     @Override
