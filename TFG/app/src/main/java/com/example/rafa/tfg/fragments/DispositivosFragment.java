@@ -1,5 +1,6 @@
 package com.example.rafa.tfg.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.rafa.tfg.DispositivosActivity;
@@ -20,6 +22,7 @@ import com.example.rafa.tfg.R;
 import com.example.rafa.tfg.Usuario;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
+import com.example.rafa.tfg.adapters.DispositivosDataAdapterAnade;
 import com.example.rafa.tfg.clases.Caracteristicas;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Utilidades;
@@ -52,8 +55,11 @@ public class DispositivosFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private RecyclerView mDispositivosRecycler;
+    private RecyclerView mDispositivosAnadeRecycler;
     private DispositivosDataAdapter dispositivosDataAdapter;
+    private DispositivosDataAdapterAnade dispositivosDataAdapterAnade;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayoutDispNuevo;
     private Casa casa;
 
     // TODO: Rename and change types of parameters
@@ -104,16 +110,58 @@ public class DispositivosFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_dispositivos, container, false);
 
         Utilidades.regresaDisp = true;
+
         mDispositivosRecycler = v.findViewById(R.id.recyclerDispositivos);
+        v.findViewById(R.id.anadeDisp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                View mView = getLayoutInflater().inflate(R.layout.anade_dispositivos, null);
+                mDispositivosAnadeRecycler = mView.findViewById(R.id.recyclerDispositivosAnade);
+                swipeRefreshLayoutDispNuevo = mView.findViewById(R.id.swipe_refresh_layout_dispositivos_nuevos);
+                swipeRefreshLayoutDispNuevo.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        swipeRefreshLayoutDispNuevo.setRefreshing(true);
+                        DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
+                        dispDataTaskNuevosDispositivos.execute();
+                    }
+                });
+
+                alertBuilder.setView(mView);
+                AlertDialog alert = alertBuilder.create();
+
+                dispositivosDataAdapterAnade = new DispositivosDataAdapterAnade(getContext(), new ArrayList<DispositivosAdapter>());
+                mDispositivosAnadeRecycler.setAdapter(dispositivosDataAdapterAnade);
+                mDispositivosAnadeRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
+
+                dispositivosDataAdapterAnade.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(DispositivosAdapter clickedAppointment) {
+                        Toast.makeText(getContext(), "Añadimos el disp" + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();            }
+                });
+                DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
+                dispDataTaskNuevosDispositivos.execute();
+                alert.show();
+            }
+        });
+
+
+
         dispositivosDataAdapter = new DispositivosDataAdapter(getContext(), new ArrayList<DispositivosAdapter>());
         dispositivosDataAdapter.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DispositivosAdapter clickedAppointment) {
-                Fragment fragment = new LogDispFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_main, fragment);
-                transaction.addToBackStack(null); //PAraque vuelva al fragment anterior
-                transaction.commit();
+                Toast.makeText(getContext(), "¿Que Hacemos? " + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();
+
+            /** Aqui va la funcionalidad del dispositivo como apertura de nuevo fragment
+            Fragment fragment = new LogDispFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_main, fragment);
+            transaction.addToBackStack(null); //PAraque vuelva al fragment anterior
+            transaction.commit();
+            */
             }
         });
 
@@ -204,6 +252,40 @@ public class DispositivosFragment extends Fragment {
             super.onPostExecute(dispositivosAdapters);
             dispositivosDataAdapter.swapItems(dispositivosAdapters);
             swipeRefreshLayout.setRefreshing(false);
+        }
+
+        @Override
+        protected void onCancelled(List<DispositivosAdapter> dispositivosAdapters) {
+            super.onCancelled(dispositivosAdapters);
+            Toast.makeText(getContext(), "No se ha podido recuperar la información de los dispositivos", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public class DispDataTaskNuevosDispositivos extends AsyncTask<Void,Void,List<DispositivosAdapter>>{
+
+        @Override
+        protected List<DispositivosAdapter> doInBackground(Void... voids) {
+            List<DispositivosAdapter> res = new ArrayList<>();
+            RestInterface rest = RestImpl.getRestInstance();
+            Call<List<DispositivosAdapter>> response = rest.getTodosDispositivosNuevos();
+
+            try{
+                Response<List<DispositivosAdapter>> resp = response.execute();
+                if(resp.isSuccessful()){
+                    res = resp.body();
+                }
+            }catch(IOException e){
+
+            }
+
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(List<DispositivosAdapter> dispositivosAdapters) {
+            super.onPostExecute(dispositivosAdapters);
+            dispositivosDataAdapterAnade.swapItems(dispositivosAdapters);
+            swipeRefreshLayoutDispNuevo.setRefreshing(false);
         }
 
         @Override

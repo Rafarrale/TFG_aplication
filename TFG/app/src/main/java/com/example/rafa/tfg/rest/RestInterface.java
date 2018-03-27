@@ -41,6 +41,9 @@ public interface RestInterface {
     @GET("/dispositivo/giveDispTodos/{homeUsu}")
     Call<List<DispositivosAdapter>> getTodosDispositivos(@Path ("homeUsu") String homeUsu);
 
+    @GET("/dispositivo/giveDispTodosNuevos")
+    Call<List<DispositivosAdapter>> getTodosDispositivosNuevos();
+
     @PUT("/api/users/new")
     Call<usuAdapter> addUsuario(@Body usuAdapter user);
 
