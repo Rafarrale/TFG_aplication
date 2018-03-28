@@ -172,7 +172,7 @@ public class NavPrincActivity extends AppCompatActivity
             if(aux.getConfiguracion() != null) {
                 confAux.setEstadoAlarma(aux.getConfiguracion().getEstadoAlarma());
             }
-            fListCasas.add(new Casa(aux.get_id(),aux.getHomeUsu(), confAux));
+            fListCasas.add(new Casa(aux.get_id(), aux.getHomeUsu(), aux.getWifi(), aux.getSsid(), confAux));
             fListCasasRes.put(0, fListCasas);
         }
     }
@@ -245,6 +245,8 @@ public class NavPrincActivity extends AppCompatActivity
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(NavPrincActivity.this);
                     View mView = getLayoutInflater().inflate(R.layout.set_casa, null);
                     final EditText mNombreCasa = mView.findViewById(R.id.etNombreCasa);
+                    final EditText mWifiCasa = mView.findViewById(R.id.etWifiCasa);
+                    final EditText mSsidCasa = mView.findViewById(R.id.etSsidCasa);
                     Button btnAñadeCasa = mView.findViewById(R.id.btAñadeCasa);
                     mBuilder.setView(mView);
                     final AlertDialog dialog = mBuilder.create();
@@ -269,7 +271,7 @@ public class NavPrincActivity extends AppCompatActivity
                                     if (response.isSuccessful()) {
                                         Toast.makeText(NavPrincActivity.this, "El nombre ya existe", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        añadeCasa(values, mNombreCasa.getText().toString());
+                                        añadeCasa(values, mNombreCasa.getText().toString(), mWifiCasa.getText().toString(), mSsidCasa.getText().toString());
                                         dialog.hide();
                                     }
                                 }
@@ -360,7 +362,7 @@ public class NavPrincActivity extends AppCompatActivity
         return true;
     }
 
-    public void añadeCasa(List<String> lista, final String valor){
+    public void añadeCasa(List<String> lista, final String valor, final String wifi, final String ssid){
         spinner = findViewById(R.id.spinnerMen);
         if(lista.get(0).equals(Constantes.CASA_VACIO)){
             lista.remove(lista.size() - 3);
@@ -377,13 +379,13 @@ public class NavPrincActivity extends AppCompatActivity
         adapter.notifyDataSetChanged();
 */
         RestInterface rest = RestImpl.getRestInstance();
-        Call<Void> restAddHome = rest.addCasa(new CasaAdapterIni(valor));
+        Call<Void> restAddHome = rest.addCasa(new CasaAdapterIni(valor, wifi, ssid));
         restAddHome.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
-                    fListCasas.add(new Casa(valor));
+                    fListCasas.add(new Casa(valor, wifi, ssid));
                     fListCasasRes.put(0, fListCasas);
 
                     if(fListCasasRes.get(1) == null) {

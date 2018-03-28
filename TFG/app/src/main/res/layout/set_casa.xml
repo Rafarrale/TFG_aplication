@@ -22,7 +22,33 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="@string/nombre"/>
+        android:hint="@string/nombre_casa"/>
+
+    <TextView
+        android:paddingTop="20dp"
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/datos_del_router_wifi" />
+
+    <EditText
+        android:id="@+id/etSsidCasa"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="@string/identificador_de_la_red_ssid"/>
+
+    <EditText
+        android:id="@+id/etWifiCasa"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="@string/contrase_a_wifi"/>
 
     <Button
         android:id="@+id/btAñadeCasa"

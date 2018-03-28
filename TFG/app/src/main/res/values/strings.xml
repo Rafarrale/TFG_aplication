@@ -64,6 +64,11 @@
     <string name="Id">Id</string>
     <string name="a_adir_dispositivos">Añadir Dispositivos</string>
     <string name="disp">Dispositivos</string>
+    <string name="introduzca_los_datos">Introduzca los Datos</string>
+    <string name="contrase_a_wifi">Contraseña Wifi</string>
+    <string name="nombre_casa">Nombre Casa</string>
+    <string name="datos_del_router_wifi">Datos del Router Wifi</string>
+    <string name="identificador_de_la_red_ssid">Identificador de la Red (SSID)</string>
 
 
 </resources>
