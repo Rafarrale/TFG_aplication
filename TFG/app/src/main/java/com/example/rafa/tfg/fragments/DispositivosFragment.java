@@ -1,12 +1,17 @@
 package com.example.rafa.tfg.fragments;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +30,7 @@ import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapterAnade;
 import com.example.rafa.tfg.clases.Caracteristicas;
 import com.example.rafa.tfg.clases.Casa;
+import com.example.rafa.tfg.clases.SharedPrefManager;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
@@ -36,6 +42,7 @@ import java.util.Map;
 
 import okhttp3.internal.Util;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.rafa.tfg.R.id.*;
@@ -139,7 +146,32 @@ public class DispositivosFragment extends Fragment {
                 dispositivosDataAdapterAnade.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(DispositivosAdapter clickedAppointment) {
-                        Toast.makeText(getContext(), "Añadimos el disp" + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();            }
+                        //Toast.makeText(getContext(), "Añadimos el disp" + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();
+
+
+                        String token = SharedPrefManager.getInstance(getContext()).getDeviceToken();
+                        Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
+
+                        RestInterface rest = RestImpl.getRestInstance();
+                        Call<Void> aux = rest.enviaNotificacion(token);
+                        aux.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if(response.isSuccessful()){
+                                    Toast.makeText(getContext(), "Todo OK", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(getContext(), "No se mando la notificacion", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+
+                            }
+
+                        });
+                    }
                 });
                 DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
                 dispDataTaskNuevosDispositivos.execute();

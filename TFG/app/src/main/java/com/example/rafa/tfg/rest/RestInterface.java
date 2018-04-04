@@ -44,6 +44,9 @@ public interface RestInterface {
     @GET("/dispositivo/giveDispTodosNuevos")
     Call<List<DispositivosAdapter>> getTodosDispositivosNuevos();
 
+    @GET("/token/{token}")
+    Call<Void> enviaNotificacion(@Path ("token") String token);
+
     @PUT("/api/users/new")
     Call<usuAdapter> addUsuario(@Body usuAdapter user);
 
