@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void guardar_estado_boton(){
-        SharedPreferences settings = getSharedPreferences(PREFS_KEY,MODE_PRIVATE);
+        SharedPreferences settings = getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
         SharedPreferences.Editor editor;
         editor = settings.edit();
         editor.putBoolean(ESTADO_BOTON, guardar_pass.isChecked());

@@ -8,7 +8,8 @@ public class Constantes {
 
     public static final String añadirCasa = "Añadir Casa";
     public static  final String eliminarCasa = "Eliminar Casa";
-    public static  final String PREFS_KEY = "tu_contexto";
+    public static  final String PREFS_KEY = "recordar_sesion";
+    public static  final String PREFS_TOKEN = "recordar_token";
     public static  final String ESTADO_BOTON = "estado.boton";
     public static  final String ESPACIO = " ";
     public static  final String DOS_PUNTOS_ESPACIO = ": ";

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -32,6 +33,9 @@ import com.example.rafa.tfg.adapters.CasaAdapterView;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Configuracion;
 import com.example.rafa.tfg.clases.Constantes;
+import com.example.rafa.tfg.clases.SettingPreferences;
+import com.example.rafa.tfg.clases.SharedPrefManager;
+import com.example.rafa.tfg.clases.Token;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.fragments.LogDispFragment;
 import com.example.rafa.tfg.fragments.SeleccionAlarmaFragment;
@@ -44,6 +48,7 @@ import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,6 +62,7 @@ import retrofit2.Response;
 import static com.example.rafa.tfg.clases.Constantes.ESPACIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
+import static com.example.rafa.tfg.clases.Constantes.PREFS_TOKEN;
 
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
@@ -70,7 +76,8 @@ public class NavPrincActivity extends AppCompatActivity
     private TextView tUsuarioEmail;
     private NavigationView navigationView;
     private List<CasaAdapterIni> listaCasas;
-    private boolean pasaHomeUsu = false;
+    private Token tokenC = new Token();
+    private SettingPreferences settingPreferences;
     ArrayList<String> values = new ArrayList<String>();
     Spinner spinner = null;
     private DrawerLayout mDrawerLayout;
@@ -137,7 +144,14 @@ public class NavPrincActivity extends AppCompatActivity
         );
 
         recuperaDatosExtraFromMainActivity();
+        actualizaCasa();
+    }
 
+    private void actualizaCasa(){
+        settingPreferences = new SettingPreferences(this.getApplicationContext());
+        tokenC = settingPreferences.getToken(PREFS_TOKEN);
+        ActualizaToken actualizaToken = new ActualizaToken();
+        actualizaToken.execute();
     }
 
     @Override
@@ -378,6 +392,16 @@ public class NavPrincActivity extends AppCompatActivity
         BaseAdapter adapter = (BaseAdapter) spinner.getAdapter();
         adapter.notifyDataSetChanged();
 */
+        /**
+         * Añadiendo el token del dispositivo
+         */
+        tokenC = new Token();
+        String token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
+        tokenC.setToken(token);
+        tokenC.setHomeUsu(valor);
+        InsertaToken insertaToken = new InsertaToken(tokenC);
+        insertaToken.execute();
+
         RestInterface rest = RestImpl.getRestInstance();
         Call<Void> restAddHome = rest.addCasa(new CasaAdapterIni(valor, wifi, ssid));
         restAddHome.enqueue(new Callback<Void>() {
@@ -531,4 +555,69 @@ public class NavPrincActivity extends AppCompatActivity
     public Map<Integer, List<Casa>> getDataListaCasasFragment(){
         return fListCasasRes;
     }
+
+    protected class ActualizaToken extends AsyncTask<Void,Void,Token>{
+
+        @Override
+        protected Token doInBackground(Void... voids) {
+
+            Token res = null;
+            RestInterface rest = RestImpl.getRestInstance();
+            Call<Token> tokenRest = rest.actualizaToken(tokenC);
+            try {
+                Response<Token> responseToken = tokenRest.execute();
+                if(responseToken.isSuccessful()){
+                    res = responseToken.body();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(Token token) {
+            tokenC = token;
+        }
+    }
+    protected class InsertaToken extends AsyncTask<Void,Void,Token>{
+
+        private Token token;
+
+        public InsertaToken(Token token) {
+            this.token = token;
+        }
+
+        @Override
+        protected Token doInBackground(Void... voids) {
+
+            Token res = null;
+            RestInterface rest = RestImpl.getRestInstance();
+            Call<Token> tokenRest = rest.enviaToken(token);
+            try {
+                Response<Token> responseToken = tokenRest.execute();
+                if(responseToken.isSuccessful()){
+                    res = responseToken.body();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(Token token) {
+            /**
+            SharedPreferences sharedPreferences = getSharedPreferences(PREFS_TOKEN, MODE_PRIVATE);
+            SharedPreferences.Editor editor;
+            editor = sharedPreferences.edit();
+            editor.
+             **/
+            tokenC = token;
+            settingPreferences.save(tokenC, PREFS_TOKEN);
+        }
+    }
 }
+

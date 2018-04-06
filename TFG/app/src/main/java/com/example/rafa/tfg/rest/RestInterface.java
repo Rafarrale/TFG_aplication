@@ -4,6 +4,7 @@ import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.estadoAlarmaAdapter;
 import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.clases.Casa;
+import com.example.rafa.tfg.clases.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +45,6 @@ public interface RestInterface {
     @GET("/dispositivo/giveDispTodosNuevos")
     Call<List<DispositivosAdapter>> getTodosDispositivosNuevos();
 
-    @GET("/token/{token}")
-    Call<Void> enviaNotificacion(@Path ("token") String token);
-
     @PUT("/api/users/new")
     Call<usuAdapter> addUsuario(@Body usuAdapter user);
 
@@ -76,6 +74,11 @@ public interface RestInterface {
     @POST("/dispositivo/insertDispositivo")
     Call<DispositivosAdapter> addDispositivo(@Body DispositivosAdapter dispositivosAdapter);
 
+    @POST("/notificacion/actualizaToken")
+    Call<Token> actualizaToken(@Body Token token);
+
+    @POST("/notificacion/insertaToken")
+    Call<Token> enviaToken(@Body Token token);
 
 
 }

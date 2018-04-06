@@ -146,31 +146,7 @@ public class DispositivosFragment extends Fragment {
                 dispositivosDataAdapterAnade.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(DispositivosAdapter clickedAppointment) {
-                        //Toast.makeText(getContext(), "Añadimos el disp" + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();
-
-
-                        String token = SharedPrefManager.getInstance(getContext()).getDeviceToken();
-                        Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
-
-                        RestInterface rest = RestImpl.getRestInstance();
-                        Call<Void> aux = rest.enviaNotificacion(token);
-                        aux.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                if(response.isSuccessful()){
-                                    Toast.makeText(getContext(), "Todo OK", Toast.LENGTH_SHORT).show();
-                                }else{
-                                    Toast.makeText(getContext(), "No se mando la notificacion", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-
-                            }
-
-                        });
+                        Toast.makeText(getContext(), "Añadimos el disp" + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
