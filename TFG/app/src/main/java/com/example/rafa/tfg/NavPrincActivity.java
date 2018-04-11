@@ -148,10 +148,22 @@ public class NavPrincActivity extends AppCompatActivity
     }
 
     private void actualizaCasa(){
+        /**  TODO */
         settingPreferences = new SettingPreferences(this.getApplicationContext());
         tokenC = settingPreferences.getToken(PREFS_TOKEN);
-        ActualizaToken actualizaToken = new ActualizaToken();
-        actualizaToken.execute();
+        if(!listaCasas.isEmpty() && tokenC == null || tokenC.getToken() == null){
+            for(int i = 0; i < listaCasas.size(); i++) {
+                String token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
+                Token auxToken = new Token();
+                auxToken.setToken(token);
+                auxToken.setHomeUsu(listaCasas.get(i).getHomeUsu());
+                ActualizaToken actualizaToken = new ActualizaToken(auxToken);
+                actualizaToken.execute();
+            }
+        }else {
+            ActualizaToken actualizaToken = new ActualizaToken(tokenC);
+            actualizaToken.execute();
+        }
     }
 
     @Override
@@ -393,7 +405,7 @@ public class NavPrincActivity extends AppCompatActivity
         adapter.notifyDataSetChanged();
 */
         /**
-         * Añadiendo el token del dispositivo
+         * Añadiendo el token del dispositivo TODO
          */
         tokenC = new Token();
         String token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
@@ -557,13 +569,18 @@ public class NavPrincActivity extends AppCompatActivity
     }
 
     protected class ActualizaToken extends AsyncTask<Void,Void,Token>{
+        private Token token;
+
+        public ActualizaToken(Token token) {
+            this.token = token;
+        }
 
         @Override
         protected Token doInBackground(Void... voids) {
 
             Token res = null;
             RestInterface rest = RestImpl.getRestInstance();
-            Call<Token> tokenRest = rest.actualizaToken(tokenC);
+            Call<Token> tokenRest = rest.actualizaToken(token);
             try {
                 Response<Token> responseToken = tokenRest.execute();
                 if(responseToken.isSuccessful()){
@@ -578,7 +595,10 @@ public class NavPrincActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(Token token) {
-            tokenC = token;
+            if(token != null) {
+                tokenC = token;
+                settingPreferences.save(tokenC, PREFS_TOKEN);
+            }
         }
     }
     protected class InsertaToken extends AsyncTask<Void,Void,Token>{
