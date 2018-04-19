@@ -30,16 +30,16 @@
             android:id="@+id/imageViewUsuarios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
             android:src="@drawable/ic_devices_other_black_24dp" />
 
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tvNomDispositivoTodos"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/imageViewUsuarios"
             android:src="@drawable/ic_launch_black_24dp" />
 
         <View
@@ -47,7 +47,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:layout_toEndOf="@+id/imageViewUsuarios"
             android:background="#E0E0E0" />
 

@@ -36,6 +36,7 @@ public class Constantes {
     public static final String BATERIA = "Batería";
     public static final String HABITACION = "Habitación";
     public static final String POR_DETERMINAR = "Por Determinar";
+    public static final String POR_ASIGNAR = "Asignar";
     public static final int VALUE_50 = 50;
     public static final int VALUE_30 = 30;
     public static final int VALUE_10 = 10;

@@ -3,6 +3,10 @@
     package="com.example.rafa.tfg">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +25,8 @@
         <activity android:name=".Registro" />
         <activity android:name=".Usuario" />
         <activity android:name=".UsuariosActivity" />
+        <activity android:name=".demo_activity.EsptouchDemoActivity" />
+
         <activity
             android:name=".NavPrincActivity"
             android:label="@string/title_activity_nav_princ"

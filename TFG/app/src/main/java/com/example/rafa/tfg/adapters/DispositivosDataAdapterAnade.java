@@ -81,32 +81,38 @@ public class DispositivosDataAdapterAnade extends RecyclerView.Adapter<Dispositi
 
         }
 
-
-
-
         StringBuilder id = new StringBuilder();
-        id.append(Constantes.ID);
-        id.append(Constantes.DOS_PUNTOS_ESPACIO);
-        id.append(appointment.get_id());
-
         StringBuilder habit = new StringBuilder();
-        habit.append(Constantes.HABITACION);
-        habit.append(Constantes.DOS_PUNTOS_ESPACIO);
-        habit.append(appointment.getHabitacion());
-
         StringBuilder nom = new StringBuilder();
-        nom.append(Constantes.NOMBRE);
-        nom.append(Constantes.DOS_PUNTOS_ESPACIO);
-        nom.append(appointment.getName());
-
         StringBuilder tipo = new StringBuilder();
         StringBuilder estado = new StringBuilder();
         StringBuilder bateria = new StringBuilder();
 
 
-        holder.id.setText(id);
-        holder.nom.setText(nom);
-        holder.habit.setText(habit);
+        id.append(Constantes.ID);
+        id.append(Constantes.DOS_PUNTOS_ESPACIO);
+        id.append(appointment.get_id());
+
+        if(appointment.getHabitacion() != null) {
+            habit.append(Constantes.HABITACION);
+            habit.append(Constantes.DOS_PUNTOS_ESPACIO);
+            habit.append(appointment.getHabitacion());
+        }else{
+            habit.append(Constantes.HABITACION);
+            habit.append(Constantes.DOS_PUNTOS_ESPACIO);
+            habit.append(Constantes.POR_ASIGNAR);
+        }
+
+        if(appointment.getName() != null) {
+            nom.append(Constantes.NOMBRE);
+            nom.append(Constantes.DOS_PUNTOS_ESPACIO);
+            nom.append(appointment.getName());
+        }else{
+            nom.append(Constantes.NOMBRE);
+            nom.append(Constantes.DOS_PUNTOS_ESPACIO);
+            nom.append(Constantes.POR_ASIGNAR);
+        }
+
         if(appointment.getTipo() != null) {
             tipo.append(Constantes.TIPO);
             tipo.append(Constantes.DOS_PUNTOS_ESPACIO);
@@ -136,6 +142,9 @@ public class DispositivosDataAdapterAnade extends RecyclerView.Adapter<Dispositi
             bateria.append(Constantes.POR_DETERMINAR);
         }
 
+        holder.id.setText(id);
+        holder.nom.setText(nom);
+        holder.habit.setText(habit);
         holder.tipo.setText(tipo);
         holder.estado.setText(estado);
         holder.bateria.setText(bateria);
@@ -159,7 +168,7 @@ public class DispositivosDataAdapterAnade extends RecyclerView.Adapter<Dispositi
             super(itemView);
 
             statusIndicator = itemView.findViewById(R.id.indicator_dispositivo_status);
-            id = itemView.findViewById(R.id.tvIdDispositivoTodos);
+            id = (TextView)itemView.findViewById(R.id.tvIdDispositivoTodos);
             nom = (TextView) itemView.findViewById(R.id.tvNomDispositivoTodos);
             habit = (TextView) itemView.findViewById(R.id.tvDispHabitTodos);
             tipo = (TextView) itemView.findViewById(R.id.tvDispTipoTodos);

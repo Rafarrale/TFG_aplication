@@ -22,6 +22,7 @@ import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Configuracion;
 import com.example.rafa.tfg.clases.Constantes;
+import com.example.rafa.tfg.demo_activity.EsptouchDemoActivity;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 
@@ -122,12 +123,15 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
         card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+/**
                 Intent  intent = new Intent(getActivity(), DispositivosActivity.class);
                 Bundle bundle = new Bundle();
                 Casa casa = fListCasasRes.get(1).get(0);
                 bundle.putParcelable("CASA", casa);
                 intent.putExtras(bundle);
+                getActivity().startActivity(intent);
+ */
+                Intent  intent = new Intent(getActivity(), EsptouchDemoActivity.class);
                 getActivity().startActivity(intent);
             }
         });
