@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Configuracion;
 import com.example.rafa.tfg.clases.Constantes;
-import com.example.rafa.tfg.demo_activity.EsptouchDemoActivity;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 
@@ -123,16 +121,14 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
         card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/**
+
                 Intent  intent = new Intent(getActivity(), DispositivosActivity.class);
                 Bundle bundle = new Bundle();
                 Casa casa = fListCasasRes.get(1).get(0);
                 bundle.putParcelable("CASA", casa);
                 intent.putExtras(bundle);
                 getActivity().startActivity(intent);
- */
-                Intent  intent = new Intent(getActivity(), EsptouchDemoActivity.class);
-                getActivity().startActivity(intent);
+
             }
         });
 

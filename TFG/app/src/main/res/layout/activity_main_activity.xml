@@ -12,7 +12,6 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
         android:paddingBottom="20dp"
         android:src="@drawable/casa_main" />
 
@@ -51,25 +50,28 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/log"
+        android:layout_marginBottom="2dp"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
         android:onClick="onClickLog"/>
 
     <Button
         android:id="@+id/btn_registrar"
+        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="5dp"
         android:text="@string/log_reg" />
 
     <TextView
         android:id="@+id/tv_record"
         android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_height="wrap_content"
-        android:text="@string/log_no_rec"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:text="@string/log_no_rec" />
 
 </LinearLayout>

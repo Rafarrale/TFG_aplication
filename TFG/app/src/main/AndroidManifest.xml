@@ -25,7 +25,7 @@
         <activity android:name=".Registro" />
         <activity android:name=".Usuario" />
         <activity android:name=".UsuariosActivity" />
-        <activity android:name=".demo_activity.EsptouchDemoActivity" />
+        <activity android:name=".esp_touch_activity.EsptouchActivity" />
 
         <activity
             android:name=".NavPrincActivity"

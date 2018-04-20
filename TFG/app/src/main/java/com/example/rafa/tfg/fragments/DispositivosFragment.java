@@ -1,51 +1,37 @@
 package com.example.rafa.tfg.fragments;
 
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.rafa.tfg.DispositivosActivity;
-import com.example.rafa.tfg.NavPrincActivity;
 import com.example.rafa.tfg.R;
-import com.example.rafa.tfg.Usuario;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapterAnade;
-import com.example.rafa.tfg.clases.Caracteristicas;
 import com.example.rafa.tfg.clases.Casa;
-import com.example.rafa.tfg.clases.SharedPrefManager;
 import com.example.rafa.tfg.clases.Utilidades;
+import com.example.rafa.tfg.esp_touch_activity.EsptouchActivity;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import okhttp3.internal.Util;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.example.rafa.tfg.R.id.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -120,38 +106,45 @@ public class DispositivosFragment extends Fragment {
 
         mDispositivosRecycler = v.findViewById(R.id.recyclerDispositivos);
         v.findViewById(R.id.anadeDisp).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
-                View mView = getLayoutInflater().inflate(R.layout.anade_dispositivos, null);
-                mDispositivosAnadeRecycler = mView.findViewById(R.id.recyclerDispositivosAnade);
-                swipeRefreshLayoutDispNuevo = mView.findViewById(R.id.swipe_refresh_layout_dispositivos_nuevos);
-                swipeRefreshLayoutDispNuevo.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        swipeRefreshLayoutDispNuevo.setRefreshing(true);
-                        DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
-                        dispDataTaskNuevosDispositivos.execute();
-                    }
-                });
+                Intent intent = new Intent(getContext(), EsptouchActivity.class);
+                getActivity().startActivity(intent);
 
-                alertBuilder.setView(mView);
-                AlertDialog alert = alertBuilder.create();
+                /** AlertDialog para agregar dispositivos*/
+                if (false) {
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                    View mView = getLayoutInflater().inflate(R.layout.anade_dispositivos, null);
+                    mDispositivosAnadeRecycler = mView.findViewById(R.id.recyclerDispositivosAnade);
+                    swipeRefreshLayoutDispNuevo = mView.findViewById(R.id.swipe_refresh_layout_dispositivos_nuevos);
+                    swipeRefreshLayoutDispNuevo.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            swipeRefreshLayoutDispNuevo.setRefreshing(true);
+                            DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
+                            dispDataTaskNuevosDispositivos.execute();
+                        }
+                    });
 
-                dispositivosDataAdapterAnade = new DispositivosDataAdapterAnade(getContext(), new ArrayList<DispositivosAdapter>());
-                mDispositivosAnadeRecycler.setAdapter(dispositivosDataAdapterAnade);
-                mDispositivosAnadeRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
+                    alertBuilder.setView(mView);
+                    AlertDialog alert = alertBuilder.create();
 
-                dispositivosDataAdapterAnade.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(DispositivosAdapter clickedAppointment) {
-                        Toast.makeText(getContext(), "Añadimos el disp" + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-                DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
-                dispDataTaskNuevosDispositivos.execute();
-                alert.show();
+                    dispositivosDataAdapterAnade = new DispositivosDataAdapterAnade(getContext(), new ArrayList<DispositivosAdapter>());
+                    mDispositivosAnadeRecycler.setAdapter(dispositivosDataAdapterAnade);
+                    mDispositivosAnadeRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+                    dispositivosDataAdapterAnade.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(DispositivosAdapter clickedAppointment) {
+                            Toast.makeText(getContext(), "Añadimos el disp" + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
+                    dispDataTaskNuevosDispositivos.execute();
+                    alert.show();
+                }
             }
         });
 

@@ -71,10 +71,11 @@
     <string name="identificador_de_la_red_ssid">Identificador de la Red (SSID)</string>
 
 
-    <string name="hello_world">Hello world!</string>
     <string name="tvApSsidTitle">SSID: </string>
     <string name="tvPasswordTitle">Password: </string>
-    <string name="switchIsSsidHiddenTitle">SSID is Hidden</string>
-    <string name="spinnerTaskResultCountTitle">Task result count</string>
-    <string name="btnConfirmTitle">Confirm</string>
+    <string name="switchIsSsidHiddenTitle">SSID esta Oculto</string>
+    <string name="spinnerTaskResultCountTitle">Dispositivos a Añadir</string>
+    <string name="btnConfirmTitle">Asociar Dispositivos</string>
+    <string name="mostrar_dispositivos">Mostrar Dispositivos</string>
+    <string name="conexion_de_dispositivos_a_la_red">Conexion de Dispositivos a la Red</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.rafa.tfg.demo_activity;
+package com.example.rafa.tfg.esp_touch_activity;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -35,9 +35,9 @@ import com.example.rafa.tfg.R;
 import java.util.List;
 
 
-public class EsptouchDemoActivity extends AppCompatActivity implements OnClickListener {
+public class EsptouchActivity extends AppCompatActivity implements OnClickListener {
 
-    private static final String TAG = "EsptouchDemoActivity";
+    private static final String TAG = "EsptouchActivity";
 
     private TextView mTvApSsid;
 
@@ -73,8 +73,8 @@ public class EsptouchDemoActivity extends AppCompatActivity implements OnClickLi
                         if (mTask != null) {
                             mTask.cancelEsptouch();
                             mTask = null;
-                            new AlertDialog.Builder(EsptouchDemoActivity.this)
-                                    .setMessage("Wifi disconnected or changed")
+                            new AlertDialog.Builder(EsptouchActivity.this)
+                                    .setMessage("Wifi desconectado o cambiado")
                                     .setNegativeButton(android.R.string.cancel, null)
                                     .show();
                         }
@@ -87,7 +87,7 @@ public class EsptouchDemoActivity extends AppCompatActivity implements OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.esptouch_demo_activity);
+        setContentView(R.layout.esptouch_activity);
 
         mWifiAdmin = new EspWifiAdminSimple(this);
         mTvApSsid = findViewById(R.id.tvApSssidConnected);
@@ -164,8 +164,8 @@ public class EsptouchDemoActivity extends AppCompatActivity implements OnClickLi
 
             @Override
             public void run() {
-                String text = result.getBssid() + " is connected to the wifi";
-                Toast.makeText(EsptouchDemoActivity.this, text,
+                String text = result.getBssid() + " esta conectado al wifi";
+                Toast.makeText(EsptouchActivity.this, text,
                         Toast.LENGTH_LONG).show();
             }
 
@@ -196,9 +196,9 @@ public class EsptouchDemoActivity extends AppCompatActivity implements OnClickLi
 
         @Override
         protected void onPreExecute() {
-            mProgressDialog = new ProgressDialog(EsptouchDemoActivity.this);
+            mProgressDialog = new ProgressDialog(EsptouchActivity.this);
             mProgressDialog
-                    .setMessage("Esptouch is configuring, please wait for a moment...");
+                    .setMessage("La aplicación esta configurando los dispositivos, por favor espere ...");
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.setOnCancelListener(new OnCancelListener() {
                 @Override
@@ -214,7 +214,7 @@ public class EsptouchDemoActivity extends AppCompatActivity implements OnClickLi
                 }
             });
             mProgressDialog.setButton(DialogInterface.BUTTON_POSITIVE,
-                    "Waiting...", new DialogInterface.OnClickListener() {
+                    "Esperando...", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                         }
@@ -238,9 +238,9 @@ public class EsptouchDemoActivity extends AppCompatActivity implements OnClickLi
                 if (useAes) {
                     byte[] secretKey = "1234567890123456".getBytes(); // TODO modify your own key
                     EspAES aes = new EspAES(secretKey);
-                    mEsptouchTask = new EsptouchTask(apSsid, apBssid, apPassword, aes, EsptouchDemoActivity.this);
+                    mEsptouchTask = new EsptouchTask(apSsid, apBssid, apPassword, aes, EsptouchActivity.this);
                 } else {
-                    mEsptouchTask = new EsptouchTask(apSsid, apBssid, apPassword, null, EsptouchDemoActivity.this);
+                    mEsptouchTask = new EsptouchTask(apSsid, apBssid, apPassword, null, EsptouchActivity.this);
                 }
                 mEsptouchTask.setEsptouchListener(myListener);
             }
@@ -255,7 +255,7 @@ public class EsptouchDemoActivity extends AppCompatActivity implements OnClickLi
             mProgressDialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(
                     "OK");
             if (result == null) {
-                mProgressDialog.setMessage("Create Esptouch task failed, the esptouch port could be used by other thread");
+                mProgressDialog.setMessage("La tarea falló");
                 return;
             }
 
@@ -271,7 +271,7 @@ public class EsptouchDemoActivity extends AppCompatActivity implements OnClickLi
                 if (firstResult.isSuc()) {
                     StringBuilder sb = new StringBuilder();
                     for (IEsptouchResult resultInList : result) {
-                        sb.append("Esptouch success, bssid = "
+                        sb.append("Asociado con éxito, bssid = "
                                 + resultInList.getBssid()
                                 + ",InetAddress = "
                                 + resultInList.getInetAddress()
@@ -282,12 +282,12 @@ public class EsptouchDemoActivity extends AppCompatActivity implements OnClickLi
                         }
                     }
                     if (count < result.size()) {
-                        sb.append("\nthere's " + (result.size() - count)
-                                + " more result(s) without showing\n");
+                        sb.append("\nHay " + (result.size() - count)
+                                + " mas resultado(s) sin mostrarse\n");
                     }
                     mProgressDialog.setMessage(sb.toString());
                 } else {
-                    mProgressDialog.setMessage("Esptouch fail");
+                    mProgressDialog.setMessage("La operacion falló");
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.example.rafa.tfg.demo_activity;
+package com.example.rafa.tfg.esp_touch_activity;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

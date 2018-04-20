@@ -1,8 +1,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="49dp"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:src="@drawable/ic_wifi_black_24dp" />
+
+        <TextView
+            android:id="@+id/tvApInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/conexion_de_dispositivos_a_la_red"
+            style="@style/Base.TextAppearance.AppCompat.Body2"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <View
+        android:id="@+id/vertical_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:background="#E0E0E0" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,9 +101,18 @@
 
     <Button
         android:id="@+id/btnConfirm"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/btnConfirmTitle" />
+
+    <Button
+        android:id="@+id/btnMostrarDisp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mostrar_dispositivos" />
 
     <TextView
         android:id="@+id/version_tv"
