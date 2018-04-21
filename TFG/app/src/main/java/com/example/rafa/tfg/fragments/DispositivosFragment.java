@@ -48,11 +48,10 @@ public class DispositivosFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private RecyclerView mDispositivosRecycler;
-    private RecyclerView mDispositivosAnadeRecycler;
     private DispositivosDataAdapter dispositivosDataAdapter;
     private DispositivosDataAdapterAnade dispositivosDataAdapterAnade;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private SwipeRefreshLayout swipeRefreshLayoutDispNuevo;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private Casa casa;
 
     // TODO: Rename and change types of parameters
@@ -112,43 +111,8 @@ public class DispositivosFragment extends Fragment {
 
                 Intent intent = new Intent(getContext(), EsptouchActivity.class);
                 getActivity().startActivity(intent);
-
-                /** AlertDialog para agregar dispositivos*/
-                if (false) {
-                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
-                    View mView = getLayoutInflater().inflate(R.layout.anade_dispositivos, null);
-                    mDispositivosAnadeRecycler = mView.findViewById(R.id.recyclerDispositivosAnade);
-                    swipeRefreshLayoutDispNuevo = mView.findViewById(R.id.swipe_refresh_layout_dispositivos_nuevos);
-                    swipeRefreshLayoutDispNuevo.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                            swipeRefreshLayoutDispNuevo.setRefreshing(true);
-                            DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
-                            dispDataTaskNuevosDispositivos.execute();
-                        }
-                    });
-
-                    alertBuilder.setView(mView);
-                    AlertDialog alert = alertBuilder.create();
-
-                    dispositivosDataAdapterAnade = new DispositivosDataAdapterAnade(getContext(), new ArrayList<DispositivosAdapter>());
-                    mDispositivosAnadeRecycler.setAdapter(dispositivosDataAdapterAnade);
-                    mDispositivosAnadeRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-
-                    dispositivosDataAdapterAnade.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(DispositivosAdapter clickedAppointment) {
-                            Toast.makeText(getContext(), "Añadimos el disp" + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
-                    dispDataTaskNuevosDispositivos.execute();
-                    alert.show();
-                }
             }
         });
-
-
 
         dispositivosDataAdapter = new DispositivosDataAdapter(getContext(), new ArrayList<DispositivosAdapter>());
         dispositivosDataAdapter.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
@@ -253,40 +217,6 @@ public class DispositivosFragment extends Fragment {
             super.onPostExecute(dispositivosAdapters);
             dispositivosDataAdapter.swapItems(dispositivosAdapters);
             swipeRefreshLayout.setRefreshing(false);
-        }
-
-        @Override
-        protected void onCancelled(List<DispositivosAdapter> dispositivosAdapters) {
-            super.onCancelled(dispositivosAdapters);
-            Toast.makeText(getContext(), "No se ha podido recuperar la información de los dispositivos", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public class DispDataTaskNuevosDispositivos extends AsyncTask<Void,Void,List<DispositivosAdapter>>{
-
-        @Override
-        protected List<DispositivosAdapter> doInBackground(Void... voids) {
-            List<DispositivosAdapter> res = new ArrayList<>();
-            RestInterface rest = RestImpl.getRestInstance();
-            Call<List<DispositivosAdapter>> response = rest.getTodosDispositivosNuevos();
-
-            try{
-                Response<List<DispositivosAdapter>> resp = response.execute();
-                if(resp.isSuccessful()){
-                    res = resp.body();
-                }
-            }catch(IOException e){
-
-            }
-
-            return res;
-        }
-
-        @Override
-        protected void onPostExecute(List<DispositivosAdapter> dispositivosAdapters) {
-            super.onPostExecute(dispositivosAdapters);
-            dispositivosDataAdapterAnade.swapItems(dispositivosAdapters);
-            swipeRefreshLayoutDispNuevo.setRefreshing(false);
         }
 
         @Override

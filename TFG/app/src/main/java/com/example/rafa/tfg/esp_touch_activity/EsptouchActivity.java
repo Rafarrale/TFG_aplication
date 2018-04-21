@@ -11,8 +11,11 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -30,9 +33,22 @@ import com.espressif.iot.esptouch.IEsptouchResult;
 import com.espressif.iot.esptouch.IEsptouchTask;
 import com.espressif.iot.esptouch.task.__IEsptouchTask;
 import com.espressif.iot.esptouch.util.EspAES;
+import com.example.rafa.tfg.MainActivity;
 import com.example.rafa.tfg.R;
+import com.example.rafa.tfg.Registro;
+import com.example.rafa.tfg.adapters.DispositivosAdapter;
+import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
+import com.example.rafa.tfg.adapters.DispositivosDataAdapterAnade;
+import com.example.rafa.tfg.fragments.DispositivosFragment;
+import com.example.rafa.tfg.rest.RestImpl;
+import com.example.rafa.tfg.rest.RestInterface;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 
 public class EsptouchActivity extends AppCompatActivity implements OnClickListener {
@@ -44,8 +60,12 @@ public class EsptouchActivity extends AppCompatActivity implements OnClickListen
     private EditText mEdtApPassword;
 
     private Button mBtnConfirm;
-
+    private Button mBtnDisp;
     private EspWifiAdminSimple mWifiAdmin;
+    private RecyclerView mDispositivosAnadeRecycler;
+    private SwipeRefreshLayout swipeRefreshLayoutDispNuevo;
+    private DispositivosDataAdapterAnade dispositivosDataAdapterAnade;
+
 
     private Spinner mSpinnerTaskCount;
     private IEsptouchListener myListener = new IEsptouchListener() {
@@ -93,6 +113,7 @@ public class EsptouchActivity extends AppCompatActivity implements OnClickListen
         mTvApSsid = findViewById(R.id.tvApSssidConnected);
         mEdtApPassword = findViewById(R.id.edtApPassword);
         mBtnConfirm = findViewById(R.id.btnConfirm);
+        mBtnDisp = findViewById(R.id.btnMostrarDisp);
         mBtnConfirm.setOnClickListener(this);
         initSpinner();
 
@@ -101,6 +122,42 @@ public class EsptouchActivity extends AppCompatActivity implements OnClickListen
 
         IntentFilter filter = new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         registerReceiver(mReceiver, filter);
+
+        /** AlertDialog para agregar dispositivos*/
+        mBtnDisp.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    android.app.AlertDialog.Builder alertBuilder = new android.app.AlertDialog.Builder(EsptouchActivity.this);
+                    View mView = getLayoutInflater().inflate(R.layout.anade_dispositivos, null);
+                    mDispositivosAnadeRecycler = mView.findViewById(R.id.recyclerDispositivosAnade);
+                    swipeRefreshLayoutDispNuevo = mView.findViewById(R.id.swipe_refresh_layout_dispositivos_nuevos);
+                    swipeRefreshLayoutDispNuevo.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            swipeRefreshLayoutDispNuevo.setRefreshing(true);
+                            DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
+                            dispDataTaskNuevosDispositivos.execute();
+                        }
+                    });
+
+                    alertBuilder.setView(mView);
+                    android.app.AlertDialog alert = alertBuilder.create();
+
+                    dispositivosDataAdapterAnade = new DispositivosDataAdapterAnade(EsptouchActivity.this, new ArrayList<DispositivosAdapter>());
+                    mDispositivosAnadeRecycler.setAdapter(dispositivosDataAdapterAnade);
+                    mDispositivosAnadeRecycler.setLayoutManager(new LinearLayoutManager(EsptouchActivity.this, LinearLayoutManager.VERTICAL, false));
+
+                    dispositivosDataAdapterAnade.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(DispositivosAdapter clickedAppointment) {
+                            Toast.makeText(EsptouchActivity.this, "Añadimos el disp" + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();
+                    dispDataTaskNuevosDispositivos.execute();
+                    alert.show();
+            }
+        });
     }
 
     private void initSpinner() {
@@ -290,6 +347,40 @@ public class EsptouchActivity extends AppCompatActivity implements OnClickListen
                     mProgressDialog.setMessage("La operacion falló");
                 }
             }
+        }
+    }
+
+    public class DispDataTaskNuevosDispositivos extends AsyncTask<Void,Void,List<DispositivosAdapter>>{
+
+        @Override
+        protected List<DispositivosAdapter> doInBackground(Void... voids) {
+            List<DispositivosAdapter> res = new ArrayList<>();
+            RestInterface rest = RestImpl.getRestInstance();
+            Call<List<DispositivosAdapter>> response = rest.getTodosDispositivosNuevos();
+
+            try{
+                Response<List<DispositivosAdapter>> resp = response.execute();
+                if(resp.isSuccessful()){
+                    res = resp.body();
+                }
+            }catch(IOException e){
+
+            }
+
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(List<DispositivosAdapter> dispositivosAdapters) {
+            super.onPostExecute(dispositivosAdapters);
+            dispositivosDataAdapterAnade.swapItems(dispositivosAdapters);
+            swipeRefreshLayoutDispNuevo.setRefreshing(false);
+        }
+
+        @Override
+        protected void onCancelled(List<DispositivosAdapter> dispositivosAdapters) {
+            super.onCancelled(dispositivosAdapters);
+            Toast.makeText(EsptouchActivity.this, "No se ha podido recuperar la información de los dispositivos", Toast.LENGTH_SHORT).show();
         }
     }
 }
