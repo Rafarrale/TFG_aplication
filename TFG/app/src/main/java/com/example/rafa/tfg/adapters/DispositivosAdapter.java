@@ -43,16 +43,6 @@ public class DispositivosAdapter implements Parcelable{
         this.bateria = bateria;
     }
 
-    public DispositivosAdapter(String casa, String habitacion, String name, String estado, String tipo, String bateria) {
-        this.casa = casa;
-        this.habitacion = habitacion;
-        this.name = name;
-        this.estado = estado;
-        this.tipo = tipo;
-        this.bateria = bateria;
-    }
-
-
     protected DispositivosAdapter(Parcel in) {
         _id = in.readString();
         casa = in.readString();

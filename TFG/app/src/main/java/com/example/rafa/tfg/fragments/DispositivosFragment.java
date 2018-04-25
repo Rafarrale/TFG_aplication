@@ -91,7 +91,7 @@ public class DispositivosFragment extends Fragment {
         }
 
         DispositivosActivity dispositivosActivity = (DispositivosActivity) getActivity();
-            casa = dispositivosActivity.casaActual();
+        casa = dispositivosActivity.casaActual();
 
     }
 
@@ -110,6 +110,11 @@ public class DispositivosFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getContext(), EsptouchActivity.class);
+                /** Paso de casa actual a EspTouchActivity*/
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("CASA", casa);
+                intent.putExtras(bundle);
+
                 getActivity().startActivity(intent);
             }
         });

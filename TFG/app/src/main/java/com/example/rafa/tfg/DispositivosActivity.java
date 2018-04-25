@@ -1,5 +1,6 @@
 package com.example.rafa.tfg;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.clases.Casa;
+import com.example.rafa.tfg.esp_touch_activity.EsptouchActivity;
 import com.example.rafa.tfg.fragments.ContenedorDispFragment;
 import com.example.rafa.tfg.fragments.DispositivosFragment;
 import com.example.rafa.tfg.fragments.GreenFragment;
@@ -22,7 +24,6 @@ public class DispositivosActivity extends AppCompatActivity implements GreenFrag
         setContentView(R.layout.activity_dispositivos);
         Bundle bundle = getIntent().getExtras();
         casa = bundle.getParcelable("CASA");
-
     }
 
     @Override

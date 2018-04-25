@@ -78,4 +78,6 @@
     <string name="btnConfirmTitle">Asociar Dispositivos</string>
     <string name="mostrar_dispositivos">Mostrar Dispositivos</string>
     <string name="conexion_de_dispositivos_a_la_red">Conexion de Dispositivos a la Red</string>
+    <string name="nombre_del_dispositivo">Nombre del Dispositivo</string>
+    <string name="habitaci_n">Habitación</string>
 </resources>

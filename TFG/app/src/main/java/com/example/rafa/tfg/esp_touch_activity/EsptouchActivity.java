@@ -33,12 +33,14 @@ import com.espressif.iot.esptouch.IEsptouchResult;
 import com.espressif.iot.esptouch.IEsptouchTask;
 import com.espressif.iot.esptouch.task.__IEsptouchTask;
 import com.espressif.iot.esptouch.util.EspAES;
+import com.example.rafa.tfg.DispositivosActivity;
 import com.example.rafa.tfg.MainActivity;
 import com.example.rafa.tfg.R;
 import com.example.rafa.tfg.Registro;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapterAnade;
+import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.fragments.DispositivosFragment;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
@@ -48,6 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 
@@ -65,7 +68,7 @@ public class EsptouchActivity extends AppCompatActivity implements OnClickListen
     private RecyclerView mDispositivosAnadeRecycler;
     private SwipeRefreshLayout swipeRefreshLayoutDispNuevo;
     private DispositivosDataAdapterAnade dispositivosDataAdapterAnade;
-
+    private Casa casa;
 
     private Spinner mSpinnerTaskCount;
     private IEsptouchListener myListener = new IEsptouchListener() {
@@ -123,11 +126,14 @@ public class EsptouchActivity extends AppCompatActivity implements OnClickListen
         IntentFilter filter = new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         registerReceiver(mReceiver, filter);
 
+        Bundle bundle = getIntent().getExtras();
+        casa = bundle.getParcelable("CASA");
+
         /** AlertDialog para agregar dispositivos*/
         mBtnDisp.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                    android.app.AlertDialog.Builder alertBuilder = new android.app.AlertDialog.Builder(EsptouchActivity.this);
+                    final android.app.AlertDialog.Builder alertBuilder = new android.app.AlertDialog.Builder(EsptouchActivity.this);
                     View mView = getLayoutInflater().inflate(R.layout.anade_dispositivos, null);
                     mDispositivosAnadeRecycler = mView.findViewById(R.id.recyclerDispositivosAnade);
                     swipeRefreshLayoutDispNuevo = mView.findViewById(R.id.swipe_refresh_layout_dispositivos_nuevos);
@@ -149,8 +155,42 @@ public class EsptouchActivity extends AppCompatActivity implements OnClickListen
 
                     dispositivosDataAdapterAnade.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(DispositivosAdapter clickedAppointment) {
-                            Toast.makeText(EsptouchActivity.this, "Añadimos el disp" + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();
+                        public void onItemClick(final DispositivosAdapter clickedAppointment) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(EsptouchActivity.this);
+                            View mView = getLayoutInflater().inflate(R.layout.anade_disp_nuevo, null);
+                            final EditText nomDispNuevo = mView.findViewById(R.id.etNombreDispNuevo);
+                            final EditText habitDispNuevo = mView.findViewById(R.id.etHabitacionDispNuevo);
+                            Button btnAnadeDisp = mView.findViewById(R.id.btnAnadeDispNuevo);
+                            alert.setView(mView);
+                            AlertDialog alertShow = alert.create();
+                            alertShow.show();
+
+                            btnAnadeDisp.setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    final StringBuilder nomDisp = new StringBuilder(nomDispNuevo.getText().toString());
+                                    final StringBuilder habitDisp = new StringBuilder(habitDispNuevo.getText().toString());
+                                    final StringBuilder casaDisp = new StringBuilder(casa.getHomeUsu());
+                                    DispositivosAdapter dispositivosAdapter = new DispositivosAdapter(clickedAppointment.get_id(),casaDisp.toString(),habitDisp.toString(),nomDisp.toString(),clickedAppointment.getEstado(),clickedAppointment.getTipo(),clickedAppointment.getBateria());
+                                    RestInterface restConect = RestImpl.getRestInstance();
+                                    Call<Void> rest  = restConect.addDispositivoCasa(dispositivosAdapter);
+                                    rest.enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                            if(response.isSuccessful()){
+                                                Toast.makeText(EsptouchActivity.this, "Dispositivo Añadido Correctamente", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Void> call, Throwable t) {
+                                            Toast.makeText(EsptouchActivity.this, "No se pudo realizar la Operación", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                                }
+                            });
+
                         }
                     });
                     DispDataTaskNuevosDispositivos dispDataTaskNuevosDispositivos = new DispDataTaskNuevosDispositivos();

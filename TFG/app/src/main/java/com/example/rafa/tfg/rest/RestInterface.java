@@ -71,8 +71,8 @@ public interface RestInterface {
     @POST("/casa/insertCasa")
     Call<Void> addCasa(@Body CasaAdapterIni casaAdapterIni);
 
-    @POST("/dispositivo/insertDispositivo")
-    Call<DispositivosAdapter> addDispositivo(@Body DispositivosAdapter dispositivosAdapter);
+    @POST("/dispositivo/insertaDispositivoCasa")
+    Call<Void> addDispositivoCasa(@Body DispositivosAdapter dispositivosAdapter);
 
     @POST("/notificacion/actualizaToken")
     Call<Token> actualizaToken(@Body Token token);
