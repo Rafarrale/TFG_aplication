@@ -148,7 +148,6 @@ public class NavPrincActivity extends AppCompatActivity
     }
 
     private void actualizaCasa(){
-        /**  TODO */
         settingPreferences = new SettingPreferences(this.getApplicationContext());
         tokenC = settingPreferences.getToken(PREFS_TOKEN);
         if(!listaCasas.isEmpty() && tokenC == null || tokenC.getToken() == null){
@@ -161,6 +160,8 @@ public class NavPrincActivity extends AppCompatActivity
                 actualizaToken.execute();
             }
         }else {
+            String token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
+            tokenC.setToken(token);
             ActualizaToken actualizaToken = new ActualizaToken(tokenC);
             actualizaToken.execute();
         }
@@ -319,6 +320,7 @@ public class NavPrincActivity extends AppCompatActivity
                     if(listaCasas == null || values.get(0).equals(Constantes.CASA_VACIO)){
                         cValues.remove(cValues.size() - 1);
                         cValues.add(Constantes.CASA_VACIO_ELIMINAR);
+
                     }
                     ListView lv = mView.findViewById(R.id.lvListaCasas);
                     CasaAdapterView adapter = new CasaAdapterView(NavPrincActivity.this, cValues);
@@ -405,7 +407,7 @@ public class NavPrincActivity extends AppCompatActivity
         adapter.notifyDataSetChanged();
 */
         /**
-         * Añadiendo el token del dispositivo TODO
+         * Añadiendo el token del dispositivo
          */
         tokenC = new Token();
         String token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
@@ -460,7 +462,8 @@ public class NavPrincActivity extends AppCompatActivity
                 if(response.isSuccessful()){
                     if(!casa.equals(Constantes.CASA_VACIO)) {
                         Toast.makeText(NavPrincActivity.this, "Casa eliminada", Toast.LENGTH_SHORT).show();
-
+                        settingPreferences = new SettingPreferences(getApplicationContext());
+                        settingPreferences.remove(PREFS_TOKEN);
                         List<Casa> fListCasasCopy = new ArrayList<>(fListCasas);
                         Iterator<Casa> itr = fListCasasCopy.listIterator();
 
@@ -580,16 +583,17 @@ public class NavPrincActivity extends AppCompatActivity
 
             Token res = null;
             RestInterface rest = RestImpl.getRestInstance();
-            Call<Token> tokenRest = rest.actualizaToken(token);
-            try {
-                Response<Token> responseToken = tokenRest.execute();
-                if(responseToken.isSuccessful()){
-                    res = responseToken.body();
+            if(token != null) {
+                Call<Token> tokenRest = rest.actualizaToken(token);
+                try {
+                    Response<Token> responseToken = tokenRest.execute();
+                    if (responseToken.isSuccessful()) {
+                        res = responseToken.body();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-
             return res;
         }
 

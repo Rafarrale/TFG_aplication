@@ -25,6 +25,12 @@ public class SettingPreferences {
         edit.commit();
     }
 
+    public void remove(String PrefKey) {
+        SharedPreferences.Editor edit = getSharedPreferences().edit();
+        edit.remove(PrefKey);
+        edit.commit();
+    }
+
     public Token getToken(String PrefKey) {
         String json = getSharedPreferences().getString(PrefKey,null);
         if(json == null){

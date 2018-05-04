@@ -22,8 +22,10 @@ public class DispositivosActivity extends AppCompatActivity implements GreenFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dispositivos);
-        Bundle bundle = getIntent().getExtras();
-        casa = bundle.getParcelable("CASA");
+        if(getIntent().getExtras() != null){
+            Bundle bundle = getIntent().getExtras();
+            casa = bundle.getParcelable("CASA");
+        }
     }
 
     @Override

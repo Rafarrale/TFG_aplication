@@ -121,14 +121,14 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
         card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent  intent = new Intent(getActivity(), DispositivosActivity.class);
-                Bundle bundle = new Bundle();
-                Casa casa = fListCasasRes.get(1).get(0);
-                bundle.putParcelable("CASA", casa);
-                intent.putExtras(bundle);
+                if(fListCasasRes.size() != 0){
+                    Bundle bundle = new Bundle();
+                    Casa casa = fListCasasRes.get(1).get(0);
+                    bundle.putParcelable("CASA", casa);
+                    intent.putExtras(bundle);
+                }
                 getActivity().startActivity(intent);
-
             }
         });
 

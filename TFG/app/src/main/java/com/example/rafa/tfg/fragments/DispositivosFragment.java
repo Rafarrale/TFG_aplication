@@ -141,13 +141,19 @@ public class DispositivosFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(true);
-                DispDataTask dispDataTask = new DispDataTask(casa.getHomeUsu());
-                dispDataTask.execute();
+                if(casa != null){
+                    swipeRefreshLayout.setRefreshing(true);
+                    DispDataTask dispDataTask = new DispDataTask(casa.getHomeUsu());
+                    dispDataTask.execute();
+                }else{
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
-        DispDataTask dispDataTask = new DispDataTask(casa.getHomeUsu());
-        dispDataTask.execute();
+        if(casa != null){
+            DispDataTask dispDataTask = new DispDataTask(casa.getHomeUsu());
+            dispDataTask.execute();
+        }
 
         return v;
     }
