@@ -14,8 +14,8 @@ import java.util.List;
 public class SeccionesAdapter extends FragmentStatePagerAdapter{
 
     private final List<Fragment> listaFragments = new ArrayList<>();
-    private final List<String> listaTitulos = new ArrayList<>();
 
+    private final List<String> listaTitulos = new ArrayList<>();
     public SeccionesAdapter(FragmentManager fm) {
         super(fm);
     }

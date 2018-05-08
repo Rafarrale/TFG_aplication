@@ -33,8 +33,8 @@ public class DispositivosDataAdapter extends RecyclerView.Adapter<DispositivosDa
 
         void onItemClick(DispositivosAdapter clickedAppointment);
 
-    }
 
+    }
     public DispositivosDataAdapter(Context context, List<DispositivosAdapter> items) {
         mItems = items;
         mContext = context;
@@ -155,6 +155,7 @@ public class DispositivosDataAdapter extends RecyclerView.Adapter<DispositivosDa
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         public TextView id;
         public TextView nom;
         public TextView habit;
@@ -162,7 +163,6 @@ public class DispositivosDataAdapter extends RecyclerView.Adapter<DispositivosDa
         public TextView estado;
         public TextView bateria;
         public View statusIndicator;
-
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -184,5 +184,6 @@ public class DispositivosDataAdapter extends RecyclerView.Adapter<DispositivosDa
                 mOnItemClickListener.onItemClick(mItems.get(position));
             }
         }
+
     }
 }

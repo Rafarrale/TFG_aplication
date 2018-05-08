@@ -81,4 +81,5 @@
     <string name="nombre_del_dispositivo">Nombre del Dispositivo</string>
     <string name="habitaci_n">Habitación</string>
     <string name="no_existen_dispositivos_para_a_adir">No Existen Dispositivos para añadir</string>
+    <string name="no_existen_dispositivos">No existen Dispositivos</string>
 </resources>

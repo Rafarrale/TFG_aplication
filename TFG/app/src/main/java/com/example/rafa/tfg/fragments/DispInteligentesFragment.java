@@ -1,8 +1,6 @@
 package com.example.rafa.tfg.fragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,10 +17,7 @@ import com.example.rafa.tfg.DispositivosActivity;
 import com.example.rafa.tfg.R;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
-import com.example.rafa.tfg.adapters.DispositivosDataAdapterAnade;
 import com.example.rafa.tfg.clases.Casa;
-import com.example.rafa.tfg.clases.Utilidades;
-import com.example.rafa.tfg.esp_touch_activity.EsptouchActivity;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 
@@ -34,15 +29,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DispositivosFragment.OnFragmentInteractionListener} interface
+ * {@link DispInteligentesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DispositivosFragment#newInstance} factory method to
+ * Use the {@link DispInteligentesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DispositivosFragment extends Fragment {
+public class DispInteligentesFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -50,19 +46,12 @@ public class DispositivosFragment extends Fragment {
 
     private RecyclerView mDispositivosRecycler;
     private DispositivosDataAdapter dispositivosDataAdapter;
-    private DispositivosDataAdapterAnade dispositivosDataAdapterAnade;
-    private SwipeRefreshLayout swipeRefreshLayoutDispNuevo;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Casa casa;
-    View mainView;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
+    private View mainView = null;
 
-    public DispositivosFragment() {
+    public DispInteligentesFragment() {
         // Required empty public constructor
     }
 
@@ -72,11 +61,11 @@ public class DispositivosFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DispositivosFragment.
+     * @return A new instance of fragment DispInteligentesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DispositivosFragment newInstance(String param1, String param2) {
-        DispositivosFragment fragment = new DispositivosFragment();
+    public static DispInteligentesFragment newInstance(String param1, String param2) {
+        DispInteligentesFragment fragment = new DispInteligentesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -87,23 +76,17 @@ public class DispositivosFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
         DispositivosActivity dispositivosActivity = (DispositivosActivity) getActivity();
         casa = dispositivosActivity.casaActual();
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         if(casa != null){
             // Inflate the layout for this fragment
-            mainView =  inflater.inflate(R.layout.fragment_dispositivos, container, false);
-            mDispositivosRecycler  = mainView.findViewById(R.id.recyclerDispositivos);
+            mainView =  inflater.inflate(R.layout.fragment_disp_inteligentes, container, false);
+            mDispositivosRecycler  = mainView.findViewById(R.id.recyclerDispositivosInteligentes);
 
             dispositivosDataAdapter = new DispositivosDataAdapter(getContext(), new ArrayList<DispositivosAdapter>());
             dispositivosDataAdapter.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
@@ -115,7 +98,7 @@ public class DispositivosFragment extends Fragment {
 
             mDispositivosRecycler.setAdapter(dispositivosDataAdapter);
             mDispositivosRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
-            swipeRefreshLayout = mainView.findViewById(R.id.swipe_refresh_layout_dispositivos);
+            swipeRefreshLayout = mainView.findViewById(R.id.swipe_refresh_layout_dispositivos_inteligentes);
             swipeRefreshLayout.setRefreshing(true);
             RestInterface rest = RestImpl.getRestInstance();
             Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(casa.getHomeUsu());
@@ -129,7 +112,7 @@ public class DispositivosFragment extends Fragment {
                             swipeRefreshLayout.setRefreshing(false);
                         }else{
                             swipeRefreshLayout.setRefreshing(false);
-                            setViewLayout(R.layout.fragment_dispositivos_vacio);
+                            setViewLayout(R.layout.fragment_disp_inteligentes_vacio);
                         }
                     }
                 }
@@ -141,7 +124,7 @@ public class DispositivosFragment extends Fragment {
                 }
             });
         }else{
-            setViewLayout(R.layout.fragment_dispositivos_vacio);
+            setViewLayout(R.layout.fragment_disp_inteligentes_vacio);
         }
 
 
@@ -162,7 +145,7 @@ public class DispositivosFragment extends Fragment {
                                     swipeRefreshLayout.setRefreshing(false);
                                 }else{
                                     swipeRefreshLayout.setRefreshing(false);
-                                    setViewLayout(R.layout.fragment_dispositivos_vacio);
+                                    setViewLayout(R.layout.fragment_disp_inteligentes_vacio);
                                 }
                             }
                         }
@@ -179,35 +162,15 @@ public class DispositivosFragment extends Fragment {
                 }
             }
         });
-
-       listenerAnadeDisp(mainView);
-
         return mainView;
     }
 
     private void setViewLayout(int id){
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mainView = inflater.inflate(id, null);
-        listenerAnadeDisp(mainView);
         ViewGroup rootView = (ViewGroup) getView();
         rootView.removeAllViews();
         rootView.addView(mainView);
-    }
-    private void listenerAnadeDisp(View view){
-        view.findViewById(R.id.anadeDisp).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getContext(), EsptouchActivity.class);
-                /** Paso de casa actual a EspTouchActivity*/
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("CASA", casa);
-                intent.putExtras(bundle);
-
-                getActivity().startActivity(intent);
-            }
-        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

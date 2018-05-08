@@ -41,7 +41,7 @@ import com.example.rafa.tfg.fragments.LogDispFragment;
 import com.example.rafa.tfg.fragments.SeleccionAlarmaFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.DispositivosFragment;
-import com.example.rafa.tfg.fragments.GreenFragment;
+import com.example.rafa.tfg.fragments.DispInteligentesFragment;
 import com.example.rafa.tfg.fragments.RojoFragment;
 import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.rest.RestImpl;
@@ -66,7 +66,7 @@ import static com.example.rafa.tfg.clases.Constantes.PREFS_TOKEN;
 
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
-        SeleccionAlarmaFragment.OnFragmentInteractionListener,GreenFragment.OnFragmentInteractionListener,
+        SeleccionAlarmaFragment.OnFragmentInteractionListener,LogDispFragment.OnFragmentInteractionListener,
         ContenedorFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener{
 
     private List<Casa> fListCasas = new ArrayList<>();

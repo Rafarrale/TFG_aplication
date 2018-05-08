@@ -7,13 +7,16 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.rafa.tfg.R;
 import com.example.rafa.tfg.adapters.SeccionesAdapter;
+import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
 
 /**
@@ -28,6 +31,7 @@ import com.example.rafa.tfg.clases.Utilidades;
     private AppBarLayout appBar;
     private TabLayout pestañas;
     private ViewPager viewPager;
+    private SeccionesAdapter adapter;
     View vista;
 
     public ContenedorDispFragment() {
@@ -73,12 +77,7 @@ import com.example.rafa.tfg.clases.Utilidades;
                 viewPager = vista.findViewById(R.id.idViewPagerDispInformacion);
                 llenarViewPager(viewPager);
 
-                viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                        super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                    }
-                });
+
                 pestañas.setupWithViewPager(viewPager);
                 pestañas.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -87,13 +86,34 @@ import com.example.rafa.tfg.clases.Utilidades;
             }
         }
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment currentFragment = adapter.getItem(position);
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.detach(currentFragment);
+                fragmentTransaction.attach(currentFragment);
+                fragmentTransaction.commit();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         return vista;
     }
 
     private void llenarViewPager(ViewPager viewPager) {
-        SeccionesAdapter adapter = new SeccionesAdapter(getFragmentManager());
+        adapter = new SeccionesAdapter(getFragmentManager());
 
-        adapter.addFragment(new GreenFragment(),"Green fragment");
+        adapter.addFragment(new DispInteligentesFragment(),"Dispositivos Inteligentes");
         adapter.addFragment(new DispositivosFragment(),"Todos");
 
         viewPager.setAdapter(adapter);
