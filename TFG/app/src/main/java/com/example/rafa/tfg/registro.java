@@ -38,7 +38,8 @@ public class Registro extends AppCompatActivity {
 
 
                 RestInterface rest = RestImpl.getRestInstance();
-                Call<Void> restCheckCredentials = rest.addUser(new usuAdapter(edt_usu.getText().toString(),edt_nombre.getText().toString(),edt_apellidos.getText().toString(),edt_pass.getText().toString(),edt_email.getText().toString()));
+                Call<Void> restCheckCredentials = rest.addUser(new usuAdapter(edt_usu.getText().toString(),edt_nombre.getText().toString(),edt_apellidos.getText().toString()
+                        ,edt_pass.getText().toString(),edt_email.getText().toString(), edt_pass_casa.getText().toString(), null));
                 restCheckCredentials.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
@@ -48,14 +49,14 @@ public class Registro extends AppCompatActivity {
                                     .setAction("Action", null).show();
                             Registro.this.finish();
                         } else {
-                            Snackbar.make(v, "Se ha producido un error al añadir el dato", Snackbar.LENGTH_LONG)
+                            Snackbar.make(v, "La clave de producto no es válida", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-                        Snackbar.make(v, "Se ha producido un Failure", Snackbar.LENGTH_LONG)
+                        Snackbar.make(v, "No se a podido realizar la operación", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }
                 });

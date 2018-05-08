@@ -70,7 +70,7 @@ public class NavPrincActivity extends AppCompatActivity
         ContenedorFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener{
 
     private List<Casa> fListCasas = new ArrayList<>();
-    Map<Integer, List<Casa>> fListCasasRes = new HashMap<Integer, List<Casa>>();
+    private Map<Integer, List<Casa>> fListCasasRes = new HashMap<Integer, List<Casa>>();
     private usuAdapter usuario;
     private TextView tUsuario;
     private TextView tUsuarioEmail;
@@ -78,9 +78,9 @@ public class NavPrincActivity extends AppCompatActivity
     private List<CasaAdapterIni> listaCasas;
     private Token tokenC = new Token();
     private SettingPreferences settingPreferences;
-    ArrayList<String> values = new ArrayList<String>();
-    Spinner spinner = null;
     private DrawerLayout mDrawerLayout;
+    private ArrayList<String> values = new ArrayList<String>();
+    private Spinner spinner = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,10 +144,10 @@ public class NavPrincActivity extends AppCompatActivity
         );
 
         recuperaDatosExtraFromMainActivity();
-        actualizaCasa();
+        actualizaToken();
     }
 
-    private void actualizaCasa(){
+    private void actualizaToken(){
         settingPreferences = new SettingPreferences(this.getApplicationContext());
         tokenC = settingPreferences.getToken(PREFS_TOKEN);
         if(!listaCasas.isEmpty() && tokenC == null || tokenC.getToken() == null){
@@ -199,7 +199,7 @@ public class NavPrincActivity extends AppCompatActivity
             if(aux.getConfiguracion() != null) {
                 confAux.setEstadoAlarma(aux.getConfiguracion().getEstadoAlarma());
             }
-            fListCasas.add(new Casa(aux.get_id(), aux.getHomeUsu(), aux.getWifi(), aux.getSsid(), confAux));
+            fListCasas.add(new Casa(aux.get_id(), aux.getHomeUsu(), confAux));
             fListCasasRes.put(0, fListCasas);
         }
     }
@@ -272,8 +272,6 @@ public class NavPrincActivity extends AppCompatActivity
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(NavPrincActivity.this);
                     View mView = getLayoutInflater().inflate(R.layout.set_casa, null);
                     final EditText mNombreCasa = mView.findViewById(R.id.etNombreCasa);
-                    final EditText mWifiCasa = mView.findViewById(R.id.etWifiCasa);
-                    final EditText mSsidCasa = mView.findViewById(R.id.etSsidCasa);
                     Button btnAñadeCasa = mView.findViewById(R.id.btAñadeCasa);
                     mBuilder.setView(mView);
                     final AlertDialog dialog = mBuilder.create();
@@ -298,7 +296,7 @@ public class NavPrincActivity extends AppCompatActivity
                                     if (response.isSuccessful()) {
                                         Toast.makeText(NavPrincActivity.this, "El nombre ya existe", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        añadeCasa(values, mNombreCasa.getText().toString(), mWifiCasa.getText().toString(), mSsidCasa.getText().toString());
+                                        añadeCasa(values, mNombreCasa.getText().toString());
                                         dialog.hide();
                                     }
                                 }
@@ -390,7 +388,7 @@ public class NavPrincActivity extends AppCompatActivity
         return true;
     }
 
-    public void añadeCasa(List<String> lista, final String valor, final String wifi, final String ssid){
+    public void añadeCasa(List<String> lista, final String valor){
         spinner = findViewById(R.id.spinnerMen);
         if(lista.get(0).equals(Constantes.CASA_VACIO)){
             lista.remove(lista.size() - 3);
@@ -417,13 +415,13 @@ public class NavPrincActivity extends AppCompatActivity
         insertaToken.execute();
 
         RestInterface rest = RestImpl.getRestInstance();
-        Call<Void> restAddHome = rest.addCasa(new CasaAdapterIni(valor, wifi, ssid));
+        Call<Void> restAddHome = rest.addCasa(new CasaAdapterIni(valor, usuario.getPass()));
         restAddHome.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
-                    fListCasas.add(new Casa(valor, wifi, ssid));
+                    fListCasas.add(new Casa(valor));
                     fListCasasRes.put(0, fListCasas);
 
                     if(fListCasasRes.get(1) == null) {

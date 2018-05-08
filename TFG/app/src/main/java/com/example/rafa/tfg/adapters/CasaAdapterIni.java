@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import com.example.rafa.tfg.clases.Configuracion;
 import com.google.gson.Gson;
 
+import java.util.Objects;
+
 /**
  * Created by Rafael on 04/03/2018.
  */
@@ -13,39 +15,24 @@ import com.google.gson.Gson;
 public class CasaAdapterIni implements Parcelable {
     private String _id;
     private String homeUsu;
-    private String wifi;
-    private String ssid;
+    private String passCasa;
     private Configuracion configuracion;
 
-    public CasaAdapterIni(String _id, String homeUsu, String wifi, String ssid, Configuracion configuracion) {
-        this._id = _id;
-        this.homeUsu = homeUsu;
-        this.wifi = wifi;
-        this.ssid = ssid;
-        this.configuracion = configuracion;
-    }
-
-    public CasaAdapterIni(String _id, String homeUsu) {
-        this._id = _id;
-        this.homeUsu = homeUsu;
-    }
-
-    public CasaAdapterIni(String homeUsu, String wifi, String ssid){
-        this.homeUsu = homeUsu;
-        this.wifi = wifi;
-        this.ssid = ssid;
-    }
 
     public CasaAdapterIni(String homeUsu){
         this.homeUsu = homeUsu;
     }
 
+    public CasaAdapterIni(String homeUsu, String passCasa){
+        this.homeUsu = homeUsu;
+        this.passCasa = passCasa;
+
+    }
 
     protected CasaAdapterIni(Parcel in) {
         _id = in.readString();
         homeUsu = in.readString();
-        wifi = in.readString();
-        ssid = in.readString();
+        passCasa = in.readString();
         configuracion = in.readParcelable(Configuracion.class.getClassLoader());
     }
 
@@ -53,8 +40,7 @@ public class CasaAdapterIni implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(_id);
         dest.writeString(homeUsu);
-        dest.writeString(wifi);
-        dest.writeString(ssid);
+        dest.writeString(passCasa);
         dest.writeParcelable(configuracion, flags);
     }
 
@@ -91,20 +77,12 @@ public class CasaAdapterIni implements Parcelable {
         this.homeUsu = homeUsu;
     }
 
-    public String getWifi() {
-        return wifi;
+    public String getPassCasa() {
+        return passCasa;
     }
 
-    public void setWifi(String wifi) {
-        this.wifi = wifi;
-    }
-
-    public String getSsid() {
-        return ssid;
-    }
-
-    public void setSsid(String ssid) {
-        this.ssid = ssid;
+    public void setPassCasa(String passCasa) {
+        this.passCasa = passCasa;
     }
 
     public Configuracion getConfiguracion() {
@@ -119,24 +97,17 @@ public class CasaAdapterIni implements Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         CasaAdapterIni that = (CasaAdapterIni) o;
-
-        if (_id != null ? !_id.equals(that._id) : that._id != null) return false;
-        if (homeUsu != null ? !homeUsu.equals(that.homeUsu) : that.homeUsu != null) return false;
-        if (wifi != null ? !wifi.equals(that.wifi) : that.wifi != null) return false;
-        if (ssid != null ? !ssid.equals(that.ssid) : that.ssid != null) return false;
-        return configuracion != null ? configuracion.equals(that.configuracion) : that.configuracion == null;
+        return Objects.equals(_id, that._id) &&
+                Objects.equals(homeUsu, that.homeUsu) &&
+                Objects.equals(passCasa, that.passCasa) &&
+                Objects.equals(configuracion, that.configuracion);
     }
 
     @Override
     public int hashCode() {
-        int result = _id != null ? _id.hashCode() : 0;
-        result = 31 * result + (homeUsu != null ? homeUsu.hashCode() : 0);
-        result = 31 * result + (wifi != null ? wifi.hashCode() : 0);
-        result = 31 * result + (ssid != null ? ssid.hashCode() : 0);
-        result = 31 * result + (configuracion != null ? configuracion.hashCode() : 0);
-        return result;
+
+        return Objects.hash(_id, homeUsu, passCasa, configuracion);
     }
 
     public static  usuAdapter buildFromJson(String jsonString){

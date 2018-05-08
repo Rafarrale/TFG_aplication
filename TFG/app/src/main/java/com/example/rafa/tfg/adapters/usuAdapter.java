@@ -17,28 +17,23 @@ public class usuAdapter implements Parcelable {
     private String pass;
     private String admin;
     private String email;
+    private String passCasa;
 
 
     public  usuAdapter(){
 
     }
 
-    public usuAdapter(String _id, String user, String nombre, String apellidos, String pass, String admin, String email){
-        this._id = _id;
-        this.user = user;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.pass = pass;
-        this.admin = admin;
-        this.email = email;
-    }
 
-    public usuAdapter(String user, String nombre, String apellidos, String email, String pass){
+    public usuAdapter(String user, String nombre, String apellidos, String pass, String email, String passCasa, String admin){
         this.user = user;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.pass = pass;
         this.email = email;
+        this.passCasa = passCasa;
+        this.admin = admin;
+
     }
 
     protected usuAdapter(Parcel in) {
