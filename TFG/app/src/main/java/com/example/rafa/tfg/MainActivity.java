@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
@@ -40,11 +41,11 @@ public class MainActivity extends AppCompatActivity {
     private View mProgressView;
     private UserLoginTask mUserLoginTask = null;
     private UserLoginTask mAuthTask = null;
-    private CasaTask mCasaTask = null;
     private AutoCompleteTextView mUsuarioView;
     private EditText mPasswordView;
     private CheckBox guardar_pass;
     private List<CasaAdapterIni> casasExtra;
+    private usuAdapter auxUsuario;
 
 
     @Override
@@ -195,8 +196,6 @@ public class MainActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mCasaTask = new CasaTask();
-            mCasaTask.execute();
             mAuthTask = new UserLoginTask(usuario, password);
             mAuthTask.execute((Void) null);
 
@@ -256,18 +255,8 @@ public class MainActivity extends AppCompatActivity {
             showProgress(false);
 
             if(user != null) {
-
-                Intent intent = new Intent(MainActivity.this, NavPrincActivity.class);
-                intent.putExtra("USER", user.toJson());
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("CASAS", (ArrayList<? extends Parcelable>) casasExtra);
-                intent.putExtras(bundle);
-
-                guardar_estado_boton();
-                startActivity(intent);
-                Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_SHORT).show();
-
+                auxUsuario = user;
+                passNavPrinc();
             }else{
                 mPasswordView.setError(getString(R.string.error_incorrect_password_Usu));
                 mPasswordView.requestFocus();
@@ -282,38 +271,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected class CasaTask extends AsyncTask<Void,Void,List<CasaAdapterIni>>{
+    private void passNavPrinc() {
+        List<CasaAdapterIni> res = null;
+        RestInterface rest = RestImpl.getRestInstance();
 
-        @Override
-        protected List<CasaAdapterIni> doInBackground(Void... params) {
-            List<CasaAdapterIni> res = null;
-            RestInterface rest = RestImpl.getRestInstance();
+        Call<List<CasaAdapterIni>> restCasas = rest.getCasas(auxUsuario.getPassCasa());
 
-            Call<List<CasaAdapterIni>> restCasas = rest.getCasas();
+        restCasas.enqueue(new Callback<List<CasaAdapterIni>>() {
+            @Override
+            public void onResponse(Call<List<CasaAdapterIni>> call, Response<List<CasaAdapterIni>> response) {
+                if (response.isSuccessful()) {
+                    casasExtra = response.body();
+                    Intent intent = new Intent(MainActivity.this, NavPrincActivity.class);
+                    intent.putExtra("USER", auxUsuario.toJson());
 
-            try{
-                Response<List<CasaAdapterIni>> responseCasas = restCasas.execute();
-                if(responseCasas.isSuccessful()){
-                    res = responseCasas.body();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("CASAS", (ArrayList<? extends Parcelable>) casasExtra);
+                    intent.putExtras(bundle);
 
+                    guardar_estado_boton();
+                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_SHORT).show();
                 }
-
-            }catch(IOException io){
-
             }
 
-            return res;
-        }
-
-        protected void onPostExecute(final List<CasaAdapterIni> casas){
-            casasExtra = casas;
-        }
-
-        @Override
-        protected void onCancelled() {
-            Toast.makeText(getApplicationContext(), "No se ha podido recuperar la información", Toast.LENGTH_SHORT).show();
-
-        }
+            @Override
+            public void onFailure(Call<List<CasaAdapterIni>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "No se ha podido recuperar la información", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     //<editor-fold desc="Fases de vida de la activity">

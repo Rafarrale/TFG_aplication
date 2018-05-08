@@ -33,8 +33,8 @@ public interface RestInterface {
     @GET("/usuario/giveUsuario/todosUsuarios")
     Call<ArrayList<usuAdapter>> getTodosUsuarios();
 
-    @GET("/casa/giveHome/todasCasas")
-    Call<List<CasaAdapterIni>> getCasas();
+    @GET("/casa/giveHome/todasCasas/{numSerie}")
+    Call<List<CasaAdapterIni>> getCasas(@Path ("numSerie") String numSerie);
 
     @GET("/casa/giveEstado/{homeUsu}/{estadoAlarma}")
     Call<estadoAlarmaAdapter> estadoAlarmaCasa(@Path ("homeUsu") String homeUsu, @Path("estadoAlarma") String casaAdapterIni);

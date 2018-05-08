@@ -140,6 +140,14 @@ public class usuAdapter implements Parcelable {
         this.email = email;
     }
 
+    public String getPassCasa() {
+        return passCasa;
+    }
+
+    public void setPassCasa(String passCasa) {
+        this.passCasa = passCasa;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
