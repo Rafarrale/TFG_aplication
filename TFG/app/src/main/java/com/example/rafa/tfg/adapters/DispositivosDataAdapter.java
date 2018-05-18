@@ -72,16 +72,16 @@ public class DispositivosDataAdapter extends RecyclerView.Adapter<DispositivosDa
                 int aux = Integer.parseInt(appointment.getBateria());
                 // estado: se colorea indicador según el estado
 
-                if (aux >= Constantes.VALUE_50) {
+                if (aux >= Constantes.VALUE_30) {
                     statusIndicator.setBackgroundResource(R.color.deepVerde);
                 }
-                if (aux < Constantes.VALUE_50 && aux >= Constantes.VALUE_30){
+                if (aux < Constantes.VALUE_30 && aux >= Constantes.VALUE_10){
                     statusIndicator.setBackgroundResource(R.color.deepOrange);
                 }
-                if(aux < Constantes.VALUE_30 && aux >= Constantes.VALUE_10) {
+                if(aux < Constantes.VALUE_10 && aux >= Constantes.VALUE_5) {
                 statusIndicator.setBackgroundResource(R.color.deepRedAlerta);
                 }
-                if(aux < Constantes.VALUE_10) {
+                if(aux < Constantes.VALUE_5) {
                     statusIndicator.setBackgroundResource(R.color.deepNegro);
                 }
 
@@ -137,7 +137,17 @@ public class DispositivosDataAdapter extends RecyclerView.Adapter<DispositivosDa
         if(appointment.getBateria() != null){
             bateria.append(Constantes.BATERIA);
             bateria.append(Constantes.DOS_PUNTOS_ESPACIO);
-            bateria.append(appointment.getBateria());
+            String aux ;
+            if(Integer.parseInt(appointment.getBateria()) == 30){
+                aux = "Cargada";
+            }else if(Integer.parseInt(appointment.getBateria()) == 10){
+                aux = "Media";
+            }else if(Integer.parseInt(appointment.getBateria()) == 5){
+                aux = "Cargar";
+            }else{
+                aux = "Apagado";
+            }
+            bateria.append(aux);
         }else{
             bateria.append(Constantes.BATERIA);
             bateria.append(Constantes.DOS_PUNTOS_ESPACIO);

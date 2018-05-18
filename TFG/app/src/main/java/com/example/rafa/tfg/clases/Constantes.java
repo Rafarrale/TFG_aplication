@@ -40,6 +40,7 @@ public class Constantes {
     public static final int VALUE_50 = 50;
     public static final int VALUE_30 = 30;
     public static final int VALUE_10 = 10;
+    public static final int VALUE_5 = 5;
     public static final int VALUE_0 = 0;
 
 
