@@ -8,6 +8,7 @@
     tools:context="com.example.rafa.tfg.Registro">
 
     <TextView
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reg_titl"
@@ -59,6 +60,9 @@
         android:id="@+id/btn_reg_alta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
+        android:textColor="@color/backgroundcolor"
+        android:background="@color/colorPrimary"
         android:text="@string/reg_reg"/>
 </LinearLayout>

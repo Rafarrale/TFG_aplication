@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Parcelable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,11 +20,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.rafa.tfg.adapters.CasaAdapterIni;
-import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 import com.example.rafa.tfg.adapters.usuAdapter;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,8 +34,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_CASAS;
+import static com.example.rafa.tfg.clases.Constantes.PREFS_CASAS;
+import static com.example.rafa.tfg.clases.Constantes.PREFS_USUARIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_USUARIO;
 
 public class MainActivity extends AppCompatActivity {
     Button btn_registrar;
@@ -57,13 +62,13 @@ public class MainActivity extends AppCompatActivity {
         mUsuarioView = findViewById(R.id.logUsu);
         mPasswordView = findViewById(R.id.edt_cod_seg);
         guardar_pass = findViewById(R.id.guardar_pass);
-/*
+
         if(obtener_estado_boton()){
             Intent intent = new Intent(MainActivity.this,NavPrincActivity.class);
             startActivity(intent);
             MainActivity.this.finish();
         }
-*/
+
         //Metodo OnClickListener Registrar
         btn_registrar = findViewById(R.id.btn_registrar);
         btn_registrar.setOnClickListener(new View.OnClickListener() {
@@ -73,30 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intentReg);
             }
         });
-
-
-
-
-        //<editor-fold desc="Pruebas del progressBar">
-        /*
-        showProgress(true);
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showProgress(false);
-            }
-        }, 5000);
-
-        */
-        //</editor-fold>
-        //<editor-fold desc="Avisamos que la actividad esta creada">
-    /*
-        Toast.makeText(this, "OnCreate", Toast.LENGTH_SHORT).show();
-        // La actividad está creada.
-    */
-        //</editor-fold>
     }
 
     public void guardar_estado_boton(){
@@ -111,27 +92,14 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
         return settings.getBoolean(ESTADO_BOTON,false);
     }
-    //<editor-fold desc="ProgressBar">
     /**
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-/*
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-*/
+
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
@@ -141,17 +109,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
-    //</editor-fold>
 
-
-
-    //<editor-fold desc="attemptLogin">
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -219,6 +180,42 @@ public class MainActivity extends AppCompatActivity {
         attemptLogin();
     }
 
+    // Metodo click de recodar contraseña
+    public void onClickRecordar(View view) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(view.getContext());
+        View mViewRecuperaPass = getLayoutInflater().inflate(R.layout.recupera_pass, null);
+        final EditText emailRecupera = mViewRecuperaPass.findViewById(R.id.edt_recupera_contraseña);
+        emailRecupera.setError(null);
+        Button btnRecupar = mViewRecuperaPass.findViewById(R.id.btn_recupera_pass);
+        alertBuilder.setView(mViewRecuperaPass);
+        final AlertDialog alertDialog = alertBuilder.create();
+        alertDialog.show();
+        btnRecupar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RestInterface rest = RestImpl.getRestInstance();
+                Call<Void> apiRest = rest.getPass(emailRecupera.getText().toString());
+                apiRest.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if(response.isSuccessful()){
+                            Toast.makeText(MainActivity.this, "Revise su correo electrónico para recuperar su contraseña", Toast.LENGTH_SHORT).show();
+                            alertDialog.cancel();
+                        }else{
+                            Toast.makeText(MainActivity.this, "El email es incorrecto", Toast.LENGTH_SHORT).show();
+                            emailRecupera.setError(getString(R.string.email_incorrecto));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, "No se pudo realizar la operacion", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
     protected class UserLoginTask extends AsyncTask<Void,Void,usuAdapter>{
 
         private final String usuario;
@@ -284,10 +281,21 @@ public class MainActivity extends AppCompatActivity {
                     casasExtra = response.body();
                     Intent intent = new Intent(MainActivity.this, NavPrincActivity.class);
                     intent.putExtra("USER", auxUsuario.toJson());
+                    /* Guardar datos para "recordar inicio sesion" */
+                    SharedPreferences sharedPreferences = getSharedPreferences(PREFS_USUARIO, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(ESTADO_USUARIO, auxUsuario.toJson());
+                    editor.apply();
 
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("CASAS", (ArrayList<? extends Parcelable>) casasExtra);
                     intent.putExtras(bundle);
+
+                    sharedPreferences = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
+                    editor = sharedPreferences.edit();
+                    Gson gson = new Gson();
+                    editor.putString(ESTADO_CASAS, gson.toJson(casasExtra));
+                    editor.apply();
 
                     guardar_estado_boton();
                     startActivity(intent);
@@ -301,41 +309,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    //<editor-fold desc="Fases de vida de la activity">
-    /*
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Toast.makeText(this, "OnStart", Toast.LENGTH_SHORT).show();
-        // La actividad está a punto de hacerse visible.
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Toast.makeText(this, "OnResume", Toast.LENGTH_SHORT).show();
-        // La actividad se ha vuelto visible (ahora se "reanuda").
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Toast.makeText(this, "OnPause", Toast.LENGTH_SHORT).show();
-        // Enfocarse en otra actividad  (esta actividad está a punto de ser "detenida").
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Toast.makeText(this, "OnStop", Toast.LENGTH_SHORT).show();
-        // La actividad ya no es visible (ahora está "detenida")
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(this, "OnDestroy", Toast.LENGTH_SHORT).show();
-        // La actividad está a punto de ser destruida.
-    }
-    */
-    //</editor-fold>
-
-
 }

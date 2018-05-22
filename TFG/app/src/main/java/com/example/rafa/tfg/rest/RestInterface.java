@@ -24,14 +24,14 @@ import retrofit2.http.Path;
 
 public interface RestInterface {
 
-    @GET("/api/users/id/{idusuario}")
-    Call<List<usuAdapter>> getUsuario(@Path("idusuario") int idusuario);
-
     @GET("/usuario/giveUsu/{usu}/{pass}")
     Call<usuAdapter> checkLogin(@Path("usu") String email, @Path("pass") String pass);
 
     @GET("/usuario/giveUsuario/todosUsuarios")
     Call<ArrayList<usuAdapter>> getTodosUsuarios();
+
+    @GET("/usuario/recuperaPass/{email}")
+    Call<Void> getPass (@Path("email") String email);
 
     @GET("/casa/giveHome/todasCasas/{numSerie}")
     Call<List<CasaAdapterIni>> getCasas(@Path ("numSerie") String numSerie);

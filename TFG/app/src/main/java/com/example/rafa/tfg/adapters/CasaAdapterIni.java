@@ -93,6 +93,7 @@ public class CasaAdapterIni implements Parcelable {
         this.configuracion = configuracion;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

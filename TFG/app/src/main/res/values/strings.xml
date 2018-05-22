@@ -18,6 +18,8 @@
     <string name="reg_reg">Registro</string>
     <string name="error_password">Contraseña no válida</string>
     <string name="error_field_required">Campo requerido</string>
+    <string name="error_password_length">Contraseña como minimo de 6 caracteres</string>
+    <string name="formato_email">El email introducido no es correcto</string>
     <string name="error_incorrect_password_Usu">Contraseña o Usuario Incorrecta</string>
 
     <string name="princ_bloq">Armar </string>
@@ -50,7 +52,6 @@
     <string name="no_hay_usuarios">No hay usuarios</string>
     <string name="datos_de_usuario">Datos De Usuario</string>
     <string name="password">Password</string>
-    <string name="email">Email</string>
     <string name="admin">Admin</string>
     <string name="usuario">Usuario</string>
     <string name="actualiza">Actualiza</string>
@@ -82,4 +83,7 @@
     <string name="habitaci_n">Habitación</string>
     <string name="no_existen_dispositivos_para_a_adir">No Existen Dispositivos para añadir</string>
     <string name="no_existen_dispositivos">No existen Dispositivos</string>
+    <string name="email">Email</string>
+    <string name="introduzca_su_email_para_recuperar_la_contrase_a">Introduzca su Email para recuperar la Contraseña</string>
+    <string name="email_incorrecto">El Email introducido no es válido</string>
 </resources>

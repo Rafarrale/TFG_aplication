@@ -41,14 +41,18 @@ import com.example.rafa.tfg.fragments.LogDispFragment;
 import com.example.rafa.tfg.fragments.SeleccionAlarmaFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.DispositivosFragment;
-import com.example.rafa.tfg.fragments.DispInteligentesFragment;
 import com.example.rafa.tfg.fragments.RojoFragment;
 import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -60,9 +64,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.rafa.tfg.clases.Constantes.ESPACIO;
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_CASAS;
+import static com.example.rafa.tfg.clases.Constantes.PREFS_CASAS;
+import static com.example.rafa.tfg.clases.Constantes.PREFS_USUARIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_TOKEN;
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_USUARIO;
 
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
@@ -142,7 +150,6 @@ public class NavPrincActivity extends AppCompatActivity
                     }
                 }
         );
-
         recuperaDatosExtraFromMainActivity();
         actualizaToken();
     }
@@ -150,7 +157,7 @@ public class NavPrincActivity extends AppCompatActivity
     private void actualizaToken(){
         settingPreferences = new SettingPreferences(this.getApplicationContext());
         tokenC = settingPreferences.getToken(PREFS_TOKEN);
-        if(!listaCasas.isEmpty() && tokenC == null || tokenC.getToken() == null){
+        if(listaCasas != null && (!listaCasas.isEmpty() && tokenC == null || tokenC.getToken() == null)){
             for(int i = 0; i < listaCasas.size(); i++) {
                 String token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
                 Token auxToken = new Token();
@@ -168,25 +175,39 @@ public class NavPrincActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        if(Utilidades.validaPantalla  ){
-            //--- Establecemos el Contenedor Fragment como vista principal al ejecutarse la activity principal
-            Fragment fragment = new ContenedorFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();
-            Utilidades.validaPantalla = false;
-            //---
-        }
+    protected void onResume() {
+        super.onResume();
+        //--- Establecemos el Contenedor Fragment como vista principal al ejecutarse la activity principal
+        Fragment fragment = new ContenedorFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();
     }
 
-
-
     private void recuperaDatosExtraFromMainActivity() {
-        String userJson = getIntent().getStringExtra("USER");
-        Gson gson = new Gson();
-        usuario = gson.fromJson(userJson, usuAdapter.class);
-        Bundle bundle = getIntent().getExtras();
-        listaCasas = bundle.getParcelableArrayList("CASAS");
+
+        SharedPreferences preferences = getSharedPreferences(PREFS_KEY,MODE_PRIVATE);
+        boolean botonSesion = preferences.getBoolean(ESTADO_BOTON, false);
+        if(!botonSesion){
+            String userJson = getIntent().getStringExtra("USER");
+            Gson gson = new Gson();
+            usuario = gson.fromJson(userJson, usuAdapter.class);
+            Bundle bundle = getIntent().getExtras();
+            listaCasas = bundle.getParcelableArrayList("CASAS");
+        }else{
+            SharedPreferences preferencesMain = getSharedPreferences(PREFS_USUARIO, MODE_PRIVATE);
+            String userJson = preferencesMain.getString(ESTADO_USUARIO, null);
+            Gson gson = new Gson();
+            usuario = gson.fromJson(userJson, usuAdapter.class);
+            preferencesMain = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
+            String casasJson = preferencesMain.getString(ESTADO_CASAS, null);
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONArray(casasJson);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Type listType = new TypeToken<ArrayList<CasaAdapterIni>>(){}.getType();
+            listaCasas = new Gson().fromJson(String.valueOf(jsonArray), listType);
+        }
 
         añadeListaFCasa(listaCasas);
 
@@ -453,7 +474,7 @@ public class NavPrincActivity extends AppCompatActivity
         spinner.setAdapter(dataAdapter);
 
         RestInterface rest = RestImpl.getRestInstance();
-        Call<Void> restDropHome = rest.eliminaCasa(new CasaAdapterIni(null,casa));
+        Call<Void> restDropHome = rest.eliminaCasa(new CasaAdapterIni(casa, null));
         restDropHome.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -631,12 +652,6 @@ public class NavPrincActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(Token token) {
-            /**
-            SharedPreferences sharedPreferences = getSharedPreferences(PREFS_TOKEN, MODE_PRIVATE);
-            SharedPreferences.Editor editor;
-            editor = sharedPreferences.edit();
-            editor.
-             **/
             tokenC = token;
             settingPreferences.save(tokenC, PREFS_TOKEN);
         }
