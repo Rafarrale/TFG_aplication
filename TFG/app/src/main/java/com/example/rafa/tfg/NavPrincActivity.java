@@ -581,6 +581,7 @@ public class NavPrincActivity extends AppCompatActivity
 
             Intent intent = new Intent(NavPrincActivity.this,MainActivity.class);
             startActivity(intent);
+            NavPrincActivity.this.finish();
         }
 
         if(fragmentSeleccionado == true){

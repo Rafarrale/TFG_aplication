@@ -299,6 +299,9 @@ public class MainActivity extends AppCompatActivity {
 
                     guardar_estado_boton();
                     startActivity(intent);
+                    if(guardar_pass.isChecked()){
+                        MainActivity.this.finish();
+                    }
                     Toast.makeText(getApplicationContext(), "Login Correcto", Toast.LENGTH_SHORT).show();
                 }
             }
