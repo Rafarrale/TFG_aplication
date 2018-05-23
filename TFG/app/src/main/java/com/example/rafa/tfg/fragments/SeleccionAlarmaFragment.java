@@ -2,6 +2,7 @@ package com.example.rafa.tfg.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,14 +24,19 @@ import com.example.rafa.tfg.clases.Configuracion;
 import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
+import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Response;
+
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_CASAS;
+import static com.example.rafa.tfg.clases.Constantes.PREFS_CASAS;
 
 
 /**
@@ -47,6 +53,8 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
     private int vale1,vale2,vale3,vale4,vale5 = 0;
     usuAdapter recibeUsu = new usuAdapter();
     Map<Integer, List<Casa>> fListCasasRes = new HashMap<Integer, List<Casa>>();
+    List<Casa> listCasasRes = new ArrayList<>();
+    private NavPrincActivity navPrincActivity;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -94,9 +102,10 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        NavPrincActivity navPrincActivity = (NavPrincActivity) getActivity();
+        navPrincActivity = (NavPrincActivity) getActivity();
         recibeUsu = navPrincActivity.getDataUsuarioFragment();
         fListCasasRes = navPrincActivity.getDataListaCasasFragment();
+        listCasasRes = navPrincActivity.getListaCasasFragment();
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_seleccion_alarma, container, false);
@@ -338,6 +347,18 @@ public void activaBoton(Integer v){
             if(estadoAlarmaCasa != null){
                 Configuracion confAux = estadoAlarmaCasa.getConfiguracion();
                 fListCasasRes.get(1).get(0).setConfiguracion(confAux);
+                String auxHomeUsu = fListCasasRes.get(1).get(0).getHomeUsu();
+                for(Casa val: listCasasRes){
+                    if(val.getHomeUsu() == auxHomeUsu){
+                        val.setConfiguracion(confAux);
+                    }
+                }
+                /***/
+                SharedPreferences sharedPreferences = navPrincActivity.getSharedPreferences(PREFS_CASAS, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                Gson gson = new Gson();
+                editor.putString(ESTADO_CASAS ,gson.toJson(listCasasRes));
+                editor.apply();
             }
         }
 

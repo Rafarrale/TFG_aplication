@@ -47,10 +47,8 @@ import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -135,13 +133,10 @@ public class NavPrincActivity extends AppCompatActivity
 
                     @Override
                     public void onDrawerClosed(View drawerView) {
-                        // Respond when the drawer is closed
-
                         //--- Establecemos el Contenedor Fragment como vista principal al ejecutarse la activity principal
                         Fragment fragment = new ContenedorFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();
                         Utilidades.validaPantalla = false;
-                        //---
                     }
 
                     @Override
@@ -177,9 +172,13 @@ public class NavPrincActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        //--- Establecemos el Contenedor Fragment como vista principal al ejecutarse la activity principal
-        Fragment fragment = new ContenedorFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Utilidades.iniciaAplicacion = false;
     }
 
     private void recuperaDatosExtraFromMainActivity() {
@@ -246,12 +245,6 @@ public class NavPrincActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-        } else {
-            Fragment fragment = new ContenedorFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commit();        }
     }
 
     @Override
@@ -318,7 +311,7 @@ public class NavPrincActivity extends AppCompatActivity
                                         Toast.makeText(NavPrincActivity.this, "El nombre ya existe", Toast.LENGTH_SHORT).show();
                                     } else {
                                         añadeCasa(values, mNombreCasa.getText().toString());
-                                        dialog.hide();
+                                        dialog.cancel();
                                     }
                                 }
 
@@ -356,7 +349,7 @@ public class NavPrincActivity extends AppCompatActivity
                             String eliminaEstaCasa = values.get(pos);
                             values.remove(pos);
                             eliminaCasa(values, eliminaEstaCasa);
-                            dialog.hide();
+                            dialog.cancel();
 
                         }
                     });
@@ -445,6 +438,12 @@ public class NavPrincActivity extends AppCompatActivity
                     fListCasas.add(new Casa(valor));
                     fListCasasRes.put(0, fListCasas);
 
+                    SharedPreferences sharedPreferences = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    Gson gson = new Gson();
+                    editor.putString(ESTADO_CASAS, gson.toJson(fListCasas));
+                    editor.apply();
+
                     if(fListCasasRes.get(1) == null) {
                         fListCasasRes.put(1, fListCasas);
                     }
@@ -505,6 +504,22 @@ public class NavPrincActivity extends AppCompatActivity
                                     fListCasasRes.put(1,fListCasas);
                                 }
                             }
+                        }
+                        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        Gson gson = new Gson();
+                        if(fListCasas.size() == 0 && fListCasasRes.size() != 0){
+                            editor.putString(ESTADO_CASAS, gson.toJson(fListCasasRes.get(1)));
+                            editor.apply();
+                        }else if(fListCasas.size() != 0){
+                            List<Casa> aux = fListCasas;
+                            aux.add(fListCasasRes.get(1).get(0));
+                            editor.putString(ESTADO_CASAS, gson.toJson(aux));
+                            editor.apply();
+                        }else{
+                            List<Casa> aux = fListCasas;
+                            editor.putString(ESTADO_CASAS, gson.toJson(aux));
+                            editor.apply();
                         }
                     }
                 }else{
@@ -588,6 +603,10 @@ public class NavPrincActivity extends AppCompatActivity
 
     public Map<Integer, List<Casa>> getDataListaCasasFragment(){
         return fListCasasRes;
+    }
+
+    public List<Casa> getListaCasasFragment(){
+        return fListCasas;
     }
 
     protected class ActualizaToken extends AsyncTask<Void,Void,Token>{
