@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -131,13 +132,17 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 Intent  intent = new Intent(getActivity(), DispositivosActivity.class);
-                if(fListCasasRes.size() != 0){
+                if(fListCasasRes.size() != 0 && fListCasasRes.get(1).size() != 0){
                     Bundle bundle = new Bundle();
                     Casa casa = fListCasasRes.get(1).get(0);
                     bundle.putParcelable("CASA", casa);
                     intent.putExtras(bundle);
                 }
-                getActivity().startActivity(intent);
+                if(listCasasRes.size() != 0){
+                    getActivity().startActivity(intent);
+                }else{
+                    Snackbar.make(getView(), "Primero se debe añadir una casa", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
         });
 
@@ -202,102 +207,105 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
     }
 
 public void activaBoton(Integer v){
+        if(listCasasRes.size() != 0){
+            switch(v){
+                case R.id.card1:
+                    if(vale1 == 0) {
+                        card1.setBackgroundColor(Color.parseColor("#8C7C4DFF"));
+                        card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        vale1 = 1;
+                        vale2 = 0;
+                        vale3 = 0;
+                        vale5 = 0;
+                        CasaTask casaTask = new CasaTask(Constantes.DESARMAR);
+                        casaTask.execute();
 
-        switch(v){
-        case R.id.card1:
-            if(vale1 == 0) {
-                card1.setBackgroundColor(Color.parseColor("#8C7C4DFF"));
-                card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                vale1 = 1;
-                vale2 = 0;
-                vale3 = 0;
-                vale5 = 0;
-                CasaTask casaTask = new CasaTask(Constantes.DESARMAR);
-                casaTask.execute();
+                    }else{
+                        card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        vale1 = 0;
+                    }
+                    //i = new Intent(this,MisDatosActivity.class);
+                    //startActivity(i);
+                    break;
 
-            }else{
-                card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                vale1 = 0;
-            }
-            //i = new Intent(this,MisDatosActivity.class);
-            //startActivity(i);
-            break;
+                case R.id.card2:
 
-        case R.id.card2:
-
-            if(vale2 == 0) {
-                card2.setBackgroundColor(Color.parseColor("#8CFF4081"));
-                card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                vale2 = 1;
-                vale1 = 0;
-                vale3 = 0;
-                vale5 = 0;
-                CasaTask casaTask = new CasaTask(Constantes.ARMAR);
-                casaTask.execute();
-            }else{
-                card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                vale2 = 0;
-            }
-
-                /*
-                i = new Intent(this,);
-                startActivity(i);
-                */
-            break;
-        case R.id.card3:
-
-            if(vale3 == 0) {
-                card3.setBackgroundColor(Color.parseColor("#8C00BFA5"));
-                //i = new Intent(PrincipalActivity.this,sensorActivity.class);
-                card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                vale3 = 1;
-                vale1 = 0;
-                vale2 = 0;
-                vale5 = 0;
-                CasaTask casaTask = new CasaTask(Constantes.CASA);
-                casaTask.execute();
-            }else{
-                card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                vale3 = 0;
-            }
+                    if(vale2 == 0) {
+                        card2.setBackgroundColor(Color.parseColor("#8CFF4081"));
+                        card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        vale2 = 1;
+                        vale1 = 0;
+                        vale3 = 0;
+                        vale5 = 0;
+                        CasaTask casaTask = new CasaTask(Constantes.ARMAR);
+                        casaTask.execute();
+                    }else{
+                        card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        vale2 = 0;
+                    }
 
                 /*
                 i = new Intent(this,);
                 startActivity(i);
                 */
-            break;
+                    break;
+                case R.id.card3:
 
-        case R.id.card5:
+                    if(vale3 == 0) {
+                        card3.setBackgroundColor(Color.parseColor("#8C00BFA5"));
+                        //i = new Intent(PrincipalActivity.this,sensorActivity.class);
+                        card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        vale3 = 1;
+                        vale1 = 0;
+                        vale2 = 0;
+                        vale5 = 0;
+                        CasaTask casaTask = new CasaTask(Constantes.CASA);
+                        casaTask.execute();
+                    }else{
+                        card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        vale3 = 0;
+                    }
 
-            if(vale5 == 0) {
-                card5.setBackgroundColor(Color.parseColor("#8CFA0008"));
-                card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                vale5 = 1;
-                vale1 = 0;
-                vale3 = 0;
-                vale2 = 0;
-                CasaTask casaTask = new CasaTask(Constantes.ALARMA);
-                casaTask.execute();
-            }else{
-                card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                vale5 = 0;
-            }
                 /*
                 i = new Intent(this,);
                 startActivity(i);
                 */
-            break;
-        default:
-            break;
-    }
+                    break;
+
+                case R.id.card5:
+
+                    if(vale5 == 0) {
+                        card5.setBackgroundColor(Color.parseColor("#8CFA0008"));
+                        card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        vale5 = 1;
+                        vale1 = 0;
+                        vale3 = 0;
+                        vale2 = 0;
+                        CasaTask casaTask = new CasaTask(Constantes.ALARMA);
+                        casaTask.execute();
+                    }else{
+                        card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        vale5 = 0;
+                    }
+                /*
+                i = new Intent(this,);
+                startActivity(i);
+                */
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            Snackbar.make(getView(), "Primero se debe añadir una casa", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        }
 }
 
     /**
