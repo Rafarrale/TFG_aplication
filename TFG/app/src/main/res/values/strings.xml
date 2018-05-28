@@ -18,6 +18,7 @@
     <string name="reg_reg">Registro</string>
     <string name="error_password">Contraseña no válida</string>
     <string name="error_field_required">Campo requerido</string>
+    <string name="error_usuario">Usuario en uso</string>
     <string name="error_password_length">Contraseña como minimo de 6 caracteres</string>
     <string name="formato_email">El email introducido no es correcto</string>
     <string name="error_incorrect_password_Usu">Contraseña o Usuario Incorrecta</string>

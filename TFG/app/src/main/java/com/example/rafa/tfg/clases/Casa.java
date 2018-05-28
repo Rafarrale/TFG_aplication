@@ -21,6 +21,11 @@ public class Casa implements Parcelable {
     private LogSeguridad logSeguridad;
     private LogUsuarios logUsuarios;
 
+
+    public Casa() {
+
+    }
+
     public Casa(String _id, String homeUsu, Configuracion configuracion, DispositivosAdapter dispositivosAdapter, Camaras camaras, LogSeguridad logSeguridad, LogUsuarios logUsuarios) {
         this._id = _id;
         this.homeUsu = homeUsu;

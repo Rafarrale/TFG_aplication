@@ -47,18 +47,35 @@ public class Registro extends AppCompatActivity {
 
                 if(attemptLogin()) {
                     RestInterface rest = RestImpl.getRestInstance();
-                    Call<Void> restCheckCredentials = rest.addUser(new usuAdapter(edt_usu.getText().toString(), edt_nombre.getText().toString(), edt_apellidos.getText().toString()
+                    Call<Void> restCheckUser = rest.compruebaUser(edt_usu.getText().toString());
+                    final Call<Void> restCheckCredentials = rest.addUser(new usuAdapter(edt_usu.getText().toString(), edt_nombre.getText().toString(), edt_apellidos.getText().toString()
                             , edt_pass.getText().toString(), edt_email.getText().toString(), edt_pass_casa.getText().toString(), null));
-                    restCheckCredentials.enqueue(new Callback<Void>() {
+                    restCheckUser.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(Registro.this, "Usuario Registrado Correctamente", Toast.LENGTH_SHORT).show();
-                                Snackbar.make(v, "Nuevo dato añadido", Snackbar.LENGTH_LONG)
-                                        .setAction("Action", null).show();
-                                Registro.this.finish();
-                            } else {
-                                Snackbar.make(v, "La clave de producto no es válida", Snackbar.LENGTH_LONG)
+                            if(response.isSuccessful()){
+                                restCheckCredentials.enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        if (response.isSuccessful()) {
+                                            Toast.makeText(Registro.this, "Usuario Registrado Correctamente", Toast.LENGTH_SHORT).show();
+                                            Snackbar.make(v, "Nuevo dato añadido", Snackbar.LENGTH_LONG)
+                                                    .setAction("Action", null).show();
+                                            Registro.this.finish();
+                                        } else {
+                                            Snackbar.make(v, "La clave de producto no es válida", Snackbar.LENGTH_LONG)
+                                                    .setAction("Action", null).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        Snackbar.make(v, "No se a podido realizar la operación", Snackbar.LENGTH_LONG)
+                                                .setAction("Action", null).show();
+                                    }
+                                });
+                            }else{
+                                Snackbar.make(v, "El usuario ya existe", Snackbar.LENGTH_LONG)
                                         .setAction("Action", null).show();
                             }
                         }

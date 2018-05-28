@@ -21,6 +21,7 @@ import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapterAnade;
 import com.example.rafa.tfg.clases.Casa;
+import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.esp_touch_activity.EsptouchActivity;
 import com.example.rafa.tfg.rest.RestImpl;
@@ -118,13 +119,13 @@ public class DispositivosFragment extends Fragment {
             swipeRefreshLayout = mainView.findViewById(R.id.swipe_refresh_layout_dispositivos);
             swipeRefreshLayout.setRefreshing(true);
             RestInterface rest = RestImpl.getRestInstance();
-            Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(casa.getHomeUsu());
+            Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(casa.getHomeUsu(), Constantes.DISP_TODOS);
             response.enqueue(new Callback<List<DispositivosAdapter>>() {
                 @Override
                 public void onResponse(Call<List<DispositivosAdapter>> call, Response<List<DispositivosAdapter>> response) {
                     if(response.isSuccessful()){
                         List<DispositivosAdapter> aux = response.body();
-                        if(aux.get(0).get_id() != null) {
+                        if(aux.size() != 0 && aux.get(0).get_id() != null) {
                             dispositivosDataAdapter.swapItems(response.body());
                             swipeRefreshLayout.setRefreshing(false);
                         }else{
@@ -151,7 +152,7 @@ public class DispositivosFragment extends Fragment {
                 if(casa != null){
                     swipeRefreshLayout.setRefreshing(true);
                     RestInterface rest = RestImpl.getRestInstance();
-                    Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(casa.getHomeUsu());
+                    Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(casa.getHomeUsu(), Constantes.DISP_TODOS);
                     response.enqueue(new Callback<List<DispositivosAdapter>>() {
                         @Override
                         public void onResponse(Call<List<DispositivosAdapter>> call, Response<List<DispositivosAdapter>> response) {

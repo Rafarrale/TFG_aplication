@@ -21,6 +21,7 @@ import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,8 +47,9 @@ public class UsuariosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getIntent().getExtras();
-        usuarioActual = bundle.getParcelable("USUARIO_ACTUAL");
+        String userJson = getIntent().getStringExtra("USER");
+        Gson gson = new Gson();
+        usuarioActual = gson.fromJson(userJson, usuAdapter.class);
         setContentView(R.layout.content_usuarios);
         //Inicialización RecyclerView
         mUsuariosRecycler = findViewById(R.id.recyclerUsuarios);
@@ -264,7 +266,7 @@ public class UsuariosActivity extends AppCompatActivity {
             ArrayList<usuAdapter> res = new ArrayList<usuAdapter>();
 
             RestInterface rest = RestImpl.getRestInstance();
-            Call<ArrayList<usuAdapter>> restUsu = rest.getTodosUsuarios();
+            Call<ArrayList<usuAdapter>> restUsu = rest.getTodosUsuarios(usuarioActual.getPassCasa());
 
             try{
                 Response<ArrayList<usuAdapter>> responseUsuarios = restUsu.execute();

@@ -3,8 +3,8 @@ import com.example.rafa.tfg.adapters.CasaAdapterIni;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.estadoAlarmaAdapter;
 import com.example.rafa.tfg.adapters.usuAdapter;
-import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Token;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +27,14 @@ public interface RestInterface {
     @GET("/usuario/giveUsu/{usu}/{pass}")
     Call<usuAdapter> checkLogin(@Path("usu") String email, @Path("pass") String pass);
 
-    @GET("/usuario/giveUsuario/todosUsuarios")
-    Call<ArrayList<usuAdapter>> getTodosUsuarios();
+    @GET("/usuario/giveUsuario/todosUsuarios/{passCasa}")
+    Call<ArrayList<usuAdapter>> getTodosUsuarios(@Path("passCasa") String passCasa);
 
     @GET("/usuario/recuperaPass/{email}")
     Call<Void> getPass (@Path("email") String email);
+
+    @GET("/usuario/compruebaUser/{user}")
+    Call<Void> compruebaUser(@Path("user") String user);
 
     @GET("/casa/giveHome/todasCasas/{numSerie}")
     Call<List<CasaAdapterIni>> getCasas(@Path ("numSerie") String numSerie);
@@ -39,14 +42,11 @@ public interface RestInterface {
     @GET("/casa/giveEstado/{homeUsu}/{estadoAlarma}")
     Call<estadoAlarmaAdapter> estadoAlarmaCasa(@Path ("homeUsu") String homeUsu, @Path("estadoAlarma") String casaAdapterIni);
 
-    @GET("/dispositivo/giveDispTodos/{homeUsu}")
-    Call<List<DispositivosAdapter>> getTodosDispositivos(@Path ("homeUsu") String homeUsu);
+    @GET("/dispositivo/giveDispTodos/{homeUsu}/{tipo}")
+    Call<List<DispositivosAdapter>> getTodosDispositivos(@Path ("homeUsu") String homeUsu, @Path("tipo") String tipo);
 
-    @GET("/dispositivo/giveDispTodosNuevos")
-    Call<List<DispositivosAdapter>> getTodosDispositivosNuevos();
-
-    @PUT("/api/users/new")
-    Call<usuAdapter> addUsuario(@Body usuAdapter user);
+    @GET("/dispositivo/giveDispTodosNuevos/{campoClaveDisp}")
+    Call<List<DispositivosAdapter>> getTodosDispositivosNuevos(@Path("campoClaveDisp") String campoClaveDisp);
 
 /* No funciona antiguo metodo
     @DELETE("/casa/eliminaCasa")
@@ -74,11 +74,10 @@ public interface RestInterface {
     @POST("/dispositivo/insertaDispositivoCasa")
     Call<Void> addDispositivoCasa(@Body DispositivosAdapter dispositivosAdapter);
 
-    @POST("/notificacion/actualizaToken")
-    Call<Token> actualizaToken(@Body Token token);
-
     @POST("/notificacion/insertaToken")
-    Call<Token> enviaToken(@Body Token token);
+    Call<Token> anadeToken(@Body Token token);
 
+    @POST("/notificacion/insertaTokenCasa")
+    Call<Void> anadeTokenCasa(@Body Token token);
 
 }

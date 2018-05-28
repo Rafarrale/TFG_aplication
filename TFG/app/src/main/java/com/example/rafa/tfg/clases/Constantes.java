@@ -13,11 +13,21 @@ public class Constantes {
     public static  final String PREFS_TOKEN = "recordar_token";
     public static  final String PREFS_USUARIO = "recordar_usuario";
     public static  final String PREFS_CASAS = "recordar_casas";
+    public static  final String ESTADO_TOKEN = "estado_token";
     public static  final String ESTADO_BOTON = "estado_boton";
     public static  final String ESTADO_USUARIO = "datos_usuario";
     public static  final String ESTADO_CASAS = "datos_casas";
-
     /*Fin preferencias*/
+
+    /* Dispositivos de tipo aviso */
+    public static  final String DISP_CONTACTO = "contacto";
+    public static  final String DISP_TODOS = "todos";
+    /* Fin Dispositivos de tipo aviso */
+
+    /* Dispositivos de tipo Control*/
+    public static  final String DISP_CONTROL_LUZ = "luz";
+    /* Fin Dispositivos de tipo Control*/
+
     public static  final String ESPACIO = " ";
     public static  final String DOS_PUNTOS_ESPACIO = ": ";
     public static final String CASA_VACIO = "Aquí para Añadir Casa";
@@ -44,6 +54,8 @@ public class Constantes {
     public static final String HABITACION = "Habitación";
     public static final String POR_DETERMINAR = "Por Determinar";
     public static final String POR_ASIGNAR = "Asignar";
+    public static final String RED_DESCONOCIDA = "<unknown ssid>";
+    public static final String RED_OTRA_DESCONOCIDA = " Red no válida";
     public static final int VALUE_50 = 50;
     public static final int VALUE_30 = 30;
     public static final int VALUE_10 = 10;

@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,7 +33,6 @@ import com.example.rafa.tfg.adapters.CasaAdapterView;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Configuracion;
 import com.example.rafa.tfg.clases.Constantes;
-import com.example.rafa.tfg.clases.SettingPreferences;
 import com.example.rafa.tfg.clases.SharedPrefManager;
 import com.example.rafa.tfg.clases.Token;
 import com.example.rafa.tfg.clases.Utilidades;
@@ -63,6 +62,7 @@ import retrofit2.Response;
 
 import static com.example.rafa.tfg.clases.Constantes.ESPACIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_CASAS;
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_TOKEN;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_CASAS;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_USUARIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
@@ -82,12 +82,10 @@ public class NavPrincActivity extends AppCompatActivity
     private TextView tUsuarioEmail;
     private NavigationView navigationView;
     private List<CasaAdapterIni> listaCasas;
-    private Token tokenC = new Token();
-    private SettingPreferences settingPreferences;
     private DrawerLayout mDrawerLayout;
     private ArrayList<String> values = new ArrayList<String>();
     private Spinner spinner = null;
-
+    private Token token = new Token();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,28 +148,39 @@ public class NavPrincActivity extends AppCompatActivity
     }
 
     private void actualizaToken(){
-        settingPreferences = new SettingPreferences(this.getApplicationContext());
-        tokenC = settingPreferences.getToken(PREFS_TOKEN);
-        if(listaCasas != null && (!listaCasas.isEmpty() && tokenC == null || tokenC.getToken() == null)){
-            for(int i = 0; i < listaCasas.size(); i++) {
-                String token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
-                Token auxToken = new Token();
-                auxToken.setToken(token);
-                auxToken.setHomeUsu(listaCasas.get(i).getHomeUsu());
-                ActualizaToken actualizaToken = new ActualizaToken(auxToken);
-                actualizaToken.execute();
-            }
-        }else {
-            String token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
-            tokenC.setToken(token);
-            ActualizaToken actualizaToken = new ActualizaToken(tokenC);
-            actualizaToken.execute();
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_TOKEN, MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        final Gson gson = new Gson();
+        String recoveryToken = sharedPreferences.getString(ESTADO_TOKEN, null);
+        Token auxToken = gson.fromJson(recoveryToken, Token.class);
+        token.setToken(SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken());
+        token.setPassCasa(usuario.getPassCasa());
+        if(auxToken != null){
+            token.set_id(auxToken.get_id());
         }
+        RestInterface restInterface = RestImpl.getRestInstance();
+        Call<Token> rest = restInterface.anadeToken(token);
+        rest.enqueue(new Callback<Token>() {
+            @Override
+            public void onResponse(Call<Token> call, Response<Token> response) {
+                if(response.isSuccessful()){
+                    token = response.body();
+                    editor.putString(ESTADO_TOKEN ,gson.toJson(token));
+                    editor.apply();
+
+                }
+            }
+            @Override
+            public void onFailure(Call<Token> call, Throwable t) {
+                Log.e("Error", "No se pudo actualizar el token en BBDD");
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        //actualizaToken();
 
     }
 
@@ -418,16 +427,6 @@ public class NavPrincActivity extends AppCompatActivity
         BaseAdapter adapter = (BaseAdapter) spinner.getAdapter();
         adapter.notifyDataSetChanged();
 */
-        /**
-         * Añadiendo el token del dispositivo
-         */
-        tokenC = new Token();
-        String token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
-        tokenC.setToken(token);
-        tokenC.setHomeUsu(valor);
-        InsertaToken insertaToken = new InsertaToken(tokenC);
-        insertaToken.execute();
-
         RestInterface rest = RestImpl.getRestInstance();
         Call<Void> restAddHome = rest.addCasa(new CasaAdapterIni(valor, usuario.getPass()));
         restAddHome.enqueue(new Callback<Void>() {
@@ -447,6 +446,23 @@ public class NavPrincActivity extends AppCompatActivity
                     if(fListCasasRes.get(1) == null) {
                         fListCasasRes.put(1, fListCasas);
                     }
+
+                    /** Añadimos token a Casa*/
+                    token.setCasa(valor);
+                    RestInterface restInterface = RestImpl.getRestInstance();
+                    Call<Void> rest = restInterface.anadeTokenCasa(token);
+                    rest.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if(response.isSuccessful()){
+                            }else{
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.e("Error", "No se pudo actualizar el token en BBDD");
+                        }
+                    });
 
                 }else{
                     Toast.makeText(NavPrincActivity.this, "No fue posible añadir la casa", Toast.LENGTH_SHORT).show();
@@ -480,8 +496,6 @@ public class NavPrincActivity extends AppCompatActivity
                 if(response.isSuccessful()){
                     if(!casa.equals(Constantes.CASA_VACIO)) {
                         Toast.makeText(NavPrincActivity.this, "Casa eliminada", Toast.LENGTH_SHORT).show();
-                        settingPreferences = new SettingPreferences(getApplicationContext());
-                        settingPreferences.remove(PREFS_TOKEN);
                         List<Casa> fListCasasCopy = new ArrayList<>(fListCasas);
                         Iterator<Casa> itr = fListCasasCopy.listIterator();
 
@@ -563,9 +577,7 @@ public class NavPrincActivity extends AppCompatActivity
 
         if (id == R.id.nav_usuarios) {
             Intent intent = new Intent(NavPrincActivity.this, UsuariosActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("USUARIO_ACTUAL", usuario);
-            intent.putExtras(bundle);
+            intent.putExtra("USER", usuario.toJson());
             startActivity(intent);
 
         } else if (id == R.id.nav_notificaciones) {
@@ -610,71 +622,5 @@ public class NavPrincActivity extends AppCompatActivity
         return fListCasas;
     }
 
-    protected class ActualizaToken extends AsyncTask<Void,Void,Token>{
-        private Token token;
-
-        public ActualizaToken(Token token) {
-            this.token = token;
-        }
-
-        @Override
-        protected Token doInBackground(Void... voids) {
-
-            Token res = null;
-            RestInterface rest = RestImpl.getRestInstance();
-            if(token != null) {
-                Call<Token> tokenRest = rest.actualizaToken(token);
-                try {
-                    Response<Token> responseToken = tokenRest.execute();
-                    if (responseToken.isSuccessful()) {
-                        res = responseToken.body();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return res;
-        }
-
-        @Override
-        protected void onPostExecute(Token token) {
-            if(token != null) {
-                tokenC = token;
-                settingPreferences.save(tokenC, PREFS_TOKEN);
-            }
-        }
-    }
-    protected class InsertaToken extends AsyncTask<Void,Void,Token>{
-
-        private Token token;
-
-        public InsertaToken(Token token) {
-            this.token = token;
-        }
-
-        @Override
-        protected Token doInBackground(Void... voids) {
-
-            Token res = null;
-            RestInterface rest = RestImpl.getRestInstance();
-            Call<Token> tokenRest = rest.enviaToken(token);
-            try {
-                Response<Token> responseToken = tokenRest.execute();
-                if(responseToken.isSuccessful()){
-                    res = responseToken.body();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return res;
-        }
-
-        @Override
-        protected void onPostExecute(Token token) {
-            tokenC = token;
-            settingPreferences.save(tokenC, PREFS_TOKEN);
-        }
-    }
 }
 
