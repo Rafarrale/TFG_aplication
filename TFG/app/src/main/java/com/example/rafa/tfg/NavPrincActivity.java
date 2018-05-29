@@ -69,6 +69,7 @@ import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_TOKEN;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_USUARIO;
+import static com.example.rafa.tfg.clases.Constantes.PRIMERA_CERO;
 
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
@@ -154,7 +155,8 @@ public class NavPrincActivity extends AppCompatActivity
         String recoveryToken = sharedPreferences.getString(ESTADO_TOKEN, null);
         Token auxToken = gson.fromJson(recoveryToken, Token.class);
         token.setToken(SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken());
-        token.setPassCasa(usuario.getPassCasa());
+        token.setKeyToUse(usuario.getKeyToUse());
+        token.setPassCasa(usuario.getPassCasa()); //TODO
         if(auxToken != null){
             token.set_id(auxToken.get_id());
         }

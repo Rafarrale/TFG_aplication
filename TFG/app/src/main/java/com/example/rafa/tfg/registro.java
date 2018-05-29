@@ -9,9 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.rafa.tfg.adapters.CasaPass;
+import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 import com.example.rafa.tfg.adapters.usuAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +30,7 @@ public class Registro extends AppCompatActivity {
     EditText edt_apellidos;
     EditText edt_email;
     EditText edt_pass_casa;
+    private List<CasaPass> listaPass = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +52,12 @@ public class Registro extends AppCompatActivity {
             public void onClick(final View v) {
 
                 if(attemptLogin()) {
+                    CasaPass casaPass = new CasaPass(edt_pass_casa.getText().toString());
+                    listaPass.add(casaPass);
                     RestInterface rest = RestImpl.getRestInstance();
                     Call<Void> restCheckUser = rest.compruebaUser(edt_usu.getText().toString());
                     final Call<Void> restCheckCredentials = rest.addUser(new usuAdapter(edt_usu.getText().toString(), edt_nombre.getText().toString(), edt_apellidos.getText().toString()
-                            , edt_pass.getText().toString(), edt_email.getText().toString(), edt_pass_casa.getText().toString(), null));
+                            , edt_pass.getText().toString(), edt_email.getText().toString(), Integer.parseInt(Constantes.PRIMERA_CERO), listaPass)); //TODO
                     restCheckUser.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {

@@ -40,6 +40,7 @@ import static com.example.rafa.tfg.clases.Constantes.PREFS_USUARIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_USUARIO;
+import static com.example.rafa.tfg.clases.Constantes.PRIMERA_CERO;
 
 public class MainActivity extends AppCompatActivity {
     Button btn_registrar;
@@ -272,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         List<CasaAdapterIni> res = null;
         RestInterface rest = RestImpl.getRestInstance();
 
-        Call<List<CasaAdapterIni>> restCasas = rest.getCasas(auxUsuario.getPassCasa());
+        Call<List<CasaAdapterIni>> restCasas = rest.getCasas(auxUsuario.getPassCasa().get(auxUsuario.getKeyToUse()).getKey()); //TODO
 
         restCasas.enqueue(new Callback<List<CasaAdapterIni>>() {
             @Override

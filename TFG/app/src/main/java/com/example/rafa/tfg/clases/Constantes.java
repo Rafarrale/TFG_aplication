@@ -8,6 +8,7 @@ public class Constantes {
 
     public static final String añadirCasa = "Añadir Casa";
     public static  final String eliminarCasa = "Eliminar Casa";
+
     /*Preferencias*/
     public static  final String PREFS_KEY = "recordar_sesion";
     public static  final String PREFS_TOKEN = "recordar_token";
@@ -56,12 +57,20 @@ public class Constantes {
     public static final String POR_ASIGNAR = "Asignar";
     public static final String RED_DESCONOCIDA = "<unknown ssid>";
     public static final String RED_OTRA_DESCONOCIDA = " Red no válida";
+
+    /* Constantes numericas */
     public static final int VALUE_50 = 50;
     public static final int VALUE_30 = 30;
     public static final int VALUE_10 = 10;
     public static final int VALUE_5 = 5;
     public static final int VALUE_0 = 0;
-
+    public static final String PRIMERA_CERO = "0";
+    public static final String SEGUNDA_UNO = "1";
+    public static final String TERCERA_DOS = "2";
+    public static final String CUARTA_TRES = "3";
+    public static final String QUINTA_CUATRO = "4";
+    public static final String SEXTA_CINCO = "5";
+    /* Fin Constantes numericas */
 
 
 
