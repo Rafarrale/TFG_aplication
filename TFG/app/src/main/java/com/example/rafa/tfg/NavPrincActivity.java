@@ -610,7 +610,9 @@ public class NavPrincActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_micasa) {
             Intent intent = new Intent(NavPrincActivity.this, MiCasaActivity.class);
-            intent.putExtra(CASA_ACTUAL, fListCasasRes.get(VALUE_1).get(VALUE_0).getHomeUsu());
+            if(fListCasasRes.size() > 0){
+                intent.putExtra(CASA_ACTUAL, fListCasasRes.get(VALUE_1).get(VALUE_0).getHomeUsu());
+            }
             startActivity(intent);
             NavPrincActivity.this.finish();
 

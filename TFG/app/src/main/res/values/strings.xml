@@ -34,6 +34,10 @@
     <string name="princ_panic">Alarma</string>
     <string name="princ_panic_sub">Activar la Alarma, de dos toques</string>
     <string name="princ_cerrar_sesion">Cerrar Sesión</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="no_disponible">No disponible</string>
+
+
 
     <string name="title_activity_nav_princ">NavPrincActivity</string>
 
