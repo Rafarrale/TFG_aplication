@@ -60,6 +60,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.rafa.tfg.clases.Constantes.CASA_ACTUAL;
 import static com.example.rafa.tfg.clases.Constantes.ESPACIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_CASAS;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_TOKEN;
@@ -70,6 +71,8 @@ import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_TOKEN;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_USUARIO;
 import static com.example.rafa.tfg.clases.Constantes.PRIMERA_CERO;
+import static com.example.rafa.tfg.clases.Constantes.VALUE_0;
+import static com.example.rafa.tfg.clases.Constantes.VALUE_1;
 
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
@@ -192,16 +195,37 @@ public class NavPrincActivity extends AppCompatActivity
         Utilidades.iniciaAplicacion = false;
     }
 
-    private void recuperaDatosExtraFromMainActivity() {
+    public void recuperaDatosExtraFromMainActivity() {
 
         SharedPreferences preferences = getSharedPreferences(PREFS_KEY,MODE_PRIVATE);
         boolean botonSesion = preferences.getBoolean(ESTADO_BOTON, false);
         if(!botonSesion){
-            String userJson = getIntent().getStringExtra("USER");
-            Gson gson = new Gson();
-            usuario = gson.fromJson(userJson, usuAdapter.class);
-            Bundle bundle = getIntent().getExtras();
-            listaCasas = bundle.getParcelableArrayList("CASAS");
+
+            if(Utilidades.regresaMiCasaKey){
+                Utilidades.regresaMiCasaKey = false;
+                /** Usuario */
+                SharedPreferences preferencesMain = getSharedPreferences(PREFS_USUARIO, MODE_PRIVATE);
+                String userJson = preferencesMain.getString(ESTADO_USUARIO, null);
+                Gson gson = new Gson();
+                usuario = gson.fromJson(userJson, usuAdapter.class);
+                /** Casas */
+                preferencesMain = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
+                String casasJson = preferencesMain.getString(ESTADO_CASAS, null);
+                JSONArray jsonArray = null;
+                try {
+                    jsonArray = new JSONArray(casasJson);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Type listType = new TypeToken<ArrayList<CasaAdapterIni>>(){}.getType();
+                listaCasas = new Gson().fromJson(String.valueOf(jsonArray), listType);
+            }else{
+                String userJson = getIntent().getStringExtra("USER");
+                Gson gson = new Gson();
+                usuario = gson.fromJson(userJson, usuAdapter.class);
+                Bundle bundle = getIntent().getExtras();
+                listaCasas = bundle.getParcelableArrayList("CASAS");
+            }
         }else{
             SharedPreferences preferencesMain = getSharedPreferences(PREFS_USUARIO, MODE_PRIVATE);
             String userJson = preferencesMain.getString(ESTADO_USUARIO, null);
@@ -334,7 +358,7 @@ public class NavPrincActivity extends AppCompatActivity
                         }
                     });
                 }else if(item.equals(Constantes.eliminarCasa)) {
-                    spinner.setSelection(0); //Selecciona para que muestre el valor 0 por defecto
+                    spinner.setSelection(0); /**Selecciona para que muestre el valor 0 por defecto */
                     ArrayList<String> cValues = new ArrayList<>(values);
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(NavPrincActivity.this);
                     View mView = getLayoutInflater().inflate(R.layout.eliminar_casa, null);
@@ -430,7 +454,7 @@ public class NavPrincActivity extends AppCompatActivity
         adapter.notifyDataSetChanged();
 */
         RestInterface rest = RestImpl.getRestInstance();
-        Call<Void> restAddHome = rest.addCasa(new CasaAdapterIni(valor, usuario.getPass()));
+        Call<Void> restAddHome = rest.addCasa(new CasaAdapterIni(valor, usuario.getPassCasa().get(usuario.getKeyToUse()).getKey()));
         restAddHome.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -585,6 +609,10 @@ public class NavPrincActivity extends AppCompatActivity
         } else if (id == R.id.nav_notificaciones) {
 
         } else if (id == R.id.nav_micasa) {
+            Intent intent = new Intent(NavPrincActivity.this, MiCasaActivity.class);
+            intent.putExtra(CASA_ACTUAL, fListCasasRes.get(VALUE_1).get(VALUE_0).getHomeUsu());
+            startActivity(intent);
+            NavPrincActivity.this.finish();
 
         }else if (id == R.id.nav_chat) {
 
@@ -592,7 +620,6 @@ public class NavPrincActivity extends AppCompatActivity
             //Borra la caracteristica ESTADO_BOTON guardada anteriormente para cerrar sesion
             SharedPreferences settings = getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
             settings.edit().remove(ESTADO_BOTON).commit();
-
             Intent intent = new Intent(NavPrincActivity.this,MainActivity.class);
             startActivity(intent);
             NavPrincActivity.this.finish();

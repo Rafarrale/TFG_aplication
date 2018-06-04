@@ -87,4 +87,13 @@
     <string name="email">Email</string>
     <string name="introduzca_su_email_para_recuperar_la_contrase_a">Introduzca su Email para recuperar la Contraseña</string>
     <string name="email_incorrecto">El Email introducido no es válido</string>
+    <string name="mis_claves">Mis Claves</string>
+    <string name="cargando">Cargando</string>
+    <string name="informacion_claves">Para poder añadir las casas de manera que la gestión sea de manera individual, usar la key propia de cada una. Pero en caso de querer
+    la gestión de las casas como un bloque, elegir la misma key para su registro(Elegir una y usar siempre dicha key)</string>
+    <string name="casa">Casa:   </string>
+    <string name="introduce_aqui_tu_key">Introduce aquí tu key para registrar</string>
+    <string name="key_2">Key 2</string>
+    <string name="key_1">Key 1</string>
+    <string name="sin_claves_registradas">Sin claves registradas</string>
 </resources>

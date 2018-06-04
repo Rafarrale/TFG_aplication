@@ -29,6 +29,7 @@ public class Constantes {
     public static  final String DISP_CONTROL_LUZ = "luz";
     /* Fin Dispositivos de tipo Control*/
 
+    public static  final String VACIO = "";
     public static  final String ESPACIO = " ";
     public static  final String DOS_PUNTOS_ESPACIO = ": ";
     public static final String CASA_VACIO = "Aquí para Añadir Casa";
@@ -57,6 +58,9 @@ public class Constantes {
     public static final String POR_ASIGNAR = "Asignar";
     public static final String RED_DESCONOCIDA = "<unknown ssid>";
     public static final String RED_OTRA_DESCONOCIDA = " Red no válida";
+    public static final String VER_KEYS = "Click aquí para seleccionar key";
+    public static final String KEY = "Key";
+    public static final String CASA_ACTUAL = "Casa actual";
 
     /* Constantes numericas */
     public static final int VALUE_50 = 50;
@@ -64,6 +68,8 @@ public class Constantes {
     public static final int VALUE_10 = 10;
     public static final int VALUE_5 = 5;
     public static final int VALUE_0 = 0;
+    public static final int VALUE_1 = 1;
+    public static final int VALUE_403 = 403;
     public static final String PRIMERA_CERO = "0";
     public static final String SEGUNDA_UNO = "1";
     public static final String TERCERA_DOS = "2";

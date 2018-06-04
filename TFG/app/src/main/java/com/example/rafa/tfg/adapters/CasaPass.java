@@ -3,6 +3,8 @@ package com.example.rafa.tfg.adapters;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Objects;
+
 public class CasaPass implements Parcelable{
     private String key;
 
@@ -45,5 +47,19 @@ public class CasaPass implements Parcelable{
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CasaPass casaPass = (CasaPass) o;
+        return Objects.equals(key, casaPass.key);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(key);
     }
 }

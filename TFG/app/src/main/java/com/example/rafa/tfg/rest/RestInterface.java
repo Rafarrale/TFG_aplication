@@ -1,4 +1,6 @@
 package com.example.rafa.tfg.rest;
+import android.content.Intent;
+
 import com.example.rafa.tfg.adapters.CasaAdapterIni;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.estadoAlarmaAdapter;
@@ -36,11 +38,20 @@ public interface RestInterface {
     @GET("/usuario/compruebaUser/{user}")
     Call<Void> compruebaUser(@Path("user") String user);
 
+    @GET("/usuario/actualizaKeyToUse/{user}/{keyToUse}")
+    Call<Void> actualizaKeyToUse(@Path("user") String user, @Path("keyToUse") Integer keyToUse);
+
+    @GET("/usuario/eliminaKey/{passCasa}/{idToken}/{usuario}")
+    Call<Void> eliminaKey(@Path("passCasa") String passCasa, @Path("idToken") String idToken, @Path("usuario") String usuario);
+
     @GET("/casa/giveHome/todasCasas/{numSerie}")
     Call<List<CasaAdapterIni>> getCasas(@Path ("numSerie") String numSerie);
 
     @GET("/casa/giveEstado/{homeUsu}/{estadoAlarma}")
     Call<estadoAlarmaAdapter> estadoAlarmaCasa(@Path ("homeUsu") String homeUsu, @Path("estadoAlarma") String casaAdapterIni);
+
+    @GET("/casa/actualizaTokenUsuario/{passCasa}/{idToken}/{usuario}")
+    Call<Void> actualizaTokenUsuario(@Path("passCasa") String passCasa, @Path("idToken") String idToken, @Path("usuario") String usuario);
 
     @GET("/dispositivo/giveDispTodos/{homeUsu}/{tipo}")
     Call<List<DispositivosAdapter>> getTodosDispositivos(@Path ("homeUsu") String homeUsu, @Path("tipo") String tipo);

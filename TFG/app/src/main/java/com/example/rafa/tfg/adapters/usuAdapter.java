@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.Gson;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Rafa on 23/01/2018.
@@ -194,5 +195,25 @@ public class usuAdapter implements Parcelable {
         return gson.toJson(this);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        usuAdapter that = (usuAdapter) o;
+        return Objects.equals(_id, that._id) &&
+                Objects.equals(user, that.user) &&
+                Objects.equals(nombre, that.nombre) &&
+                Objects.equals(apellidos, that.apellidos) &&
+                Objects.equals(pass, that.pass) &&
+                Objects.equals(admin, that.admin) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(keyToUse, that.keyToUse) &&
+                Objects.equals(passCasa, that.passCasa);
+    }
 
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(_id, user, nombre, apellidos, pass, admin, email, keyToUse, passCasa);
+    }
 }

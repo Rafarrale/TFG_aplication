@@ -11,4 +11,5 @@ public class Utilidades {
     public static boolean iniciaAplicacion = false;
     public static boolean radioButton = false;
     public static boolean regresaDisp = false;
+    public static boolean regresaMiCasaKey = false;
 }

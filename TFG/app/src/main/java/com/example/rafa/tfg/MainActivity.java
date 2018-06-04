@@ -272,7 +272,6 @@ public class MainActivity extends AppCompatActivity {
     private void passNavPrinc() {
         List<CasaAdapterIni> res = null;
         RestInterface rest = RestImpl.getRestInstance();
-
         Call<List<CasaAdapterIni>> restCasas = rest.getCasas(auxUsuario.getPassCasa().get(auxUsuario.getKeyToUse()).getKey()); //TODO
 
         restCasas.enqueue(new Callback<List<CasaAdapterIni>>() {

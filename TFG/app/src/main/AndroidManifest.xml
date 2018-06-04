@@ -15,22 +15,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Registro"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Usuario"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UsuariosActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".esp_touch_activity.EsptouchActivity"
-            android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".Registro"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Usuario"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UsuariosActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".esp_touch_activity.EsptouchActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".NavPrincActivity"
             android:label="@string/title_activity_nav_princ"
@@ -40,21 +45,20 @@
             android:name=".DispositivosActivity"
             android:label="@string/disp"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-             />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <service
-            android:name=".clases.MyFirebaseInstanceIDService">
+        <service android:name=".clases.MyFirebaseInstanceIDService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".clases.MyFirebaseMessagingService">
+        <service android:name=".clases.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".MiCasaActivity"></activity>
     </application>
 
 </manifest>
