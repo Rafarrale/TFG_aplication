@@ -58,7 +58,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".MiCasaActivity"></activity>
+        <activity android:name=".MiCasaActivity" />
+        <activity android:name=".NotificacionesActivity"></activity>
     </application>
 
 </manifest>

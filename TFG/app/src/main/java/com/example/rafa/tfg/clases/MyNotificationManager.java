@@ -84,7 +84,7 @@ public class MyNotificationManager {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(mCtx, channelId)
-                        .setSmallIcon(R.drawable.ic_control_point_black_24dp)
+                        .setSmallIcon(R.drawable.ic_home_black_menu_24dp)
                         .setContentTitle(title)
                         .setContentText(message)
                         .setAutoCancel(true)
@@ -102,7 +102,7 @@ public class MyNotificationManager {
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(ID_SMALL_NOTIFICATION /* ID of notification */, notificationBuilder.build());
     }
 
     //The method will return Bitmap from an image URL

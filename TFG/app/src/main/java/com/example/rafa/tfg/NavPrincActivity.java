@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -90,6 +91,8 @@ public class NavPrincActivity extends AppCompatActivity
     private ArrayList<String> values = new ArrayList<String>();
     private Spinner spinner = null;
     private Token token = new Token();
+    private TextView contBadge;
+    private ImageView imageBadge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,8 +100,6 @@ public class NavPrincActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +127,15 @@ public class NavPrincActivity extends AppCompatActivity
                     @Override
                     public void onDrawerSlide(View drawerView, float slideOffset) {
                         // Respond when the drawer's position changes
+                        if (Utilidades.badge > 0) {
+                            contBadge.setVisibility(View.VISIBLE);
+                            imageBadge.setVisibility(View.VISIBLE);
+                            contBadge.setText(String.valueOf(Utilidades.badge));
+
+                        } else {
+                            contBadge.setVisibility(View.GONE);
+                            imageBadge.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override
@@ -185,10 +195,14 @@ public class NavPrincActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        //actualizaToken();
+        //actualizaToken(); //TODO actualizar token?¿
+        if(usuario.getPassCasa().size() == VALUE_0){
+            Intent intent = new Intent(NavPrincActivity.this, MiCasaActivity.class);
+            startActivity(intent);
+            NavPrincActivity.this.finish();
+        }
 
     }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -286,6 +300,9 @@ public class NavPrincActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav_princ, menu);
+
+        contBadge = findViewById(R.id.tv_count_notification);
+        imageBadge = findViewById(R.id.iv_count_notification);
 
         spinner = findViewById(R.id.spinnerMen);
 
@@ -607,6 +624,9 @@ public class NavPrincActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_notificaciones) {
+            Utilidades.badge = VALUE_0;
+            Intent intent = new Intent(NavPrincActivity.this, NotificacionesActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_micasa) {
             Intent intent = new Intent(NavPrincActivity.this, MiCasaActivity.class);

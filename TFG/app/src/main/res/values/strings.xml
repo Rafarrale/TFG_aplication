@@ -38,7 +38,6 @@
     <string name="no_disponible">No disponible</string>
 
 
-
     <string name="title_activity_nav_princ">NavPrincActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -100,4 +99,11 @@
     <string name="key_2">Key 2</string>
     <string name="key_1">Key 1</string>
     <string name="sin_claves_registradas">Sin claves registradas</string>
+    <string name="clave">Clave</string>
+    <string name="registrar">Registrar</string>
+    <string name="continuar">Continuar</string>
+    <string name="acerca_de">Acerca de</string>
+    <string name="comun_cate">Comunícate</string>
+    <string name="sesi_n">Sesión</string>
+
 </resources>

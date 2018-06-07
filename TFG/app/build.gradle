@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.1.0'
     implementation 'com.android.support:design:26.1.0'
     implementation project(path: ':esptouch')
+    implementation 'com.nex3z:notification-badge:0.1.0'
 }
 
 

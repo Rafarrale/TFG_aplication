@@ -62,6 +62,7 @@ public class Constantes {
     public static final String KEY = "Key";
     public static final String CASA_ACTUAL = "Casa actual";
     public static final String NO_DISPONIBLE = "No disponible";
+    public static final String HORA = "Hora";
 
     /* Constantes numericas */
     public static final int VALUE_50 = 50;
@@ -70,6 +71,9 @@ public class Constantes {
     public static final int VALUE_5 = 5;
     public static final int VALUE_0 = 0;
     public static final int VALUE_1 = 1;
+    public static final int VALUE_2 = 2;
+    public static final int VALUE_3 = 3;
+    public static final int VALUE_4 = 4;
     public static final int VALUE_NEGATIVO_1 = -1;
     public static final int VALUE_403 = 403;
     public static final String PRIMERA_CERO = "0";

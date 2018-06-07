@@ -70,6 +70,8 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
     Token auxToken;
     RecyclerView keysRecyclerElimina;
     eliminaKeysAdapter eliminaKeysAdapter;
+    List<CasaAdapterIni> resCasas = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,10 +157,10 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
                                 usuario.setPassCasa(auxPassCasa);
                                 if(indexKey == usuario.getKeyToUse()){
                                     usuario.setKeyToUse(VALUE_NEGATIVO_1);
+                                    resCasas = new ArrayList<>();
                                     tvMiCasa.setText(NO_DISPONIBLE);
                                 }
-                                editor.putString(ESTADO_USUARIO, usuario.toJson());
-                                editor.apply();
+                                actualizarDatosLocal();
                                 recargaDatos();
                                 /** Refrescamos el sppiner*/
                                 BaseAdapter baseAdapter = (BaseAdapter) spinner.getAdapter();
@@ -187,6 +189,17 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
         }
     }
 
+    private void actualizarDatosLocal(){
+        /** Usuario*/
+        editor.putString(ESTADO_USUARIO, usuario.toJson());
+        editor.apply();
+        /** Casas*/
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
+        SharedPreferences.Editor editorCasas = sharedPreferences.edit();
+        Gson gson = new Gson();
+        editorCasas.putString(ESTADO_CASAS, gson.toJson(resCasas));
+        editorCasas.apply();
+    }
 
     public void onClickAñadeKey(final View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(MiCasaActivity.this);
@@ -213,8 +226,7 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
                         CasaPass auxCasaPass = new CasaPass(aux);
                         auxListPassCasa.add(auxCasaPass);
                         usuario.setPassCasa(auxListPassCasa);
-                        editor.putString(ESTADO_USUARIO, usuario.toJson());
-                        editor.apply();
+                        actualizarDatosLocal();
                         HideKeyboard(view);
                         alertDialog.cancel();
                         recargaDatos();
@@ -258,13 +270,8 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
                             @Override
                             public void onResponse(Call<List<CasaAdapterIni>> call, Response<List<CasaAdapterIni>> response) {
                                 if (response.isSuccessful()) {
-                                    List<CasaAdapterIni> resCasas = new ArrayList<>();
                                     resCasas = response.body();
-                                    SharedPreferences sharedPreferences = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
-                                    SharedPreferences.Editor editorCasas = sharedPreferences.edit();
-                                    Gson gson = new Gson();
-                                    editorCasas.putString(ESTADO_CASAS, gson.toJson(resCasas));
-                                    editorCasas.apply();
+                                    actualizarDatosLocal();
                                 }
                             }
 
