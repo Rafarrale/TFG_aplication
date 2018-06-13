@@ -70,6 +70,9 @@ public interface RestInterface {
     @HTTP(method = "DELETE", path = "/usuario/eliminaUsuario", hasBody = true)
     Call<Void> eliminaUsuario(@Body usuAdapter usuAdapter);
 
+    @HTTP(method = "DELETE", path = "/dispositivo/eliminaDispositivo", hasBody = true)
+    Call<Void> eliminaDispositivo(@Body DispositivosAdapter usuAdapter);
+
     @POST("/usuario/insertUsu")
     Call<Void> addUser(@Body usuAdapter user);
 
@@ -84,6 +87,9 @@ public interface RestInterface {
 
     @POST("/dispositivo/insertaDispositivoCasa")
     Call<Void> addDispositivoCasa(@Body DispositivosAdapter dispositivosAdapter);
+
+    @POST("/dispositivo/actualizaDispositivoCasa")
+    Call<Void> actualizaDispositivoCasa(@Body DispositivosAdapter dispositivosAdapter);
 
     @POST("/notificacion/insertaToken")
     Call<Token> anadeToken(@Body Token token);

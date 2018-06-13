@@ -29,6 +29,11 @@ public class Constantes {
     public static  final String DISP_CONTROL_LUZ = "luz";
     /* Fin Dispositivos de tipo Control*/
 
+    /*CONSTANTES PARA DIFERENCIAR TIPOS DE CLASES*/
+    public static  final String TIPO_ALERT_DIALOG = "android.app.AlertDialog$Builder";
+    /*FIN CONSTANTES PARA DIFERENCIAR TIPOS DE CLASES*/
+
+
     public static  final String VACIO = "";
     public static  final String ESPACIO = " ";
     public static  final String DOS_PUNTOS_ESPACIO = ": ";

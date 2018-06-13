@@ -61,25 +61,25 @@ public class EsptouchActivity extends AppCompatActivity implements OnClickListen
 
     private static final String TAG = "EsptouchActivity";
 
-    private TextView mTvApSsid;
+            private TextView mTvApSsid;
 
-    private EditText mEdtApPassword;
+            private EditText mEdtApPassword;
 
-    private Button mBtnConfirm;
-    private Button mBtnDisp;
-    private EspWifiAdminSimple mWifiAdmin;
-    private RecyclerView mDispositivosAnadeRecycler;
-    private SwipeRefreshLayout swipeRefreshLayoutDispNuevo;
-    private DispositivosDataAdapterAnade dispositivosDataAdapterAnade;
-    private Casa casa;
-    private List<DispositivosAdapter> validaDispositivosAdapters;
-    private EditText campoClaveDisp;
-    private Spinner mSpinnerTaskCount;
-    private IEsptouchListener myListener = new IEsptouchListener() {
+            private Button mBtnConfirm;
+            private Button mBtnDisp;
+            private EspWifiAdminSimple mWifiAdmin;
+            private RecyclerView mDispositivosAnadeRecycler;
+            private SwipeRefreshLayout swipeRefreshLayoutDispNuevo;
+            private DispositivosDataAdapterAnade dispositivosDataAdapterAnade;
+            private Casa casa;
+            private List<DispositivosAdapter> validaDispositivosAdapters;
+            private EditText campoClaveDisp;
+            private Spinner mSpinnerTaskCount;
+            private IEsptouchListener myListener = new IEsptouchListener() {
 
-        @Override
-        public void onEsptouchResultAdded(final IEsptouchResult result) {
-            onEsptoucResultAddedPerform(result);
+                @Override
+                public void onEsptouchResultAdded(final IEsptouchResult result) {
+                    onEsptoucResultAddedPerform(result);
         }
     };
 

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -28,13 +29,17 @@ public class DispositivosDataAdapter extends RecyclerView.Adapter<DispositivosDa
     private Context mContext;
 
     private OnItemClickListener mOnItemClickListener;
+    private OnItemLongClickListener mOnItemLongClickListener;
+
 
     public interface OnItemClickListener {
-
         void onItemClick(DispositivosAdapter clickedAppointment);
-
-
     }
+
+    public interface  OnItemLongClickListener{
+        void onItemLongClick(DispositivosAdapter clickedAppointment);
+    }
+
     public DispositivosDataAdapter(Context context, List<DispositivosAdapter> items) {
         mItems = items;
         mContext = context;
@@ -42,6 +47,10 @@ public class DispositivosDataAdapter extends RecyclerView.Adapter<DispositivosDa
 
     public OnItemClickListener getOnItemClickListener() {
         return mOnItemClickListener;
+    }
+
+    public void setOnLongItemClickListener(OnItemLongClickListener onItemLongClickListener) {
+        mOnItemLongClickListener = onItemLongClickListener;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -164,7 +173,7 @@ public class DispositivosDataAdapter extends RecyclerView.Adapter<DispositivosDa
         return mItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 
         public TextView id;
         public TextView nom;
@@ -185,6 +194,7 @@ public class DispositivosDataAdapter extends RecyclerView.Adapter<DispositivosDa
             bateria = (TextView) itemView.findViewById(R.id.tvDispBatTodos);
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -195,5 +205,13 @@ public class DispositivosDataAdapter extends RecyclerView.Adapter<DispositivosDa
             }
         }
 
+        @Override
+        public boolean onLongClick(View v) {
+            int position = getAdapterPosition();
+            if(position != RecyclerView.NO_POSITION){
+                mOnItemLongClickListener.onItemLongClick(mItems.get(position));
+            }
+            return true;
+        }
     }
 }

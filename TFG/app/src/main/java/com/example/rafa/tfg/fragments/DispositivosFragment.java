@@ -7,12 +7,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rafa.tfg.DispositivosActivity;
@@ -35,63 +38,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DispositivosFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DispositivosFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import static com.example.rafa.tfg.clases.Constantes.TIPO_ALERT_DIALOG;
+import static com.example.rafa.tfg.clases.Utilidades.difTipoDisp;
+import static com.example.rafa.tfg.clases.Utilidades.muestraTipo;
+
 public class DispositivosFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private RecyclerView mDispositivosRecycler;
     private DispositivosDataAdapter dispositivosDataAdapter;
-    private DispositivosDataAdapterAnade dispositivosDataAdapterAnade;
-    private SwipeRefreshLayout swipeRefreshLayoutDispNuevo;
+    private List<DispositivosAdapter> listDispositivosDataAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Casa casa;
     View mainView;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     public DispositivosFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DispositivosFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DispositivosFragment newInstance(String param1, String param2) {
-        DispositivosFragment fragment = new DispositivosFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
         DispositivosActivity dispositivosActivity = (DispositivosActivity) getActivity();
         casa = dispositivosActivity.casaActual();
@@ -110,7 +77,66 @@ public class DispositivosFragment extends Fragment {
             dispositivosDataAdapter.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DispositivosAdapter clickedAppointment) {
-                    Toast.makeText(getContext(), "¿Que Hacemos? " + clickedAppointment.get_id(), Toast.LENGTH_SHORT).show();
+                    /**Aqui obtenemos el tipo de objeto con el que trabajaremos segun el tipo de dispositivo
+                     * y posteriormente en muestra tipo mostramos la accion a realizar
+                     * que puede ser ej:
+                     *              contacto --> solo actualizamos
+                     *              interruptor --> actualizamos y accionamos*/
+                    Object tipo = difTipoDisp(clickedAppointment.getTipo(), getActivity());
+                    muestraTipo(clickedAppointment, tipo, dispositivosDataAdapter);
+                    /***/
+
+                }
+            });
+
+            dispositivosDataAdapter.setOnLongItemClickListener(new DispositivosDataAdapter.OnItemLongClickListener() {
+                @Override
+                public void onItemLongClick(final DispositivosAdapter clickedAppointment) {
+                    AlertDialog.Builder builderAlert= new AlertDialog.Builder(getContext());
+                    View mView = getLayoutInflater().inflate(R.layout.item_disp_elimina, null);
+                    builderAlert.setView(mView);
+                    TextView tv_nom_disp = mView.findViewById(R.id.tv_elimina_disp_nom);
+                    TextView tv_nom_hab = mView.findViewById(R.id.tv_elimina_disp_hab);
+                    Button bt_elimina_disp = mView.findViewById(R.id.bt_elimina_disp);
+
+                    StringBuilder habit = new StringBuilder();
+                    habit.append(Constantes.HABITACION);
+                    habit.append(Constantes.DOS_PUNTOS_ESPACIO);
+                    habit.append(clickedAppointment.getHabitacion());
+
+                    StringBuilder nom = new StringBuilder();
+                    nom.append(Constantes.NOMBRE);
+                    nom.append(Constantes.DOS_PUNTOS_ESPACIO);
+                    nom.append(clickedAppointment.getName());
+
+                    tv_nom_disp.setText(nom);
+                    tv_nom_hab.setText(habit);
+                    final AlertDialog alertDialog = builderAlert.create();
+                    alertDialog.show();
+
+                    bt_elimina_disp.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            RestInterface restInterface = RestImpl.getRestInstance();
+                            Call<Void> call = restInterface.eliminaDispositivo(clickedAppointment);
+                            call.enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if(response.isSuccessful()){
+                                        alertDialog.cancel();
+                                        listDispositivosDataAdapter.remove(clickedAppointment);
+                                        dispositivosDataAdapter.swapItems(listDispositivosDataAdapter);
+                                        Toast.makeText(getContext(), "Dispositivo eliminado satisfactoriamente", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    Toast.makeText(getContext(), "No se pudo realizar la operacion", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
                 }
             });
 
@@ -126,6 +152,7 @@ public class DispositivosFragment extends Fragment {
                     if(response.isSuccessful()){
                         List<DispositivosAdapter> aux = response.body();
                         if(aux.size() != 0 && aux.get(0).get_id() != null) {
+                            listDispositivosDataAdapter = new ArrayList<>(response.body());
                             dispositivosDataAdapter.swapItems(response.body());
                             swipeRefreshLayout.setRefreshing(false);
                         }else{
@@ -158,7 +185,8 @@ public class DispositivosFragment extends Fragment {
                         public void onResponse(Call<List<DispositivosAdapter>> call, Response<List<DispositivosAdapter>> response) {
                             if(response.isSuccessful()){
                                 List<DispositivosAdapter> aux = response.body();
-                                if(aux.get(0).get_id() != null) {
+                                if(aux != null) {
+                                    listDispositivosDataAdapter = new ArrayList<>(response.body());
                                     dispositivosDataAdapter.swapItems(response.body());
                                     swipeRefreshLayout.setRefreshing(false);
                                 }else{
@@ -211,13 +239,6 @@ public class DispositivosFragment extends Fragment {
         });
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -235,18 +256,7 @@ public class DispositivosFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

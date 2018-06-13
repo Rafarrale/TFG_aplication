@@ -10,7 +10,8 @@ import com.example.rafa.tfg.fragments.ContenedorDispFragment;
 import com.example.rafa.tfg.fragments.DispInteligentesFragment;
 import com.example.rafa.tfg.fragments.DispositivosFragment;
 
-public class DispositivosActivity extends AppCompatActivity implements DispInteligentesFragment.OnFragmentInteractionListener, ContenedorDispFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener{
+public class DispositivosActivity extends AppCompatActivity implements DispInteligentesFragment.OnFragmentInteractionListener,
+        ContenedorDispFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener{
 
     private Casa casa;
     @Override
