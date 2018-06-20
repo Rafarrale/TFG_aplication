@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.rafa.tfg.R;
 import com.example.rafa.tfg.clases.Constantes;
+import com.example.rafa.tfg.clases.LogDispositivos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 
 public class DispositivosLogDataAdapter extends RecyclerView.Adapter<DispositivosLogDataAdapter.ViewHolder>{
-    private List<DispositivosAdapter> mItems;
+    private List<LogDispositivos> mItems;
 
     private Context mContext;
 
@@ -26,11 +27,11 @@ public class DispositivosLogDataAdapter extends RecyclerView.Adapter<Dispositivo
 
     public interface OnItemClickListener {
 
-        void onItemClick(DispositivosAdapter clickedAppointment);
+        void onItemClick(LogDispositivos clickedAppointment);
 
     }
 
-    public DispositivosLogDataAdapter(Context context, List<DispositivosAdapter> items) {
+    public DispositivosLogDataAdapter(Context context, List<LogDispositivos> items) {
         mItems = items;
         mContext = context;
     }
@@ -43,7 +44,7 @@ public class DispositivosLogDataAdapter extends RecyclerView.Adapter<Dispositivo
         mOnItemClickListener = onItemClickListener;
     }
 
-    public void swapItems(List<DispositivosAdapter> appointments) {
+    public void swapItems(List<LogDispositivos> appointments) {
         if (appointments == null) {
             mItems = new ArrayList<>(0);
         } else {
@@ -55,50 +56,32 @@ public class DispositivosLogDataAdapter extends RecyclerView.Adapter<Dispositivo
     @Override
     public DispositivosLogDataAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        View view = layoutInflater.inflate(R.layout.items_dispositivos, parent, false);
+        View view = layoutInflater.inflate(R.layout.items_dispositivos_log, parent, false);
         return new DispositivosLogDataAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(DispositivosLogDataAdapter.ViewHolder holder, int position) {
-        DispositivosAdapter appointment = mItems.get(position);
+        LogDispositivos appointment = mItems.get(position);
 
-        StringBuilder id = new StringBuilder();
-        id.append(Constantes.ID);
-        id.append(Constantes.DOS_PUNTOS_ESPACIO);
-        id.append(appointment.get_id());
+        StringBuilder fecha = new StringBuilder();
+        fecha.append(Constantes.FECHA);
+        fecha.append(Constantes.DOS_PUNTOS_ESPACIO);
+        fecha.append(appointment.getFecha());
 
-        StringBuilder habit = new StringBuilder();
-        habit.append(Constantes.HABITACION);
-        habit.append(Constantes.DOS_PUNTOS_ESPACIO);
-        habit.append(appointment.getHabitacion());
+        StringBuilder hora = new StringBuilder();
+        hora.append(Constantes.HORA);
+        hora.append(Constantes.DOS_PUNTOS_ESPACIO);
+        hora.append(appointment.getHora());
 
-        StringBuilder nom = new StringBuilder();
-        nom.append(Constantes.NOMBRE);
-        nom.append(Constantes.DOS_PUNTOS_ESPACIO);
-        nom.append(appointment.getName());
+        StringBuilder suceso = new StringBuilder();
+        suceso.append(appointment.getSuceso());
 
-        StringBuilder tipo = new StringBuilder();
-        tipo.append(Constantes.TIPO);
-        tipo.append(Constantes.DOS_PUNTOS_ESPACIO);
-        tipo.append(appointment.getTipo());
 
-        StringBuilder estado = new StringBuilder();
-        estado.append(Constantes.ESTADO);
-        estado.append(Constantes.DOS_PUNTOS_ESPACIO);
-        estado.append(appointment.getEstado());
+        holder.fecha.setText(fecha);
+        holder.hora.setText(hora);
+        holder.suceso.setText(suceso);
 
-        StringBuilder bateria = new StringBuilder();
-        bateria.append(Constantes.BATERIA);
-        bateria.append(Constantes.DOS_PUNTOS_ESPACIO);
-        bateria.append(appointment.getBateria());
-
-        holder.id.setText(id);
-        holder.nom.setText(nom);
-        holder.habit.setText(habit);
-        holder.tipo.setText(tipo);
-        holder.estado.setText(estado);
-        holder.bateria.setText(bateria);
     }
 
     @Override
@@ -107,24 +90,16 @@ public class DispositivosLogDataAdapter extends RecyclerView.Adapter<Dispositivo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView id;
-        public TextView nom;
-        public TextView habit;
-        public TextView tipo;
-        public TextView estado;
-        public TextView bateria;
-        public View statusIndicator;
+        public TextView fecha;
+        public TextView hora;
+        public TextView suceso;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            statusIndicator = itemView.findViewById(R.id.indicator_dispositivo_status);
-            id = itemView.findViewById(R.id.tvIdDispositivoTodos);
-            nom = (TextView) itemView.findViewById(R.id.tvNomDispositivoTodos);
-            habit = (TextView) itemView.findViewById(R.id.tvDispHabitTodos);
-            tipo = (TextView) itemView.findViewById(R.id.tvDispTipoTodos);
-            estado = (TextView) itemView.findViewById(R.id.tvDispEstadoTodos);
-            bateria = (TextView) itemView.findViewById(R.id.tvDispBatTodos);
+            fecha = itemView.findViewById(R.id.tvNomDispositivoFechaTodos);
+            hora = itemView.findViewById(R.id.tvIdDispositivoHoraTodos);
+            suceso = itemView.findViewById(R.id.tvIdDispositivoSucesoTodos);
 
             itemView.setOnClickListener(this);
         }

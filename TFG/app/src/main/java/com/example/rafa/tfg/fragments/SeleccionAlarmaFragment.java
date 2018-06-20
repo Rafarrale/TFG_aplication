@@ -40,14 +40,6 @@ import static com.example.rafa.tfg.clases.Constantes.ESTADO_CASAS;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_CASAS;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SeleccionAlarmaFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SeleccionAlarmaFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SeleccionAlarmaFragment extends Fragment implements View.OnClickListener{
 
     private CardView card1,card2,card3,card4,card5;
@@ -57,14 +49,7 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
     List<Casa> listCasasRes = new ArrayList<>();
     private NavPrincActivity navPrincActivity;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -72,31 +57,15 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SeleccionAlarmaFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static SeleccionAlarmaFragment newInstance(String param1, String param2) {
         SeleccionAlarmaFragment fragment = new SeleccionAlarmaFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -112,7 +81,6 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
         return inflater.inflate(R.layout.fragment_seleccion_alarma, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -223,8 +191,10 @@ public void activaBoton(Integer v){
                         casaTask.execute();
 
                     }else{
-                        card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        vale1 = 0;
+                        if(vale1 != 1){
+                            card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                            vale1 = 0;
+                        }
                     }
                     //i = new Intent(this,MisDatosActivity.class);
                     //startActivity(i);
@@ -244,8 +214,10 @@ public void activaBoton(Integer v){
                         CasaTask casaTask = new CasaTask(Constantes.ARMAR);
                         casaTask.execute();
                     }else{
-                        card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        vale2 = 0;
+                        if(vale2 != 1){
+                            card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                            vale2 = 0;
+                        }
                     }
 
                 /*
@@ -268,8 +240,10 @@ public void activaBoton(Integer v){
                         CasaTask casaTask = new CasaTask(Constantes.CASA);
                         casaTask.execute();
                     }else{
-                        card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        vale3 = 0;
+                        if(vale3 != 1){
+                            card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                            vale3 = 0;
+                        }
                     }
 
                 /*
@@ -292,8 +266,10 @@ public void activaBoton(Integer v){
                         CasaTask casaTask = new CasaTask(Constantes.ALARMA);
                         casaTask.execute();
                     }else{
-                        card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        vale5 = 0;
+                        if(vale5 != 1){
+                            card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                            vale5 = 0;
+                        }
                     }
                 /*
                 i = new Intent(this,);
@@ -308,18 +284,7 @@ public void activaBoton(Integer v){
         }
 }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 

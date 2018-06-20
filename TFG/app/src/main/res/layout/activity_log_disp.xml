@@ -1,0 +1,126 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/content_main_log_disp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:clickable="true"
+        android:onClick="onClickAccionDisp"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardUseCompatPadding="true">
+
+        <!-- Indicador de estado -->
+        <View
+            android:id="@+id/indicator_dispositivo_status"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#E0E0E0" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="8dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp">
+
+            <ImageView
+                android:id="@+id/imageViewUsuarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_devices_other_black_24dp" />
+
+            <View
+                android:id="@+id/vertical_separator_log"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/imageViewUsuarios"
+                android:background="#E0E0E0" />
+
+            <TextView
+                android:id="@+id/tvNomDispositivoTodosLog"
+                style="@style/Base.TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:textSize="20sp"
+                android:layout_toEndOf="@+id/vertical_separator_log"
+                android:layout_toRightOf="@+id/vertical_separator_log"
+                android:hint="@string/reg_nom"
+                tools:text="Nombre" />
+
+            <TextView
+                android:id="@+id/tvHabitDispositivoTodosLog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:textSize="20sp"
+                android:layout_toEndOf="@+id/vertical_separator_log"
+                android:layout_toRightOf="@+id/vertical_separator_log"
+                android:layout_below="@id/tvNomDispositivoTodosLog"
+                android:hint="@string/habitaci_n"
+                tools:text="@string/habitaci_n" />
+
+            <TextView
+                android:id="@+id/tvIdDispositivoTodos"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/tvNomDispositivoTodosLog"
+                android:layout_below="@+id/tvHabitDispositivoTodosLog"
+                android:hint="@string/Id"
+                tools:text="Id" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+        <View
+            android:id="@+id/horizontal_separator_log"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#E0E0E0" />
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_refresh_layout_log_dispositivos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerLogDispositivos"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                tools:listitem = "@layout/items_dispositivos_log"
+                xmlns:tools="http://schemas.android.com/tools" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+</LinearLayout>

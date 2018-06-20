@@ -37,7 +37,6 @@ import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.SharedPrefManager;
 import com.example.rafa.tfg.clases.Token;
 import com.example.rafa.tfg.clases.Utilidades;
-import com.example.rafa.tfg.fragments.LogDispFragment;
 import com.example.rafa.tfg.fragments.SeleccionAlarmaFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.DispositivosFragment;
@@ -65,6 +64,7 @@ import static com.example.rafa.tfg.clases.Constantes.CASA_ACTUAL;
 import static com.example.rafa.tfg.clases.Constantes.ESPACIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_CASAS;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_TOKEN;
+import static com.example.rafa.tfg.clases.Constantes.GUARDADAS;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_CASAS;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_USUARIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
@@ -72,13 +72,13 @@ import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_TOKEN;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_USUARIO;
 import static com.example.rafa.tfg.clases.Constantes.PRIMERA_CERO;
+import static com.example.rafa.tfg.clases.Constantes.PRINCIPAL;
 import static com.example.rafa.tfg.clases.Constantes.VALUE_0;
 import static com.example.rafa.tfg.clases.Constantes.VALUE_1;
 
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
-        SeleccionAlarmaFragment.OnFragmentInteractionListener,LogDispFragment.OnFragmentInteractionListener,
-        ContenedorFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener{
+        SeleccionAlarmaFragment.OnFragmentInteractionListener,ContenedorFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener{
 
     private List<Casa> fListCasas = new ArrayList<>();
     private Map<Integer, List<Casa>> fListCasasRes = new HashMap<Integer, List<Casa>>();
@@ -169,7 +169,7 @@ public class NavPrincActivity extends AppCompatActivity
         Token auxToken = gson.fromJson(recoveryToken, Token.class);
         token.setToken(SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken());
         token.setKeyToUse(usuario.getKeyToUse());
-        token.setPassCasa(usuario.getPassCasa()); //TODO
+        token.setPassCasa(usuario.getPassCasa());
         if(auxToken != null){
             token.set_id(auxToken.get_id());
         }
@@ -539,45 +539,27 @@ public class NavPrincActivity extends AppCompatActivity
                 if(response.isSuccessful()){
                     if(!casa.equals(Constantes.CASA_VACIO)) {
                         Toast.makeText(NavPrincActivity.this, "Casa eliminada", Toast.LENGTH_SHORT).show();
-                        List<Casa> fListCasasCopy = new ArrayList<>(fListCasas);
-                        Iterator<Casa> itr = fListCasasCopy.listIterator();
-
-                        if(fListCasasCopy.size() == 0){
-                            fListCasasRes = new HashMap<>();
-                        }
-                        while(itr.hasNext()){
-                            Casa aux = itr.next();
-
-                            if(fListCasasRes.get(1).get(0).getHomeUsu().equals(aux.getHomeUsu())){
-                                fListCasas.remove(aux);
-                            }
-
-                            if(aux.getHomeUsu().equals(casa)){
-                                fListCasas.remove(aux);
-                                if(!fListCasasRes.get(1).get(0).getHomeUsu().equals(fListCasasRes.get(0).get(0).getHomeUsu())){
-                                    fListCasasRes.put(0, fListCasas);
-                                }
-                                if(fListCasasRes.get(1).get(0).getHomeUsu().equals(casa)){
-                                    fListCasasRes.put(1,fListCasas);
-                                }
+                        for(int i = 0; i < fListCasas.size(); i++){
+                            if(fListCasas.get(i).getHomeUsu().equals(casa)){
+                                fListCasas.remove(i);
                             }
                         }
+                        if(fListCasas.size() == VALUE_0){
+                            fListCasasRes.get(PRINCIPAL).remove(0);
+                        }
+
+                        List<Casa> aux = fListCasasRes.get(GUARDADAS);
+                        for (int i = 0; i < aux.size(); i++){
+                            if(aux.get(i).getHomeUsu().equals(casa)){
+                                fListCasasRes.get(GUARDADAS).remove(i);
+                            }
+                        }
+                        // Guardar en prefreencias
                         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         Gson gson = new Gson();
-                        if(fListCasas.size() == 0 && fListCasasRes.size() != 0){
-                            editor.putString(ESTADO_CASAS, gson.toJson(fListCasasRes.get(1)));
-                            editor.apply();
-                        }else if(fListCasas.size() != 0){
-                            List<Casa> aux = fListCasas;
-                            aux.add(fListCasasRes.get(1).get(0));
-                            editor.putString(ESTADO_CASAS, gson.toJson(aux));
-                            editor.apply();
-                        }else{
-                            List<Casa> aux = fListCasas;
-                            editor.putString(ESTADO_CASAS, gson.toJson(aux));
-                            editor.apply();
-                        }
+                        editor.putString(ESTADO_CASAS, gson.toJson(fListCasas));
+                        editor.apply();
                     }
                 }else{
                     Toast.makeText(NavPrincActivity.this, "No fue posible eliminar la casa", Toast.LENGTH_SHORT).show();
@@ -630,8 +612,8 @@ public class NavPrincActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_micasa) {
             Intent intent = new Intent(NavPrincActivity.this, MiCasaActivity.class);
-            if(fListCasasRes.size() > 0){
-                intent.putExtra(CASA_ACTUAL, fListCasasRes.get(VALUE_1).get(VALUE_0).getHomeUsu());
+            if(fListCasasRes.get(PRINCIPAL) != null && fListCasasRes.size() > 0){
+                intent.putExtra(CASA_ACTUAL, fListCasasRes.get(PRINCIPAL).get(VALUE_0).getHomeUsu());
             }
             startActivity(intent);
             NavPrincActivity.this.finish();

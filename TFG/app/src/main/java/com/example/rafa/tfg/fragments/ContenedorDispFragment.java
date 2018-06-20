@@ -12,11 +12,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.rafa.tfg.R;
 import com.example.rafa.tfg.adapters.SeccionesAdapter;
-import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.Utilidades;
 
 /**
@@ -99,8 +97,8 @@ import com.example.rafa.tfg.clases.Utilidades;
     private void llenarViewPager(ViewPager viewPager) {
         adapter = new SeccionesAdapter(getFragmentManager());
 
-        adapter.addFragment(new DispInteligentesFragment(),"Dispositivos Inteligentes");
-        adapter.addFragment(new DispositivosFragment(),"Todos");
+        adapter.addFragment(new DispInteligentesMenuFragment(),"Dispositivos Inteligentes");
+        adapter.addFragment(new DispositivosFragment(),"Gestión e Información");
 
         viewPager.setAdapter(adapter);
     }

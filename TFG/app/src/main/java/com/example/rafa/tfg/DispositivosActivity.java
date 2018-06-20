@@ -7,11 +7,11 @@ import android.os.Bundle;
 
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.fragments.ContenedorDispFragment;
-import com.example.rafa.tfg.fragments.DispInteligentesFragment;
+import com.example.rafa.tfg.fragments.DispInteligentesMenuFragment;
 import com.example.rafa.tfg.fragments.DispositivosFragment;
 
-public class DispositivosActivity extends AppCompatActivity implements DispInteligentesFragment.OnFragmentInteractionListener,
-        ContenedorDispFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener{
+public class DispositivosActivity extends AppCompatActivity implements ContenedorDispFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener,
+        DispInteligentesMenuFragment.OnFragmentInteractionListener{
 
     private Casa casa;
     @Override

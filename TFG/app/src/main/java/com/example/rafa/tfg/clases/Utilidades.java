@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.rafa.tfg.R;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
+import com.example.rafa.tfg.adapters.DispositivosLogDataAdapter;
 import com.example.rafa.tfg.adapters.NotificacionDispHora;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
@@ -28,6 +29,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.rafa.tfg.clases.Constantes.DISP_CONTACTO;
+import static com.example.rafa.tfg.clases.Constantes.DISP_INTERRUPTOR;
 import static com.example.rafa.tfg.clases.Constantes.TIPO_ALERT_DIALOG;
 
 /**
@@ -50,7 +52,7 @@ public class Utilidades {
     public static List<NotificacionDispHora> listNotificaciones = new ArrayList<>();
 
 
-    public static Object difTipoDisp(String tipo, Activity activity){
+    public static Object difTipoDisp(String tipo, Activity activity, boolean accion){
         Object res = null;
         mActivity = activity;
         if(tipo.equals(DISP_CONTACTO)){
@@ -59,12 +61,23 @@ public class Utilidades {
             builder.setView(mView);
             res = builder;
         }
+
+        if(tipo.equals(DISP_INTERRUPTOR) && accion){
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            mView = activity.getLayoutInflater().inflate(R.layout.item_actualiza_dispositivo, null);
+            builder.setView(mView);
+            res = builder;
+        }else{
+
+        }
         return res;
     }
 
-    public static void muestraTipo(final DispositivosAdapter dispositivo, Object objTipo, final DispositivosDataAdapter dispositivosDataAdapter){
+    public static void muestraTipo(final DispositivosAdapter dispositivo, Object objTipo, final DispositivosLogDataAdapter dispositivosLogDataAdapter){
 
-        if(objTipo.getClass().getName().equals(TIPO_ALERT_DIALOG) && dispositivo.getTipo().equals(DISP_CONTACTO)){
+
+        if(objTipo.getClass().getName().equals(TIPO_ALERT_DIALOG) && dispositivo.getTipo().equals(DISP_CONTACTO) || dispositivo.getTipo().equals(DISP_INTERRUPTOR)){
+
             AlertDialog.Builder builder = (AlertDialog.Builder)objTipo;
             final AlertDialog alertDialog = builder.create();
             alertDialog.show();
@@ -76,7 +89,6 @@ public class Utilidades {
                 public void onClick(View v) {
                     String nombre = edt_nombre_disp_act.getText().toString();
                     String habitacion = edt_hab_disp_act.getText().toString();
-
                     edt_nombre_disp_act.setError(null);
                     edt_hab_disp_act.setError(null);
                     boolean cancel = false;
@@ -97,6 +109,8 @@ public class Utilidades {
                     if(!cancel){
                         dispositivo.setName(nombre);
                         dispositivo.setHabitacion(habitacion);
+                        LogDispActivity logDispActivity = (LogDispActivity)mActivity;
+                        logDispActivity.actualizaPresentacionDisp(dispositivo);
                         RestInterface rest = RestImpl.getRestInstance();
                         Call<Void> call = rest.actualizaDispositivoCasa(dispositivo);
                         call.enqueue(new Callback<Void>() {
@@ -104,7 +118,6 @@ public class Utilidades {
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if(response.isSuccessful()){
                                     Toast.makeText(mView.getContext(), "Actualización realizada satisfactoriamente", Toast.LENGTH_SHORT).show();
-                                    refreshData(dispositivo, dispositivosDataAdapter);
                                     alertDialog.cancel();
                                 }
                             }
@@ -119,30 +132,4 @@ public class Utilidades {
             });
         }
     }
-
-    private static void refreshData(final DispositivosAdapter clickedAppointment, final DispositivosDataAdapter dispositivosDataAdapter){
-        RestInterface rest = RestImpl.getRestInstance();
-        Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(clickedAppointment.getCasa(), Constantes.DISP_TODOS);
-        response.enqueue(new Callback<List<DispositivosAdapter>>() {
-            @Override
-            public void onResponse(Call<List<DispositivosAdapter>> call, Response<List<DispositivosAdapter>> response) {
-                if(response.isSuccessful()){
-                    List<DispositivosAdapter> aux = response.body();
-                    if(aux.size() != 0 && aux.get(0).get_id() != null) {
-                        listDisp = new ArrayList<>(response.body());
-                        dispositivosDataAdapter.swapItems(response.body());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DispositivosAdapter>> call, Throwable t) {
-                Toast.makeText(mView.getContext(), "No se ha podido recuperar la información de los dispositivos", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
-
-
 }

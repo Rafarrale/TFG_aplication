@@ -37,6 +37,9 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
     implementation project(path: ':esptouch')
     implementation 'com.nex3z:notification-badge:0.1.0'
+    implementation 'com.github.Hitomis:CircleMenu:v1.1.0'
+    implementation 'me.panpf:switch-button:2.0.0'
+
 }
 
 

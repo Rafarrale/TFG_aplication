@@ -5,6 +5,7 @@ import com.example.rafa.tfg.adapters.CasaAdapterIni;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.estadoAlarmaAdapter;
 import com.example.rafa.tfg.adapters.usuAdapter;
+import com.example.rafa.tfg.clases.LogDispositivos;
 import com.example.rafa.tfg.clases.Token;
 
 
@@ -14,6 +15,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.POST;
@@ -88,8 +91,14 @@ public interface RestInterface {
     @POST("/dispositivo/insertaDispositivoCasa")
     Call<Void> addDispositivoCasa(@Body DispositivosAdapter dispositivosAdapter);
 
+    @POST("/dispositivo/getLog")
+    Call<List<LogDispositivos>> getLogDisp(@Body DispositivosAdapter dispositivosAdapter);
+
     @POST("/dispositivo/actualizaDispositivoCasa")
     Call<Void> actualizaDispositivoCasa(@Body DispositivosAdapter dispositivosAdapter);
+
+    @POST("/dispositivo/interruptorDispositivoCasa")
+    Call<Void> interruptorDispositivoCasa(@Body DispositivosAdapter dispositivosAdapter);
 
     @POST("/notificacion/insertaToken")
     Call<Token> anadeToken(@Body Token token);

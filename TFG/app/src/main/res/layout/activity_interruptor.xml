@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_interruptor">
+
+
+    <TextView
+        android:id="@+id/tv_hab_disp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="30sp"
+        android:text="@string/habitaci_n" />
+
+    <TextView
+        android:id="@+id/tv_nom_disp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="25sp"
+        android:text="@string/nombre" />
+
+    <TextView
+        android:id="@+id/tv_id_disp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:text="@string/Id" />
+
+    <ToggleButton
+        android:id="@+id/toggleButtonDisp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/toogle_button"
+        android:layout_marginTop="70dp"
+        android:layout_gravity="center"
+        android:textOff="OFF"
+        android:textOn="ON"
+        android:textStyle="italic"
+        android:textAlignment="center"
+        android:paddingBottom="60dp"/>
+</LinearLayout>

@@ -9,18 +9,25 @@ import android.os.Parcelable;
 
 public class Caracteristicas implements Parcelable {
     private Temperatura temperatura;
+    private boolean activa;
 
-    public Caracteristicas(Temperatura temperatura) {
+    public Caracteristicas() {
+    }
+
+    public Caracteristicas(Temperatura temperatura, boolean activa) {
         this.temperatura = temperatura;
+        this.activa = activa;
     }
 
     protected Caracteristicas(Parcel in) {
         temperatura = in.readParcelable(Temperatura.class.getClassLoader());
+        activa = in.readByte() != 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(temperatura, flags);
+        dest.writeByte((byte) (activa ? 1 : 0));
     }
 
     @Override
@@ -48,18 +55,11 @@ public class Caracteristicas implements Parcelable {
         this.temperatura = temperatura;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Caracteristicas that = (Caracteristicas) o;
-
-        return temperatura != null ? temperatura.equals(that.temperatura) : that.temperatura == null;
+    public boolean isActiva() {
+        return activa;
     }
 
-    @Override
-    public int hashCode() {
-        return temperatura != null ? temperatura.hashCode() : 0;
+    public void setActiva(boolean activa) {
+        this.activa = activa;
     }
 }

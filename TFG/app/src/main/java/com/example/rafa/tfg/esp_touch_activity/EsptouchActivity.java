@@ -213,50 +213,71 @@ public class EsptouchActivity extends AppCompatActivity implements OnClickListen
                                                 final StringBuilder nomDisp = new StringBuilder(nomDispNuevo.getText().toString());
                                                 final StringBuilder habitDisp = new StringBuilder(habitDispNuevo.getText().toString());
                                                 final StringBuilder casaDisp = new StringBuilder(casa.getHomeUsu());
-                                                DispositivosAdapter dispositivosAdapter = new DispositivosAdapter(clickedAppointment.get_id(), casaDisp.toString(), habitDisp.toString(), nomDisp.toString(), clickedAppointment.getEstado(), clickedAppointment.getTipo(), clickedAppointment.getBateria());
-                                                RestInterface restConect = RestImpl.getRestInstance();
-                                                Call<Void> rest = restConect.addDispositivoCasa(dispositivosAdapter);
-                                                rest.enqueue(new Callback<Void>() {
-                                                    @Override
-                                                    public void onResponse(Call<Void> call, Response<Void> response) {
-                                                        if (response.isSuccessful()) {
-                                                            Toast.makeText(EsptouchActivity.this, "Dispositivo Añadido Correctamente", Toast.LENGTH_SHORT).show();
-                                                            /**
-                                                             * Sincronizacion Bloqueante
-                                                             */
-                                                            RestInterface restActualiza = RestImpl.getRestInstance();
-                                                            Call<List<DispositivosAdapter>> responseAct = restActualiza.getTodosDispositivosNuevos(campoClaveDisp.getText().toString());
-                                                            responseAct.enqueue(new Callback<List<DispositivosAdapter>>() {
-                                                                @Override
-                                                                public void onResponse(Call<List<DispositivosAdapter>> call, Response<List<DispositivosAdapter>> response) {
-                                                                    if (response.isSuccessful() && response.body().size() != 0) {
-                                                                        dispositivosDataAdapterAnade.swapItems(response.body());
-                                                                        swipeRefreshLayoutDispNuevo.setRefreshing(false);
 
-                                                                    } else {
-                                                                        alert[0].cancel();
-                                                                        mView[0] = getLayoutInflater().inflate(R.layout.anade_dispositivos_vacio, null);
-                                                                        alertBuilderMain.setView(mView[0]);
-                                                                        alert[0] = alertBuilderMain.create();
-                                                                        alert[0].show();
+                                                View focusView = null;
+                                                nomDispNuevo.setError(null);
+                                                habitDispNuevo.setError(null);
+                                                boolean cancel = false;
+                                                if(TextUtils.isEmpty(nomDisp)){
+                                                    nomDispNuevo.setError(getString(R.string.error_field_required));
+                                                    focusView = nomDispNuevo;
+                                                    cancel = true;
+                                                }
+                                                if(TextUtils.isEmpty(habitDisp)){
+                                                    habitDispNuevo.setError(getString(R.string.error_field_required));
+                                                    focusView = habitDispNuevo;
+                                                    cancel = true;
+                                                }
+
+                                                if(cancel){
+                                                    focusView.requestFocus();
+                                                }else{
+                                                    DispositivosAdapter dispositivosAdapter = new DispositivosAdapter(clickedAppointment.get_id(), casaDisp.toString(), habitDisp.toString(), nomDisp.toString(), clickedAppointment.getEstado(), clickedAppointment.getTipo(), clickedAppointment.getBateria());
+                                                    RestInterface restConect = RestImpl.getRestInstance();
+                                                    Call<Void> rest = restConect.addDispositivoCasa(dispositivosAdapter);
+                                                    rest.enqueue(new Callback<Void>() {
+                                                        @Override
+                                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                                            if (response.isSuccessful()) {
+                                                                Toast.makeText(EsptouchActivity.this, "Dispositivo Añadido Correctamente", Toast.LENGTH_SHORT).show();
+                                                                /**
+                                                                 * Sincronizacion Bloqueante
+                                                                 */
+                                                                RestInterface restActualiza = RestImpl.getRestInstance();
+                                                                Call<List<DispositivosAdapter>> responseAct = restActualiza.getTodosDispositivosNuevos(campoClaveDisp.getText().toString());
+                                                                responseAct.enqueue(new Callback<List<DispositivosAdapter>>() {
+                                                                    @Override
+                                                                    public void onResponse(Call<List<DispositivosAdapter>> call, Response<List<DispositivosAdapter>> response) {
+                                                                        if (response.isSuccessful() && response.body().size() != 0) {
+                                                                            dispositivosDataAdapterAnade.swapItems(response.body());
+                                                                            swipeRefreshLayoutDispNuevo.setRefreshing(false);
+
+                                                                        } else {
+                                                                            alert[0].cancel();
+                                                                            mView[0] = getLayoutInflater().inflate(R.layout.anade_dispositivos_vacio, null);
+                                                                            alertBuilderMain.setView(mView[0]);
+                                                                            alert[0] = alertBuilderMain.create();
+                                                                            alert[0].show();
+                                                                        }
                                                                     }
-                                                                }
-                                                                @Override
-                                                                public void onFailure(Call<List<DispositivosAdapter>> call, Throwable t) {
-                                                                    Toast.makeText(EsptouchActivity.this, "No se pudo realizar la Operación", Toast.LENGTH_SHORT).show();
-                                                                }
-                                                            });
-                                                            alertShowItem[0].cancel();
+                                                                    @Override
+                                                                    public void onFailure(Call<List<DispositivosAdapter>> call, Throwable t) {
+                                                                        Toast.makeText(EsptouchActivity.this, "No se pudo realizar la Operación", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                });
+                                                                alertShowItem[0].cancel();
+
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<Void> call, Throwable t) {
+                                                            Toast.makeText(EsptouchActivity.this, "No se pudo realizar la Operación", Toast.LENGTH_SHORT).show();
 
                                                         }
-                                                    }
+                                                    });
+                                                }
 
-                                                    @Override
-                                                    public void onFailure(Call<Void> call, Throwable t) {
-                                                        Toast.makeText(EsptouchActivity.this, "No se pudo realizar la Operación", Toast.LENGTH_SHORT).show();
-
-                                                    }
-                                                });
                                             }else{
                                                 Toast.makeText(EsptouchActivity.this, "Añadir Casa antes de añadir Dispositivos", Toast.LENGTH_SHORT).show();
                                             }

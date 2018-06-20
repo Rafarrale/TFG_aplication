@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapterAnade;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Constantes;
+import com.example.rafa.tfg.clases.LogDispActivity;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.esp_touch_activity.EsptouchActivity;
 import com.example.rafa.tfg.rest.RestImpl;
@@ -38,6 +40,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.rafa.tfg.clases.Constantes.DISP_CONTACTO;
+import static com.example.rafa.tfg.clases.Constantes.DISP_SELECCIONADO;
 import static com.example.rafa.tfg.clases.Constantes.TIPO_ALERT_DIALOG;
 import static com.example.rafa.tfg.clases.Utilidades.difTipoDisp;
 import static com.example.rafa.tfg.clases.Utilidades.muestraTipo;
@@ -77,14 +81,13 @@ public class DispositivosFragment extends Fragment {
             dispositivosDataAdapter.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DispositivosAdapter clickedAppointment) {
-                    /**Aqui obtenemos el tipo de objeto con el que trabajaremos segun el tipo de dispositivo
-                     * y posteriormente en muestra tipo mostramos la accion a realizar
-                     * que puede ser ej:
-                     *              contacto --> solo actualizamos
-                     *              interruptor --> actualizamos y accionamos*/
-                    Object tipo = difTipoDisp(clickedAppointment.getTipo(), getActivity());
-                    muestraTipo(clickedAppointment, tipo, dispositivosDataAdapter);
-                    /***/
+
+                    /** Cambiamos de fragment para mostrar el log del disp */
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(DISP_SELECCIONADO, clickedAppointment);
+                    Intent intent = new Intent(getContext(), LogDispActivity.class);
+                    intent.putExtras(bundle);
+                    getActivity().startActivity(intent);
 
                 }
             });

@@ -59,7 +59,12 @@
         </service>
 
         <activity android:name=".MiCasaActivity" />
-        <activity android:name=".NotificacionesActivity"></activity>
+        <activity android:name=".NotificacionesActivity" />
+        <activity android:name=".clases.LogDispActivity" />
+        <activity android:name=".InterruptorActivity" />
+        <activity android:name=".JardineriaActivity" />
+        <activity android:name=".CalefaccionActivity" />
+        <activity android:name=".DispInteligentesActivity" />
     </application>
 
 </manifest>

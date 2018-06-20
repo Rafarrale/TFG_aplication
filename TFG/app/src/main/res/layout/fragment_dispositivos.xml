@@ -66,8 +66,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:hint="@string/reg_nom"
-                android:textSize="20sp"
                 android:text="@string/a_adir_dispositivos"
+                android:textSize="20sp"
                 tools:text="Añadir" />
 
             <ImageView
@@ -83,8 +83,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="8dp"
                 android:layout_alignTop="@+id/imageViewUsuarios"
+                android:layout_marginRight="8dp"
                 android:src="@drawable/ic_control_point_black_24dp" />
 
             <View
@@ -92,7 +92,7 @@
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@+id/imageViewUsuarios2"
                 android:background="#E0E0E0"
                 android:foregroundGravity="right" />

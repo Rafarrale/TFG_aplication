@@ -4,11 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.rafa.tfg.clases.Caracteristicas;
+import com.example.rafa.tfg.clases.LogDispositivos;
+
+import java.util.List;
 
 /**
  * Created by Rafael on 04/03/2018.
  */
 
+/**
+ * Clase para los dispositivos
+ * @author Rafael
+ * */
 public class DispositivosAdapter implements Parcelable{
     private String _id;
     private String casa;
@@ -18,19 +25,10 @@ public class DispositivosAdapter implements Parcelable{
     private String tipo;
     private String bateria;
     private Caracteristicas caracteristicas;
+    private List<LogDispositivos> log;
+
 
     public DispositivosAdapter() {
-    }
-
-    public DispositivosAdapter(String _id, String casa, String habitacion, String name, String estado, String tipo, String bateria, Caracteristicas caracteristicas) {
-        this._id = _id;
-        this.casa = casa;
-        this.habitacion = habitacion;
-        this.name = name;
-        this.estado = estado;
-        this.tipo = tipo;
-        this.bateria = bateria;
-        this.caracteristicas = caracteristicas;
     }
 
     public DispositivosAdapter(String _id, String casa, String habitacion, String name, String estado, String tipo, String bateria) {
@@ -43,6 +41,29 @@ public class DispositivosAdapter implements Parcelable{
         this.bateria = bateria;
     }
 
+    public DispositivosAdapter(String _id, String casa, String habitacion, String name, String estado, String tipo, String bateria, List<LogDispositivos> log) {
+        this._id = _id;
+        this.casa = casa;
+        this.habitacion = habitacion;
+        this.name = name;
+        this.estado = estado;
+        this.tipo = tipo;
+        this.bateria = bateria;
+        this.log = log;
+    }
+
+    public DispositivosAdapter(String _id, String casa, String habitacion, String name, String estado, String tipo, String bateria, Caracteristicas caracteristicas, List<LogDispositivos> log) {
+        this._id = _id;
+        this.casa = casa;
+        this.habitacion = habitacion;
+        this.name = name;
+        this.estado = estado;
+        this.tipo = tipo;
+        this.bateria = bateria;
+        this.caracteristicas = caracteristicas;
+        this.log = log;
+    }
+
     protected DispositivosAdapter(Parcel in) {
         _id = in.readString();
         casa = in.readString();
@@ -52,6 +73,7 @@ public class DispositivosAdapter implements Parcelable{
         tipo = in.readString();
         bateria = in.readString();
         caracteristicas = in.readParcelable(Caracteristicas.class.getClassLoader());
+        log = in.createTypedArrayList(LogDispositivos.CREATOR);
     }
 
     @Override
@@ -64,6 +86,7 @@ public class DispositivosAdapter implements Parcelable{
         dest.writeString(tipo);
         dest.writeString(bateria);
         dest.writeParcelable(caracteristicas, flags);
+        dest.writeTypedList(log);
     }
 
     @Override
@@ -147,34 +170,11 @@ public class DispositivosAdapter implements Parcelable{
         this.caracteristicas = caracteristicas;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        DispositivosAdapter that = (DispositivosAdapter) o;
-
-        if (_id != null ? !_id.equals(that._id) : that._id != null) return false;
-        if (casa != null ? !casa.equals(that.casa) : that.casa != null) return false;
-        if (habitacion != null ? !habitacion.equals(that.habitacion) : that.habitacion != null)
-            return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (estado != null ? !estado.equals(that.estado) : that.estado != null) return false;
-        if (tipo != null ? !tipo.equals(that.tipo) : that.tipo != null) return false;
-        if (bateria != null ? !bateria.equals(that.bateria) : that.bateria != null) return false;
-        return caracteristicas != null ? caracteristicas.equals(that.caracteristicas) : that.caracteristicas == null;
+    public List<LogDispositivos> getLog() {
+        return log;
     }
 
-    @Override
-    public int hashCode() {
-        int result = _id != null ? _id.hashCode() : 0;
-        result = 31 * result + (casa != null ? casa.hashCode() : 0);
-        result = 31 * result + (habitacion != null ? habitacion.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (estado != null ? estado.hashCode() : 0);
-        result = 31 * result + (tipo != null ? tipo.hashCode() : 0);
-        result = 31 * result + (bateria != null ? bateria.hashCode() : 0);
-        result = 31 * result + (caracteristicas != null ? caracteristicas.hashCode() : 0);
-        return result;
+    public void setLog(List<LogDispositivos> log) {
+        this.log = log;
     }
 }

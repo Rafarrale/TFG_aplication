@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragmentIdCont"
+    android:background="@mipmap/background_disp"
     tools:context="com.example.rafa.tfg.fragments.ContenedorDispFragment">
 
     <android.support.v4.view.ViewPager

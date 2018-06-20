@@ -26,7 +26,12 @@ public class Constantes {
     /* Fin Dispositivos de tipo aviso */
 
     /* Dispositivos de tipo Control*/
-    public static  final String DISP_CONTROL_LUZ = "luz";
+    public static  final String DISP_INTERRUPTOR = "interruptor";
+    public static  final String DISP_CALEFACCION = "calefaccion";
+    public static  final String DISP_JARDINERIA = "jardineria";
+    public static  final String DISP_INTERRUPTOR_LABEL = "Interruptores";
+    public static  final String DISP_CALEFACCION_LABEL = "Calefacción";
+    public static  final String DISP_JARDINERIA_LABEL = "Jardinería";
     /* Fin Dispositivos de tipo Control*/
 
     /*CONSTANTES PARA DIFERENCIAR TIPOS DE CLASES*/
@@ -34,6 +39,7 @@ public class Constantes {
     /*FIN CONSTANTES PARA DIFERENCIAR TIPOS DE CLASES*/
 
 
+    public static  final String FECHA = "Fecha";
     public static  final String VACIO = "";
     public static  final String ESPACIO = " ";
     public static  final String DOS_PUNTOS_ESPACIO = ": ";
@@ -66,8 +72,13 @@ public class Constantes {
     public static final String VER_KEYS = "Click aquí para seleccionar key";
     public static final String KEY = "Key";
     public static final String CASA_ACTUAL = "Casa actual";
+    public static final String DISP_SELECCIONADO = "Dispositivo seleccionado";
     public static final String NO_DISPONIBLE = "No disponible";
     public static final String HORA = "Hora";
+    public static final String SUCESO = "Suceso";
+    public static final String ON = "on";
+    public static final String OFF = "off";
+
 
     /* Constantes numericas */
     public static final int VALUE_50 = 50;
@@ -76,6 +87,8 @@ public class Constantes {
     public static final int VALUE_5 = 5;
     public static final int VALUE_0 = 0;
     public static final int VALUE_1 = 1;
+    public static final int PRINCIPAL = 1;
+    public static final int GUARDADAS = 0;
     public static final int VALUE_2 = 2;
     public static final int VALUE_3 = 3;
     public static final int VALUE_4 = 4;
