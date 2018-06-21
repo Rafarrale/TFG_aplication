@@ -8,12 +8,10 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Parcelable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -46,7 +44,6 @@ import static com.example.rafa.tfg.clases.Constantes.PREFS_USUARIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_USUARIO;
-import static com.example.rafa.tfg.clases.Constantes.PRIMERA_CERO;
 import static com.example.rafa.tfg.clases.Constantes.VALUE_0;
 import static com.example.rafa.tfg.clases.Constantes.VALUE_403;
 import static com.example.rafa.tfg.rest.RestImpl.getRestInstance;
@@ -286,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("USER", auxUsuario.toJson());
 
         if(auxUsuario.getPassCasa().size() != 0) {
-            Call<List<CasaAdapterIni>> restCasas = rest.getCasas(auxUsuario.getPassCasa().get(auxUsuario.getKeyToUse()).getKey()); //TODO
+            Call<List<CasaAdapterIni>> restCasas = rest.getCasas(auxUsuario.getPassCasa().get(auxUsuario.getKeyToUse()).getKey());
 
             restCasas.enqueue(new Callback<List<CasaAdapterIni>>() {
                 @Override

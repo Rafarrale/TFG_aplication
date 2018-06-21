@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rafa.tfg.InterruptorActivity;
 import com.example.rafa.tfg.R;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
@@ -19,6 +20,7 @@ import com.example.rafa.tfg.adapters.DispositivosLogDataAdapter;
 import com.example.rafa.tfg.adapters.NotificacionDispHora;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,9 +30,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.rafa.tfg.clases.Constantes.DISP_CALEFACCION;
 import static com.example.rafa.tfg.clases.Constantes.DISP_CONTACTO;
 import static com.example.rafa.tfg.clases.Constantes.DISP_INTERRUPTOR;
+import static com.example.rafa.tfg.clases.Constantes.DISP_JARDINERIA;
 import static com.example.rafa.tfg.clases.Constantes.TIPO_ALERT_DIALOG;
+import static com.example.rafa.tfg.clases.Constantes.TIPO_INTENT;
 
 /**
  * Created by Rafael on 20/02/2018.
@@ -47,6 +52,7 @@ public class Utilidades {
     public static boolean radioButton = false;
     public static boolean regresaDisp = false;
     public static boolean regresaMiCasaKey = false;
+    private static boolean mAccion = false;
     private static List<DispositivosAdapter> listDisp;
     public static Integer badge = 0;
     public static List<NotificacionDispHora> listNotificaciones = new ArrayList<>();
@@ -55,20 +61,28 @@ public class Utilidades {
     public static Object difTipoDisp(String tipo, Activity activity, boolean accion){
         Object res = null;
         mActivity = activity;
+        mAccion = accion;
         if(tipo.equals(DISP_CONTACTO)){
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             mView = activity.getLayoutInflater().inflate(R.layout.item_actualiza_dispositivo, null);
             builder.setView(mView);
             res = builder;
-        }
-
-        if(tipo.equals(DISP_INTERRUPTOR) && accion){
+        }else if(tipo.equals(DISP_INTERRUPTOR) && accion){
+            Intent intent = new Intent(activity, InterruptorActivity.class);
+            res = intent;
+        }else if(tipo.equals(DISP_JARDINERIA) && accion){
+            /** Paso a clase jardineria*/
+            //Intent intent = new Intent(activity, "clase aqui");
+            //res = intent;
+        }else if(tipo.equals(DISP_CALEFACCION) && accion){
+            /** Paso a clase calefaccion*/
+            //Intent intent = new Intent(activity, "clase aqui");
+            //res = intent;
+        }else{
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             mView = activity.getLayoutInflater().inflate(R.layout.item_actualiza_dispositivo, null);
             builder.setView(mView);
             res = builder;
-        }else{
-
         }
         return res;
     }
@@ -76,7 +90,8 @@ public class Utilidades {
     public static void muestraTipo(final DispositivosAdapter dispositivo, Object objTipo, final DispositivosLogDataAdapter dispositivosLogDataAdapter){
 
 
-        if(objTipo.getClass().getName().equals(TIPO_ALERT_DIALOG) && dispositivo.getTipo().equals(DISP_CONTACTO) || dispositivo.getTipo().equals(DISP_INTERRUPTOR)){
+        if(objTipo.getClass().getName().equals(TIPO_ALERT_DIALOG) && !mAccion && (dispositivo.getTipo().equals(DISP_CONTACTO) || dispositivo.getTipo().equals(DISP_INTERRUPTOR)
+                || dispositivo.getTipo().equals(DISP_JARDINERIA))){
 
             AlertDialog.Builder builder = (AlertDialog.Builder)objTipo;
             final AlertDialog alertDialog = builder.create();
@@ -130,6 +145,11 @@ public class Utilidades {
                     }
                 }
             });
+        }else if(objTipo.getClass().getName().equals(TIPO_INTENT) && dispositivo.getTipo().equals(DISP_INTERRUPTOR)){
+            Intent intent = (Intent) objTipo;
+            Gson gson = new Gson();
+            intent.putExtra(Constantes.DISP_SELECCIONADO, gson.toJson(dispositivo));
+            mActivity.startActivity(intent);
         }
     }
 }

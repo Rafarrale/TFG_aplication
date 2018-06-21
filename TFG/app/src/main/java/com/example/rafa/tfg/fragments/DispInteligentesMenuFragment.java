@@ -67,17 +67,17 @@ public class DispInteligentesMenuFragment extends Fragment {
             
             @Override
             public void onMenuClosed() {
+                Intent intent = new Intent(getContext(), DispInteligentesActivity.class);
+                Gson gson = new Gson();
+                intent.putExtra(Constantes.CASA_ACTUAL, gson.toJson(casa));
                 if(seleccion == Constantes.DISP_INTERRUPTOR_LABEL){
-                    Intent intent = new Intent(getContext(), DispInteligentesActivity.class);
-                    Gson gson = new Gson();
-                    intent.putExtra(Constantes.CASA_ACTUAL, gson.toJson(casa));
-                    startActivity(intent);
-
+                    intent.putExtra(Constantes.TIPO_DISP, Constantes.DISP_INTERRUPTOR);
                 }else if(seleccion == Constantes.DISP_CALEFACCION_LABEL){
-
+                    intent.putExtra(Constantes.TIPO_DISP, Constantes.DISP_CALEFACCION);
                 }else if(seleccion == Constantes.DISP_JARDINERIA_LABEL){
-
+                    intent.putExtra(Constantes.TIPO_DISP, Constantes.DISP_JARDINERIA);
                 }
+                startActivity(intent);
             }
 
         });

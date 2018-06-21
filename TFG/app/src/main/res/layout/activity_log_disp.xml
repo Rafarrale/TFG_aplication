@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:clickable="true"
-        android:onClick="onClickAccionDisp"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardUseCompatPadding="true">
 
@@ -35,6 +34,7 @@
                 android:id="@+id/imageViewUsuarios"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onClickDispInterruptor"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="8dp"
                 android:src="@drawable/ic_devices_other_black_24dp" />
@@ -47,43 +47,52 @@
                 android:layout_marginStart="16dp"
                 android:layout_toEndOf="@+id/imageViewUsuarios"
                 android:background="#E0E0E0" />
-
-            <TextView
-                android:id="@+id/tvNomDispositivoTodosLog"
-                style="@style/Base.TextAppearance.AppCompat.Body2"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:textSize="20sp"
+                android:orientation="vertical"
+                android:onClick="onClickAccionDisp"
                 android:layout_toEndOf="@+id/vertical_separator_log"
-                android:layout_toRightOf="@+id/vertical_separator_log"
-                android:hint="@string/reg_nom"
-                tools:text="Nombre" />
+                android:layout_toRightOf="@+id/vertical_separator_log">
+                <TextView
+                    android:id="@+id/tvNomDispositivoTodosLog"
+                    style="@style/Base.TextAppearance.AppCompat.Body2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:textSize="20sp"
+                    android:layout_toEndOf="@+id/vertical_separator_log"
+                    android:layout_toRightOf="@+id/vertical_separator_log"
+                    android:hint="@string/reg_nom"
+                    tools:text="Nombre" />
 
-            <TextView
-                android:id="@+id/tvHabitDispositivoTodosLog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:textSize="20sp"
-                android:layout_toEndOf="@+id/vertical_separator_log"
-                android:layout_toRightOf="@+id/vertical_separator_log"
-                android:layout_below="@id/tvNomDispositivoTodosLog"
-                android:hint="@string/habitaci_n"
-                tools:text="@string/habitaci_n" />
+                <TextView
+                    android:id="@+id/tvHabitDispositivoTodosLog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:textSize="20sp"
+                    android:layout_toEndOf="@+id/vertical_separator_log"
+                    android:layout_toRightOf="@+id/vertical_separator_log"
+                    android:layout_below="@id/tvNomDispositivoTodosLog"
+                    android:hint="@string/habitaci_n"
+                    tools:text="@string/habitaci_n" />
 
-            <TextView
-                android:id="@+id/tvIdDispositivoTodos"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/tvNomDispositivoTodosLog"
-                android:layout_below="@+id/tvHabitDispositivoTodosLog"
-                android:hint="@string/Id"
-                tools:text="Id" />
-
+                <TextView
+                    android:id="@+id/tvIdDispositivoTodos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:textSize="20sp"
+                    android:layout_toEndOf="@+id/vertical_separator_log"
+                    android:layout_toRightOf="@+id/vertical_separator_log"
+                    android:layout_below="@id/tvNomDispositivoTodosLog"
+                    android:hint="@string/Id"
+                    tools:text="Id" />
+            </LinearLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

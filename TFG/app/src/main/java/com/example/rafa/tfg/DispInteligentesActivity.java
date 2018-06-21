@@ -31,6 +31,7 @@ public class DispInteligentesActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private Casa casa;
     private View mainView = null;
+    String tipoDisp;
     View emptyDisp;
 
     @Override
@@ -40,6 +41,7 @@ public class DispInteligentesActivity extends AppCompatActivity {
 
         /**Recuperamos datos del frament que venimos*/
         String dispActual = getIntent().getStringExtra(Constantes.CASA_ACTUAL);
+        tipoDisp = getIntent().getStringExtra(Constantes.TIPO_DISP);
         Gson gson = new Gson();
         casa = gson.fromJson(dispActual, Casa.class);
 
@@ -51,7 +53,16 @@ public class DispInteligentesActivity extends AppCompatActivity {
             dispositivosDataAdapter.setOnItemClickListener(new DispositivosDataAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DispositivosAdapter clickedAppointment) {
-                    Intent intent = new Intent(getApplicationContext(), InterruptorActivity.class);
+                    Intent intent = null;
+                    if(clickedAppointment.getTipo().equals(Constantes.DISP_INTERRUPTOR)){
+                        intent = new Intent(getApplicationContext(), InterruptorActivity.class);
+                    }else if(clickedAppointment.getTipo().equals(Constantes.DISP_CALEFACCION)){
+                        //intent = new Intent(getApplicationContext(), "Clase");
+
+                    }else if(clickedAppointment.getTipo().equals(Constantes.DISP_JARDINERIA)){
+                        //intent = new Intent(getApplicationContext(), "Clase");
+
+                    }
                     Gson gson = new Gson();
                     intent.putExtra(Constantes.DISP_SELECCIONADO, gson.toJson(clickedAppointment));
                     startActivity(intent);
@@ -63,7 +74,7 @@ public class DispInteligentesActivity extends AppCompatActivity {
             swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_dispositivos_inteligentes);
             swipeRefreshLayout.setRefreshing(true);
             RestInterface rest = RestImpl.getRestInstance();
-            Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(casa.getHomeUsu(), Constantes.DISP_INTERRUPTOR);
+            Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(casa.getHomeUsu(), tipoDisp);
             response.enqueue(new Callback<List<DispositivosAdapter>>() {
                 @Override
                 public void onResponse(Call<List<DispositivosAdapter>> call, Response<List<DispositivosAdapter>> response) {
@@ -96,7 +107,7 @@ public class DispInteligentesActivity extends AppCompatActivity {
                 if(casa != null){
                     swipeRefreshLayout.setRefreshing(true);
                     RestInterface rest = RestImpl.getRestInstance();
-                    Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(casa.getHomeUsu(), Constantes.DISP_INTERRUPTOR);
+                    Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(casa.getHomeUsu(), tipoDisp);
                     response.enqueue(new Callback<List<DispositivosAdapter>>() {
                         @Override
                         public void onResponse(Call<List<DispositivosAdapter>> call, Response<List<DispositivosAdapter>> response) {

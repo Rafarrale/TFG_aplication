@@ -1,5 +1,6 @@
 package com.example.rafa.tfg;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,9 +12,12 @@ import android.widget.ToggleButton;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.clases.Caracteristicas;
 import com.example.rafa.tfg.clases.Constantes;
+import com.example.rafa.tfg.clases.LogDispositivos;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,15 +47,16 @@ public class InterruptorActivity extends AppCompatActivity {
         nombre.setText(dispositivo.getName());
         habitacion.setText(dispositivo.getHabitacion());
         id.setText(dispositivo.get_id());
+
+        boton = findViewById(R.id.toggleButtonDisp);
         if(dispositivo.getCaracteristicas() != null){
             boton.setChecked(dispositivo.getCaracteristicas().isActiva());
         }
 
-        boton = findViewById(R.id.toggleButtonDisp);
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Conecta conecta = null;
                 if(dispositivo.getCaracteristicas() == null){
                     Caracteristicas caracteristicas = new Caracteristicas();
                     dispositivo.setCaracteristicas(caracteristicas);
@@ -59,12 +64,14 @@ public class InterruptorActivity extends AppCompatActivity {
                 if(boton.isChecked()){
                     Toast.makeText(InterruptorActivity.this, Constantes.ON, Toast.LENGTH_SHORT).show();
                     dispositivo.getCaracteristicas().setActiva(true);
-                    conecta(Constantes.ON);
+                    conecta = new Conecta(dispositivo);
+                    conecta.execute();
 
                 }else if(!boton.isChecked()){
                     Toast.makeText(InterruptorActivity.this, Constantes.OFF, Toast.LENGTH_SHORT).show();
                     dispositivo.getCaracteristicas().setActiva(false);
-                    conecta(Constantes.OFF);
+                    conecta = new Conecta(dispositivo);
+                    conecta.execute();
                 }
 
             }
@@ -72,21 +79,32 @@ public class InterruptorActivity extends AppCompatActivity {
 
     }
 
-    private void conecta(String mensaje){
-        RestInterface rest = RestImpl.getRestInstance();
-        Call<Void> call = rest.interruptorDispositivoCasa(dispositivo);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if(response.isSuccessful()){
-                    Log.i("Entregado", "Se entrego correctamente");
-                }
-            }
+    protected class Conecta extends AsyncTask<Void, Void, Boolean> {
+        private DispositivosAdapter dispositivo;
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(InterruptorActivity.this, "No se puedo realizar la operación", Toast.LENGTH_SHORT).show();
-            }
-        });
+        public Conecta(DispositivosAdapter dispositivo) {
+            this.dispositivo = dispositivo;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            RestInterface rest = RestImpl.getRestInstance();
+            Call<Void> call = rest.interruptorDispositivoCasa(dispositivo);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if(response.isSuccessful()){
+                        Log.i("Entregado", "Se entrego correctamente");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(InterruptorActivity.this, "No se puedo realizar la operación", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+            return null;
+        }
     }
 }

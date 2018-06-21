@@ -14,10 +14,13 @@ public class Constantes {
     public static  final String PREFS_TOKEN = "recordar_token";
     public static  final String PREFS_USUARIO = "recordar_usuario";
     public static  final String PREFS_CASAS = "recordar_casas";
+    public static  final String PREFS_NOTIFICACIONES = "recordar_notificaciones";
+
     public static  final String ESTADO_TOKEN = "estado_token";
     public static  final String ESTADO_BOTON = "estado_boton";
     public static  final String ESTADO_USUARIO = "datos_usuario";
     public static  final String ESTADO_CASAS = "datos_casas";
+    public static  final String ESTADO_NOTIFICACIONES = "datos_notificaciones";
     /*Fin preferencias*/
 
     /* Dispositivos de tipo aviso */
@@ -32,10 +35,12 @@ public class Constantes {
     public static  final String DISP_INTERRUPTOR_LABEL = "Interruptores";
     public static  final String DISP_CALEFACCION_LABEL = "Calefacción";
     public static  final String DISP_JARDINERIA_LABEL = "Jardinería";
+    public static  final String TIPO_DISP= "tipo_disp";
     /* Fin Dispositivos de tipo Control*/
 
     /*CONSTANTES PARA DIFERENCIAR TIPOS DE CLASES*/
     public static  final String TIPO_ALERT_DIALOG = "android.app.AlertDialog$Builder";
+    public static  final String TIPO_INTENT = "android.content.Intent";
     /*FIN CONSTANTES PARA DIFERENCIAR TIPOS DE CLASES*/
 
 

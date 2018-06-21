@@ -266,7 +266,7 @@ public class UsuariosActivity extends AppCompatActivity {
             ArrayList<usuAdapter> res = new ArrayList<usuAdapter>();
 
             RestInterface rest = RestImpl.getRestInstance();
-            Call<ArrayList<usuAdapter>> restUsu = rest.getTodosUsuarios(usuarioActual.getPassCasa().get(usuarioActual.getKeyToUse()).getKey()); //TODO
+            Call<ArrayList<usuAdapter>> restUsu = rest.getTodosUsuarios(usuarioActual.getPassCasa().get(usuarioActual.getKeyToUse()).getKey());
 
             try{
                 Response<ArrayList<usuAdapter>> responseUsuarios = restUsu.execute();

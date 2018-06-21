@@ -57,7 +57,7 @@ public class Registro extends AppCompatActivity {
                     RestInterface rest = RestImpl.getRestInstance();
                     Call<Void> restCheckUser = rest.compruebaUser(edt_usu.getText().toString());
                     final Call<Void> restCheckCredentials = rest.addUser(new usuAdapter(edt_usu.getText().toString(), edt_nombre.getText().toString(), edt_apellidos.getText().toString()
-                            , edt_pass.getText().toString(), edt_email.getText().toString(), Integer.parseInt(Constantes.PRIMERA_CERO), listaPass)); //TODO
+                            , edt_pass.getText().toString(), edt_email.getText().toString(), Integer.parseInt(Constantes.PRIMERA_CERO), listaPass));
                     restCheckUser.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {

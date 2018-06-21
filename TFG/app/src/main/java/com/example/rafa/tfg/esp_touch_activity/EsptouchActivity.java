@@ -33,8 +33,6 @@ import com.espressif.iot.esptouch.IEsptouchResult;
 import com.espressif.iot.esptouch.IEsptouchTask;
 import com.espressif.iot.esptouch.task.__IEsptouchTask;
 import com.espressif.iot.esptouch.util.EspAES;
-import com.example.rafa.tfg.DispositivosActivity;
-import com.example.rafa.tfg.MainActivity;
 import com.example.rafa.tfg.R;
 import com.example.rafa.tfg.Registro;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
@@ -42,7 +40,6 @@ import com.example.rafa.tfg.adapters.DispositivosDataAdapter;
 import com.example.rafa.tfg.adapters.DispositivosDataAdapterAnade;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Constantes;
-import com.example.rafa.tfg.fragments.DispositivosFragment;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 
@@ -53,8 +50,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.os.AsyncTask.Status.FINISHED;
 
 
 public class EsptouchActivity extends AppCompatActivity implements OnClickListener {

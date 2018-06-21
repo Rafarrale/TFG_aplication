@@ -120,6 +120,11 @@ public class LogDispActivity extends AppCompatActivity {
         muestraTipo(datosDispActual, tipo, dispositivosLogDataAdapter);
     }
 
+    public void onClickDispInterruptor(View view){
+        Object tipo = difTipoDisp(datosDispActual.getTipo(), this, true);
+        muestraTipo(datosDispActual, tipo, dispositivosLogDataAdapter);
+    }
+
     protected class actualizaLogDispositivo extends AsyncTask<Void, Void, List<LogDispositivos>>{
         private DispositivosAdapter dispositivo;
 
