@@ -54,8 +54,7 @@ public class Utilidades {
     public static boolean regresaMiCasaKey = false;
     private static boolean mAccion = false;
     private static List<DispositivosAdapter> listDisp;
-    public static Integer badge = 0;
-    public static List<NotificacionDispHora> listNotificaciones = new ArrayList<>();
+
 
 
     public static Object difTipoDisp(String tipo, Activity activity, boolean accion){

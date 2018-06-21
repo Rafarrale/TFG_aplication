@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.rafa.tfg.adapters.CasaAdapterIni;
 import com.example.rafa.tfg.adapters.CasaAdapterView;
+import com.example.rafa.tfg.adapters.NotificacionDispHora;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Configuracion;
 import com.example.rafa.tfg.clases.Constantes;
@@ -63,9 +65,11 @@ import retrofit2.Response;
 import static com.example.rafa.tfg.clases.Constantes.CASA_ACTUAL;
 import static com.example.rafa.tfg.clases.Constantes.ESPACIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_CASAS;
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_NOTIFICACIONES;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_TOKEN;
 import static com.example.rafa.tfg.clases.Constantes.GUARDADAS;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_CASAS;
+import static com.example.rafa.tfg.clases.Constantes.PREFS_NOTIFICACIONES;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_USUARIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
@@ -93,6 +97,7 @@ public class NavPrincActivity extends AppCompatActivity
     private Token token = new Token();
     private TextView contBadge;
     private ImageView imageBadge;
+    List<NotificacionDispHora> listNotificaciones;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,11 +131,32 @@ public class NavPrincActivity extends AppCompatActivity
                 new DrawerLayout.DrawerListener() {
                     @Override
                     public void onDrawerSlide(View drawerView, float slideOffset) {
+
+                        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NOTIFICACIONES, MODE_PRIVATE);
+                        listNotificaciones = new ArrayList<>();
+                        String auxShared = sharedPreferences.getString(ESTADO_NOTIFICACIONES, null);
+                        Integer nVistas = 0;
+                        if(auxShared != null){
+                            JSONArray jsonArray = null;
+                            try {
+                                jsonArray = new JSONArray(auxShared);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            Type listType = new TypeToken<ArrayList<NotificacionDispHora>>(){}.getType();
+                            listNotificaciones = new Gson().fromJson(String.valueOf(jsonArray), listType);
+                            for(int i = 0; i < listNotificaciones.size(); i++){
+                                if(!listNotificaciones.get(i).isVisto()){
+                                    nVistas++;
+                                }
+                            }
+                        }
                         // Respond when the drawer's position changes
-                        if (Utilidades.badge > 0) {
+                        if (nVistas > 0) {
                             contBadge.setVisibility(View.VISIBLE);
                             imageBadge.setVisibility(View.VISIBLE);
-                            contBadge.setText(String.valueOf(Utilidades.badge));
+                            contBadge.setText(String.valueOf(nVistas));
 
                         } else {
                             contBadge.setVisibility(View.GONE);
@@ -606,8 +632,10 @@ public class NavPrincActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_notificaciones) {
-            Utilidades.badge = VALUE_0;
             Intent intent = new Intent(NavPrincActivity.this, NotificacionesActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(Constantes.ESTADO_NOTIFICACIONES, (ArrayList<? extends Parcelable>) listNotificaciones);
+            intent.putExtras(bundle);
             startActivity(intent);
 
         } else if (id == R.id.nav_micasa) {
@@ -624,7 +652,7 @@ public class NavPrincActivity extends AppCompatActivity
             //Borra la caracteristica ESTADO_BOTON guardada anteriormente para cerrar sesion
             SharedPreferences settings = getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
             settings.edit().remove(ESTADO_BOTON).commit();
-            Intent intent = new Intent(NavPrincActivity.this,MainActivity.class);
+            Intent intent = new Intent(NavPrincActivity.this, MainActivity.class);
             startActivity(intent);
             NavPrincActivity.this.finish();
         }

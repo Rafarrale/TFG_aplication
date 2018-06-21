@@ -10,16 +10,23 @@ import com.example.rafa.tfg.adapters.NotificacionDispHora;
 import com.google.firebase.messaging.FirebaseMessagingService;
 
 
-import android.content.Intent;
+        import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
-import com.google.firebase.messaging.RemoteMessage;
+        import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+        import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -85,8 +92,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void MensajesNotificacionesActivity(String title, String message) {
-        /** Cambiamos el valor de la variable badge para el contador*/
-        Utilidades.badge++;
         String[] auxTitle;
         String[] auxMessage;
         String estado;
@@ -113,11 +118,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificacionDispHora.setName(sensor);
         notificacionDispHora.setHabitacion(habitacion);
         notificacionDispHora.setHora(hora);
+        notificacionDispHora.setVisto(false);
 
-        Utilidades.listNotificaciones.add(0, notificacionDispHora);
-        if(Utilidades.listNotificaciones.size() > 50){
-            Utilidades.listNotificaciones.remove(Utilidades.listNotificaciones.size() - 1);
+        List<NotificacionDispHora> listNotificaciones = new ArrayList<>();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NOTIFICACIONES, MODE_PRIVATE);
+        String auxShared = sharedPreferences.getString(ESTADO_NOTIFICACIONES, null);
+        if(auxShared != null){
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONArray(auxShared);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Type listType = new TypeToken<ArrayList<NotificacionDispHora>>(){}.getType();
+            listNotificaciones = new Gson().fromJson(String.valueOf(jsonArray), listType);
         }
+
+        listNotificaciones.add(0, notificacionDispHora);
+        if(listNotificaciones.size() > 50){
+            listNotificaciones.remove(listNotificaciones.size() - 1);
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        editor.putString(Constantes.ESTADO_NOTIFICACIONES,gson.toJson(listNotificaciones));
+        editor.apply();
     }
 
 }
