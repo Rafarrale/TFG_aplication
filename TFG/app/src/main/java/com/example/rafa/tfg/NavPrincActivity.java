@@ -1,15 +1,23 @@
 package com.example.rafa.tfg;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -50,7 +58,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import org.json.JSONException;
-import java.io.IOException;
+
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,6 +76,7 @@ import static com.example.rafa.tfg.clases.Constantes.ESPACIO;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_CASAS;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_NOTIFICACIONES;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_TOKEN;
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_URI_IMAGEN_NAV_HEADER;
 import static com.example.rafa.tfg.clases.Constantes.GUARDADAS;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_CASAS;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_NOTIFICACIONES;
@@ -75,10 +85,8 @@ import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_TOKEN;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_USUARIO;
-import static com.example.rafa.tfg.clases.Constantes.PRIMERA_CERO;
 import static com.example.rafa.tfg.clases.Constantes.PRINCIPAL;
 import static com.example.rafa.tfg.clases.Constantes.VALUE_0;
-import static com.example.rafa.tfg.clases.Constantes.VALUE_1;
 
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
@@ -98,6 +106,10 @@ public class NavPrincActivity extends AppCompatActivity
     private TextView contBadge;
     private ImageView imageBadge;
     List<NotificacionDispHora> listNotificaciones;
+    private static final int PICK_IMAGE = 100;
+    Uri imageUri;
+    ImageView foto_gallery;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -477,7 +489,54 @@ public class NavPrincActivity extends AppCompatActivity
 
         });
 
+        foto_gallery = findViewById(R.id.circle_image_nav_header);
+
+        CargaImagen cargaImagen = new CargaImagen(this);
+        cargaImagen.execute();
+
+        foto_gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            imageUri = data.getData();
+            Float rotacionOrigen = getImageRotation(imageUri, getApplicationContext());
+            Bitmap rotateBitmap = Utilidades.rotarImagen(imageUri, rotacionOrigen, this);
+            GuardaCargaImagen GuardaCargaImagen = new GuardaCargaImagen(rotateBitmap, this);
+            GuardaCargaImagen.execute();
+        }
+    }
+
+
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    public float getImageRotation(Uri path, Context context) {
+        try {
+            String[] projection = {MediaStore.Images.ImageColumns.ORIENTATION};
+
+            Cursor cursor = context.getContentResolver().query(path, projection, null, null, null);
+
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+            cursor.close();
+
+        } catch (Exception ex) {
+            return 0f;
+        }
+
+        return 0f;
     }
 
     public void añadeCasa(List<String> lista, final String valor){
@@ -665,6 +724,69 @@ public class NavPrincActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    protected class GuardaCargaImagen extends AsyncTask<Void, Void, String>{
+        private Bitmap imagen;
+        private Activity activity;
+
+        public GuardaCargaImagen(Bitmap imagen, Activity activity) {
+            this.imagen = imagen;
+            this.activity = activity;
+
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            imagen.compress(Bitmap.CompressFormat.WEBP, 0, baos); //bm is the bitmap object
+            byte[] b = baos.toByteArray();
+            String encoded = Base64.encodeToString(b, Base64.DEFAULT);
+
+            String auxIma =  (String)Utilidades.sharedPreferencesGet(activity, Constantes.PREFS_URI_IMAGEN_NAV_HEADER, Constantes.ESTADO_URI_IMAGEN_NAV_HEADER);
+            Map<String, String> saveImagen = new Gson().fromJson(auxIma, HashMap.class);
+            if(saveImagen == null){
+                saveImagen = new HashMap<>();
+            }
+            saveImagen.put(usuario.getNombre(), encoded);
+            Utilidades.sharedPreferencesSave(activity, Constantes.PREFS_URI_IMAGEN_NAV_HEADER, ESTADO_URI_IMAGEN_NAV_HEADER, saveImagen);
+            return encoded;
+        }
+
+        @Override
+        protected void onPostExecute(String encoded) {
+            foto_gallery.setImageBitmap(imagen);
+        }
+    }
+
+    protected class CargaImagen extends AsyncTask<Void, Void, Bitmap>{
+        private Activity activity;
+
+        public CargaImagen(Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... voids) {
+            String auxIma =  (String)Utilidades.sharedPreferencesGet(activity, Constantes.PREFS_URI_IMAGEN_NAV_HEADER, Constantes.ESTADO_URI_IMAGEN_NAV_HEADER);
+            Map<String, String> imagenes = new Gson().fromJson(auxIma, HashMap.class);
+            Bitmap bitmap = null;
+            if(imagenes != null){
+                String bytes = imagenes.get(usuario.getNombre());
+                if( bytes!= null){
+                    byte[] imageAsBytes = Base64.decode(bytes.getBytes(), Base64.DEFAULT);
+                    bitmap = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+                }
+            }
+            return bitmap;
+        }
+
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            foto_gallery.setImageBitmap(bitmap);
+        }
+    }
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {

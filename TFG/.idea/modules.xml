@@ -3,10 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TFG.iml" filepath="$PROJECT_DIR$/TFG.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TFG.iml" filepath="$PROJECT_DIR$/TFG.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/espTouch/esptouch.iml" filepath="$PROJECT_DIR$/espTouch/esptouch.iml" />
       <module fileurl="file://$PROJECT_DIR$/espTouch/esptouch.iml" filepath="$PROJECT_DIR$/espTouch/esptouch.iml" />
     </modules>
   </component>

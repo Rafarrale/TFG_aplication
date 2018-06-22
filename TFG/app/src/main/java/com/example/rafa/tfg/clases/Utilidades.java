@@ -2,7 +2,14 @@ package com.example.rafa.tfg.clases;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +29,7 @@ import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -150,5 +158,46 @@ public class Utilidades {
             intent.putExtra(Constantes.DISP_SELECCIONADO, gson.toJson(dispositivo));
             mActivity.startActivity(intent);
         }
+    }
+
+    /**
+     * Dada una uri de imagen se hace la rotacion con los grados pasados para devolver un Bitmap
+     * @param imageUri
+     * @param grados
+     * @param activity
+     * @return Bitmap
+     * @author Rafa
+     */
+    public static Bitmap rotarImagen(Uri imageUri, Float grados, Activity activity){
+        Matrix matrix = new Matrix();
+        matrix.postRotate(grados);
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), imageUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Bitmap rotateBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return rotateBitmap;
+    }
+
+    /**
+     * Guarda un dato en las shared preferences, CUIDADO en formato JSON
+     * @param activity
+     * @param prefs
+     * @param estado
+     * @param dato
+     */
+    public static void sharedPreferencesSave(Activity activity, String prefs, String estado, Object dato){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(prefs, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(estado, new Gson().toJson(dato));
+        editor.apply();
+    }
+
+    public static Object sharedPreferencesGet(Activity activity, String prefs, String estado){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(prefs, Context.MODE_PRIVATE);
+        Object res = sharedPreferences.getString(estado, null);
+        return res;
     }
 }

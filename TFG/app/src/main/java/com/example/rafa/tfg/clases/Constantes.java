@@ -15,12 +15,14 @@ public class Constantes {
     public static  final String PREFS_USUARIO = "recordar_usuario";
     public static  final String PREFS_CASAS = "recordar_casas";
     public static  final String PREFS_NOTIFICACIONES = "recordar_notificaciones";
+    public static  final String PREFS_URI_IMAGEN_NAV_HEADER = "uri_nav_header";
 
     public static  final String ESTADO_TOKEN = "estado_token";
     public static  final String ESTADO_BOTON = "estado_boton";
     public static  final String ESTADO_USUARIO = "datos_usuario";
     public static  final String ESTADO_CASAS = "datos_casas";
     public static  final String ESTADO_NOTIFICACIONES = "datos_notificaciones";
+    public static  final String ESTADO_URI_IMAGEN_NAV_HEADER = "datos_uri_nav_header";
     /*Fin preferencias*/
 
     /* Dispositivos de tipo aviso */
