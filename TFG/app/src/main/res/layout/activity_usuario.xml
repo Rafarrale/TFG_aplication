@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
+    android:background="@mipmap/background_usu_info_card"
     android:orientation="vertical"
     tools:context="com.example.rafa.tfg.Usuario">
 
@@ -69,6 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_gravity="center"
         android:paddingLeft="40dp"
         tools:context="com.example.rafa.tfg.Usuario">
 
@@ -82,7 +84,7 @@
             android:id="@+id/rbAdminUsuNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="180dp"
+            android:layout_marginLeft="130dp"
             android:text="@string/no" />
 
     </LinearLayout>

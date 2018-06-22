@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_usu_info"
+    android:orientation="vertical"
+    tools:context=".MiInformacionUsuarioActivity">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="102dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardUseCompatPadding="true">
+
+        <!-- Indicador de estado -->
+        <View
+            android:id="@+id/indicator_dispositivo_status"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#E0E0E0" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="8dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:background="@mipmap/background_usu_info_card"
+            android:paddingTop="8dp">
+
+
+            <!-- Imagen de perfil -->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circle_image_nav_header_usuario_info"
+                android:layout_width="@dimen/perfil_image_size"
+                android:layout_height="@dimen/perfil_image_size"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/background_disp"
+                app:border_color="@android:color/white"
+                app:border_width="1dp" />
+
+
+            <View
+                android:id="@+id/vertical_separator"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="12dp"
+                android:layout_toEndOf="@+id/circle_image_nav_header_usuario_info"
+                android:background="#E0E0E0" />
+
+            <TextView
+                android:id="@+id/tvNomUsuarioInfo"
+                style="@style/Base.TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/vertical_separator"
+                android:layout_toRightOf="@+id/vertical_separator"
+                tools:text="Nombre" />
+
+            <TextView
+                android:id="@+id/tvApellidosUsuarioInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/tvNomUsuarioInfo"
+                android:layout_below="@+id/tvNomUsuarioInfo"
+                tools:text="Apellidos" />
+
+            <TextView
+                android:id="@+id/tvUsuarioClaveActual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/tvApellidosUsuarioInfo"
+                android:layout_below="@+id/tvApellidosUsuarioInfo"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="Clave Casa actual" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvUsuarioInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvApellidosUsuarioInfo"
+            android:layout_below="@+id/tvApellidosUsuarioInfo"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Usuario" />
+
+        <TextView
+            android:id="@+id/tvAdminInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:layout_alignStart="@+id/tvApellidosUsuarioInfo"
+            android:layout_below="@+id/tvApellidosUsuarioInfo"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Admin" />
+
+        <TextView
+            android:id="@+id/tvEmailInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:layout_alignStart="@+id/tvApellidosUsuarioInfo"
+            android:layout_below="@+id/tvApellidosUsuarioInfo"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Email" />
+
+        <TextView
+            android:id="@+id/tvContraseñaInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:layout_alignStart="@+id/tvApellidosUsuarioInfo"
+            android:layout_below="@+id/tvApellidosUsuarioInfo"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Contraseña acceso" />
+    </LinearLayout>
+
+</LinearLayout>

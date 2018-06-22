@@ -59,7 +59,7 @@ public class NotificacionesActivity extends AppCompatActivity {
         editor.apply();
 
 
-        /** Añade las claves del usuario */
+
         notificacionesAdapter = new NoficacionesAdapter(listNotificaciones, NotificacionesActivity.this);
         notificacionesRecycler.setAdapter(notificacionesAdapter);
         notificacionesRecycler.setLayoutManager(new LinearLayoutManager(NotificacionesActivity.this, LinearLayoutManager.VERTICAL, false));

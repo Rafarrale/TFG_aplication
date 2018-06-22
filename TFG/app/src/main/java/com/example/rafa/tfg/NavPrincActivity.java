@@ -234,6 +234,7 @@ public class NavPrincActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         //actualizaToken(); //TODO actualizar token?¿
+        //TODO actualizar estado alarma
         if(usuario.getPassCasa().size() == VALUE_0){
             Intent intent = new Intent(NavPrincActivity.this, MiCasaActivity.class);
             startActivity(intent);
@@ -489,17 +490,27 @@ public class NavPrincActivity extends AppCompatActivity
 
         });
 
+        /**Carga de imagen navUsuario e Informacion usuario*/
         foto_gallery = findViewById(R.id.circle_image_nav_header);
-
         CargaImagen cargaImagen = new CargaImagen(this);
         cargaImagen.execute();
 
         foto_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGallery();
+                Intent intent = new Intent(NavPrincActivity.this, MiInformacionUsuarioActivity.class);
+                startActivity(intent);
             }
         });
+
+        foto_gallery.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                openGallery();
+                return true;
+            }
+        });
+        /***/
 
         return true;
     }

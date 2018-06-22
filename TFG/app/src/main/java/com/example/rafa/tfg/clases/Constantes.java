@@ -55,11 +55,15 @@ public class Constantes {
     public static final String DESARMAR = "desarmar";
     public static final String ARMAR = "armar";
     public static final String CASA = "casa";
+    public static final String CASA_LABEL = "Casa";
     public static final String DISPOSITIVOS = "dispositivos";
     public static final String ALARMA = "alarma";
     public static final String USUARIO = "Usuario";
     public static final String NOMBRE = "Nombre";
+    public static final String APELLIDOS = "Apellidos";
     public static final String PASSWORD = "Password";
+    public static final String CONTRASEÑA_ACCESO = "Contraseña acceso";
+    public static final String CLAVE_CASA = "Clave Casa actual";
     public static final String ADMIN = "Admin";
     public static final String EMAIL = "Email";
     public static final String SI = "si";

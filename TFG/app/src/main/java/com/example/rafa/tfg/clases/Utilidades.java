@@ -195,6 +195,13 @@ public class Utilidades {
         editor.apply();
     }
 
+    /**
+     * Se necesita hacer un casting del tipo de dato que se espera devolver para que funcione correctamente
+     * @param activity
+     * @param prefs
+     * @param estado
+     * @return
+     */
     public static Object sharedPreferencesGet(Activity activity, String prefs, String estado){
         SharedPreferences sharedPreferences = activity.getSharedPreferences(prefs, Context.MODE_PRIVATE);
         Object res = sharedPreferences.getString(estado, null);

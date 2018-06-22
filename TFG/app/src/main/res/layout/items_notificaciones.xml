@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardUseCompatPadding="true">
@@ -19,7 +19,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="78dp"
+        android:layout_height="90dp"
         android:paddingBottom="8dp"
         android:paddingEnd="16dp"
         android:paddingLeft="16dp"
@@ -55,11 +55,20 @@
             tools:text="Nombre" />
 
         <TextView
-            android:id="@+id/tvIdHoraNotificacionDisp"
+            android:id="@+id/tvCasaNotificacionDisp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/tvNomDispositivoNotificacion"
             android:layout_below="@+id/tvNomDispositivoNotificacion"
+            tools:text="Casa" />
+
+
+        <TextView
+            android:id="@+id/tvIdHoraNotificacionDisp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvCasaNotificacionDisp"
+            android:layout_below="@+id/tvCasaNotificacionDisp"
             tools:text="Hora" />
 
         <TextView

@@ -53,6 +53,13 @@ public class NoficacionesAdapter extends RecyclerView.Adapter<NoficacionesAdapte
 
         holder.nombre.setText(nombre);
 
+        StringBuilder casa = new StringBuilder();
+        casa.append(Constantes.CASA_LABEL);
+        casa.append(Constantes.DOS_PUNTOS_ESPACIO);
+        casa.append(appointment.getCasa());
+
+        holder.casa.setText(casa);
+
         StringBuilder hora = new StringBuilder();
         hora.append(Constantes.HORA);
         hora.append(Constantes.DOS_PUNTOS_ESPACIO);
@@ -77,6 +84,7 @@ public class NoficacionesAdapter extends RecyclerView.Adapter<NoficacionesAdapte
         public TextView nombre;
         public TextView hora;
         public TextView estado;
+        public TextView casa;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -84,6 +92,7 @@ public class NoficacionesAdapter extends RecyclerView.Adapter<NoficacionesAdapte
             nombre = itemView.findViewById(R.id.tvNomDispositivoNotificacion);
             hora = itemView.findViewById(R.id.tvIdHoraNotificacionDisp);
             estado = itemView.findViewById(R.id.tvDispEstadoNotificacion);
+            casa = itemView.findViewById(R.id.tvCasaNotificacionDisp);
 
             itemView.setOnClickListener(this);
         }
