@@ -16,7 +16,7 @@ public class RestImpl {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
                 .create();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.102:8000").addConverterFactory(GsonConverterFactory.create(gson))
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.104:8000").addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         RestInterface rest = retrofit.create(RestInterface.class);
         return rest;
