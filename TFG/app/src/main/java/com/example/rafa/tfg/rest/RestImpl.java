@@ -1,5 +1,6 @@
 package com.example.rafa.tfg.rest;
 
+import com.example.rafa.tfg.clases.CustomTrust;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -23,13 +24,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestImpl {
 
     public static RestInterface getRestInstance(){
-        OkHttpClient okHttpClient = getUnsafeOkHttpClient();
+        //OkHttpClient okHttpClient = getUnsafeOkHttpClient();
+        CustomTrust customTrust = new CustomTrust();
+
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
                 .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://192.168.1.104:4433")
-                .client(okHttpClient)
+                .client(customTrust.getClient())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         RestInterface rest = retrofit.create(RestInterface.class);
