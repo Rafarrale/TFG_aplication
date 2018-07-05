@@ -180,9 +180,9 @@ public void activaBoton(Integer v){
                 case R.id.card1:
                     if(vale1 == 0) {
                         card1.setBackgroundColor(Color.parseColor("#8C7C4DFF"));
-                        card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card2.setBackgroundColor(Color.parseColor("#80fcfcfc"));
+                        card3.setBackgroundColor(Color.parseColor("#80fcfcfc"));
+                        card5.setBackgroundColor(Color.parseColor("#80fcfcfc"));
                         vale1 = 1;
                         vale2 = 0;
                         vale3 = 0;
@@ -192,7 +192,7 @@ public void activaBoton(Integer v){
 
                     }else{
                         if(vale1 != 1){
-                            card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                            card1.setBackgroundColor(Color.parseColor("#80fcfcfc"));
                             vale1 = 0;
                         }
                     }
@@ -204,9 +204,9 @@ public void activaBoton(Integer v){
 
                     if(vale2 == 0) {
                         card2.setBackgroundColor(Color.parseColor("#8CFF4081"));
-                        card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card1.setBackgroundColor(Color.parseColor("#80fcfcfc"));
+                        card3.setBackgroundColor(Color.parseColor("#80fcfcfc"));
+                        card5.setBackgroundColor(Color.parseColor("#80fcfcfc"));
                         vale2 = 1;
                         vale1 = 0;
                         vale3 = 0;
@@ -215,7 +215,7 @@ public void activaBoton(Integer v){
                         casaTask.execute();
                     }else{
                         if(vale2 != 1){
-                            card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                            card2.setBackgroundColor(Color.parseColor("#80fcfcfc"));
                             vale2 = 0;
                         }
                     }
@@ -230,9 +230,9 @@ public void activaBoton(Integer v){
                     if(vale3 == 0) {
                         card3.setBackgroundColor(Color.parseColor("#8C00BFA5"));
                         //i = new Intent(PrincipalActivity.this,sensorActivity.class);
-                        card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card2.setBackgroundColor(Color.parseColor("#80fcfcfc"));
+                        card1.setBackgroundColor(Color.parseColor("#80fcfcfc"));
+                        card5.setBackgroundColor(Color.parseColor("#80fcfcfc"));
                         vale3 = 1;
                         vale1 = 0;
                         vale2 = 0;
@@ -241,7 +241,7 @@ public void activaBoton(Integer v){
                         casaTask.execute();
                     }else{
                         if(vale3 != 1){
-                            card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                            card3.setBackgroundColor(Color.parseColor("#80fcfcfc"));
                             vale3 = 0;
                         }
                     }
@@ -256,9 +256,9 @@ public void activaBoton(Integer v){
 
                     if(vale5 == 0) {
                         card5.setBackgroundColor(Color.parseColor("#8CFA0008"));
-                        card2.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        card3.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        card1.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        card2.setBackgroundColor(Color.parseColor("#80fcfcfc"));
+                        card3.setBackgroundColor(Color.parseColor("#80fcfcfc"));
+                        card1.setBackgroundColor(Color.parseColor("#80fcfcfc"));
                         vale5 = 1;
                         vale1 = 0;
                         vale3 = 0;
@@ -267,7 +267,7 @@ public void activaBoton(Integer v){
                         casaTask.execute();
                     }else{
                         if(vale5 != 1){
-                            card5.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                            card5.setBackgroundColor(Color.parseColor("#80fcfcfc"));
                             vale5 = 0;
                         }
                     }

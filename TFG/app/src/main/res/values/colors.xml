@@ -13,4 +13,5 @@
     <color name="deepOrange">#ff8C00</color>
     <color name="deepVerde">#00FF80</color>
     <color name="deepNegro">#000000</color>
+    <color name="backCard">#80fcfcfc</color>
 </resources>
