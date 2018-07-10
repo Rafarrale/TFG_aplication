@@ -76,6 +76,7 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mi_casa);
+        getSupportActionBar().setTitle(R.string.Claves);
         /** Editor usuario*/
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_USUARIO, MODE_PRIVATE);
         editor = sharedPreferences.edit();

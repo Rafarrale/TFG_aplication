@@ -35,6 +35,7 @@ public class InterruptorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interruptor);
+        getSupportActionBar().setTitle(R.string.accion);
 
         Gson gson = new Gson();
         String disp = getIntent().getStringExtra(Constantes.DISP_SELECCIONADO);

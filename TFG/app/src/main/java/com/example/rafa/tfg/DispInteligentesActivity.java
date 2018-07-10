@@ -38,6 +38,7 @@ public class DispInteligentesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_disp_inteligentes);
+        getSupportActionBar().setTitle(R.string.interruptores);
 
         /**Recuperamos datos del frament que venimos*/
         String dispActual = getIntent().getStringExtra(Constantes.CASA_ACTUAL);

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TFG</string>
+    <string name="app_name">Mi Casa</string>
     <string name="log_usu">Usuario</string>
     <string name="log_cod_casa">Código Seguridad Casa</string>
     <string name="log">Login</string>
@@ -43,7 +43,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Acerca de</string>
     <string name="hello_blank_fragment">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="introduzca_aqu_el_nombre_de_su_casa">Introduzca aquí el nombre de su Casa</string>
@@ -106,5 +106,14 @@
     <string name="comun_cate">Comunícate</string>
     <string name="sesi_n">Sesión</string>
     <string name="desea_darle_valores_nuevos">¿Desea darle valores nuevos?</string>
+    <string name="Usuarios">Usuarios</string>
+    <string name="Principal">Principal</string>
+    <string name="Notificaciones">Notificaciones</string>
+    <string name="Claves">Claves</string>
+    <string name="MisDatos">Mis Datos</string>
+    <string name="Disp">Dispositivo</string>
+    <string name="conexGestion">Conexión y Gestión</string>
+    <string name="accion">Acción</string>
+    <string name="interruptores">Interruptores</string>
 
 </resources>

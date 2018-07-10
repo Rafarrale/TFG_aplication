@@ -51,6 +51,8 @@ public class UsuariosActivity extends AppCompatActivity {
         Gson gson = new Gson();
         usuarioActual = gson.fromJson(userJson, usuAdapter.class);
         setContentView(R.layout.content_usuarios);
+        getSupportActionBar().setTitle(R.string.Usuarios);
+
         //Inicialización RecyclerView
         mUsuariosRecycler = findViewById(R.id.recyclerUsuarios);
 

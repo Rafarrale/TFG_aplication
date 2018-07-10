@@ -117,7 +117,7 @@ public class NavPrincActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle(R.string.Principal);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +136,7 @@ public class NavPrincActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         /**Responder ante la apertura y cierre del navegation View*/
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -679,7 +680,9 @@ public class NavPrincActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            AlertDialog.Builder builder= new AlertDialog.Builder(NavPrincActivity.this);
+            builder.setMessage("Aplicación diseñada por:\nRafael Arroyo Alemán,\nAlumno de Ingeniería Informática de Computadores por la Universidad de Sevilla");
+            builder.show();
         }
 
         return super.onOptionsItemSelected(item);

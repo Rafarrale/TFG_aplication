@@ -36,6 +36,7 @@ public class MiInformacionUsuarioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mi_informacion_usuario);
+        getSupportActionBar().setTitle(R.string.MisDatos);
 
         String auxUsuario = (String)Utilidades.sharedPreferencesGet(this, Constantes.PREFS_USUARIO, Constantes.ESTADO_USUARIO);
         CargaImagen cargaImagen = new CargaImagen(this);

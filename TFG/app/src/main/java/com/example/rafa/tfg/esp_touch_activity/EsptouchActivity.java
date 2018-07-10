@@ -110,6 +110,7 @@ public class EsptouchActivity extends AppCompatActivity implements OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.esptouch_activity);
+        getSupportActionBar().setTitle(R.string.conexGestion);
 
         mWifiAdmin = new EspWifiAdminSimple(this);
         mTvApSsid = findViewById(R.id.tvApSssidConnected);

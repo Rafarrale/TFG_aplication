@@ -44,6 +44,8 @@ public class LogDispActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_disp);
 
+        getSupportActionBar().setTitle(R.string.Disp);
+
         Bundle bundle = getIntent().getExtras();
         datosDispActual = bundle.getParcelable(DISP_SELECCIONADO);
 
