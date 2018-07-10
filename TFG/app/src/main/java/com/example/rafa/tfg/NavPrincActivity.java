@@ -574,7 +574,7 @@ public class NavPrincActivity extends AppCompatActivity
                 if(response.isSuccessful()){
                     Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
                     fListCasas.add(new Casa(valor));
-                    fListCasasRes.put(0, fListCasas);
+                    fListCasasRes.put(1, fListCasas);
 
                     SharedPreferences sharedPreferences = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
