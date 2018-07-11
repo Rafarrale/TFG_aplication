@@ -115,5 +115,6 @@
     <string name="conexGestion">Conexión y Gestión</string>
     <string name="accion">Acción</string>
     <string name="interruptores">Interruptores</string>
+    <string name="acercaDe">Aplicación diseñada por: Rafael Arroyo Alemán, Alumno de Ingeniería Informática de Computadores por la Universidad de Sevilla</string>
 
 </resources>

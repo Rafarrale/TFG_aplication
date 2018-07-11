@@ -60,6 +60,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -234,8 +235,7 @@ public class NavPrincActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        //actualizaToken(); //TODO actualizar token?¿
-        //TODO actualizar estado alarma
+        actualizaToken();
         if(usuario.getPassCasa().size() == VALUE_0){
             Intent intent = new Intent(NavPrincActivity.this, MiCasaActivity.class);
             startActivity(intent);
@@ -247,6 +247,16 @@ public class NavPrincActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         Utilidades.iniciaAplicacion = false;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     public void recuperaDatosExtraFromMainActivity() {
@@ -681,7 +691,7 @@ public class NavPrincActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             AlertDialog.Builder builder= new AlertDialog.Builder(NavPrincActivity.this);
-            builder.setMessage("Aplicación diseñada por:\nRafael Arroyo Alemán,\nAlumno de Ingeniería Informática de Computadores por la Universidad de Sevilla");
+            builder.setMessage(R.string.acercaDe);
             builder.show();
         }
 
@@ -800,7 +810,6 @@ public class NavPrincActivity extends AppCompatActivity
             foto_gallery.setImageBitmap(bitmap);
         }
     }
-
 
     @Override
     public void onFragmentInteraction(Uri uri) {

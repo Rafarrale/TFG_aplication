@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.rafa.tfg.DispositivosActivity;
 import com.example.rafa.tfg.NavPrincActivity;
@@ -47,6 +49,7 @@ public class SeleccionAlarmaFragment extends Fragment implements View.OnClickLis
     usuAdapter recibeUsu = new usuAdapter();
     Map<Integer, List<Casa>> fListCasasRes = new HashMap<Integer, List<Casa>>();
     List<Casa> listCasasRes = new ArrayList<>();
+    int pulsadorAlarma = 0;
     private NavPrincActivity navPrincActivity;
 
 
@@ -253,8 +256,18 @@ public void activaBoton(Integer v){
                     break;
 
                 case R.id.card5:
+                    new CountDownTimer(1000, 1000) {
 
-                    if(vale5 == 0) {
+                        public void onTick(long millisUntilFinished) {
+                        }
+                        public void onFinish() {
+                            pulsadorAlarma = 0;
+                        }
+                    }.start();
+
+                    pulsadorAlarma = pulsadorAlarma + 1;
+                    if(vale5 == 0 && pulsadorAlarma == 2) {
+                        Toast.makeText(navPrincActivity, "Alarma Activada", Toast.LENGTH_SHORT).show();
                         card5.setBackgroundColor(Color.parseColor("#8CFA0008"));
                         card2.setBackgroundColor(Color.parseColor("#80fcfcfc"));
                         card3.setBackgroundColor(Color.parseColor("#80fcfcfc"));
