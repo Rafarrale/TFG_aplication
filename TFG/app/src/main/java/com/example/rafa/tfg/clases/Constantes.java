@@ -28,6 +28,7 @@ public class Constantes {
     /* Dispositivos de tipo aviso */
     public static  final String DISP_CONTACTO = "contacto";
     public static  final String DISP_TODOS = "todos";
+    public static  final String DISP_CAMARA = "camara";
     /* Fin Dispositivos de tipo aviso */
 
     /* Dispositivos de tipo Control*/
@@ -89,6 +90,7 @@ public class Constantes {
     public static final String SUCESO = "Suceso";
     public static final String ON = "on";
     public static final String OFF = "off";
+    public static final String CAMARA = "Cámara";
 
 
     /* Constantes numericas */

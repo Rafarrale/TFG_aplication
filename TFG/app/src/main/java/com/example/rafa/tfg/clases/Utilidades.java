@@ -39,6 +39,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.rafa.tfg.clases.Constantes.DISP_CALEFACCION;
+import static com.example.rafa.tfg.clases.Constantes.DISP_CAMARA;
 import static com.example.rafa.tfg.clases.Constantes.DISP_CONTACTO;
 import static com.example.rafa.tfg.clases.Constantes.DISP_INTERRUPTOR;
 import static com.example.rafa.tfg.clases.Constantes.DISP_JARDINERIA;
@@ -69,7 +70,7 @@ public class Utilidades {
         Object res = null;
         mActivity = activity;
         mAccion = accion;
-        if(tipo.equals(DISP_CONTACTO)){
+        if(tipo.equals(DISP_CONTACTO) || tipo.equals(DISP_CAMARA)){
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             mView = activity.getLayoutInflater().inflate(R.layout.item_actualiza_dispositivo, null);
             builder.setView(mView);
@@ -98,7 +99,7 @@ public class Utilidades {
 
 
         if(objTipo.getClass().getName().equals(TIPO_ALERT_DIALOG) && !mAccion && (dispositivo.getTipo().equals(DISP_CONTACTO) || dispositivo.getTipo().equals(DISP_INTERRUPTOR)
-                || dispositivo.getTipo().equals(DISP_JARDINERIA))){
+                || dispositivo.getTipo().equals(DISP_JARDINERIA) || dispositivo.getTipo().equals(DISP_CAMARA))){
 
             AlertDialog.Builder builder = (AlertDialog.Builder)objTipo;
             final AlertDialog alertDialog = builder.create();

@@ -32,7 +32,7 @@ public class RestImpl {
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://192.168.1.104:4433")
+                .baseUrl("https://192.168.2.20:4433")
                 .client(customTrust.getClient())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();

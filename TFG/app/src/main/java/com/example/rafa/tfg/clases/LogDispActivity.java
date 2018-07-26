@@ -113,7 +113,8 @@ public class LogDispActivity extends AppCompatActivity {
      * y posteriormente en muestra tipo mostramos la accion a realizar
      * que puede ser ej:
      *              contacto --> solo actualizamos
-     *              interruptor --> actualizamos y accionamos*
+     *              interruptor --> actualizamos y accionamos
+     *              camara --> solo actualizamos
      * @param view
      * @author Rafael
      */

@@ -67,7 +67,11 @@
         <activity android:name=".JardineriaActivity" />
         <activity android:name=".CalefaccionActivity" />
         <activity android:name=".DispInteligentesActivity" />
-        <activity android:name=".MiInformacionUsuarioActivity"></activity>
+        <activity android:name=".MiInformacionUsuarioActivity" />
+        <activity
+            android:name=".CamaraActivity"
+            android:label="@string/title_activity_camara"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

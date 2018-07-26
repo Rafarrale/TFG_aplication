@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="142dp"
+    app:cardBackgroundColor="@color/backCard"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardUseCompatPadding="true">
+
+    <!-- Indicador de estado -->
+    <View
+        android:id="@+id/indicator_dispositivo_status"
+        android:layout_width="8dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#E0E0E0" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp">
+
+        <ImageView
+            android:id="@+id/imageViewUsuarios"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_photo_camera_black_24dp" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tvNomDispositivoTodos"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_launch_black_24dp" />
+
+        <View
+            android:id="@+id/vertical_separator"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@+id/imageViewUsuarios"
+            android:background="#E0E0E0" />
+
+        <TextView
+            android:id="@+id/tvNomCamara"
+            style="@style/Base.TextAppearance.AppCompat.Body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/vertical_separator"
+            android:layout_toRightOf="@+id/vertical_separator"
+            tools:text="Nombre" />
+
+        <TextView
+            android:id="@+id/tvIdCamara"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvNomCamara"
+            android:layout_below="@+id/tvNomCamara"
+            tools:text="Id" />
+
+        <TextView
+            android:id="@+id/tvDispHabitCamara"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvIdCamara"
+            android:layout_below="@+id/tvIdCamara"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Habitación" />
+
+        <TextView
+            android:id="@+id/tvDispTipoCamara"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvDispHabitCamara"
+            android:layout_below="@+id/tvDispHabitCamara"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Tipo" />
+
+
+        <TextView
+            android:id="@+id/tvDispEstadoCamara"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvDispTipoCamara"
+            android:layout_below="@+id/tvDispTipoCamara"
+            tools:text="Estado" />
+
+        <TextView
+            android:id="@+id/tvDispBatCamara"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvDispEstadoCamara"
+            android:layout_below="@+id/tvDispEstadoCamara"
+            tools:text="Bateria" />
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

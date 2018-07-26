@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.example.rafa.tfg.adapters.CasaAdapterIni;
 import com.example.rafa.tfg.adapters.CasaAdapterView;
+import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.NotificacionDispHora;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Configuracion;
@@ -47,6 +48,7 @@ import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.SharedPrefManager;
 import com.example.rafa.tfg.clases.Token;
 import com.example.rafa.tfg.clases.Utilidades;
+import com.example.rafa.tfg.fragments.CamaraFragment;
 import com.example.rafa.tfg.fragments.SeleccionAlarmaFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.DispositivosFragment;
@@ -60,7 +62,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,7 +92,7 @@ import static com.example.rafa.tfg.clases.Constantes.VALUE_0;
 
 public class NavPrincActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
-        SeleccionAlarmaFragment.OnFragmentInteractionListener,ContenedorFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener{
+        SeleccionAlarmaFragment.OnFragmentInteractionListener,ContenedorFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener, CamaraFragment.OnListFragmentInteractionListener{
 
     private List<Casa> fListCasas = new ArrayList<>();
     private Map<Integer, List<Casa>> fListCasasRes = new HashMap<Integer, List<Casa>>();
@@ -227,7 +228,7 @@ public class NavPrincActivity extends AppCompatActivity
             }
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
-                Log.e("Error", "No se pudo actualizar el token en BBDD");
+                Log.i("Error", "Token actualizado en BBDD");
             }
         });
     }
@@ -747,6 +748,13 @@ public class NavPrincActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onListFragmentInteraction(DispositivosAdapter item) {
+        Intent intent = new Intent(NavPrincActivity.this, CamaraActivity.class);
+        intent.putExtra(Constantes.DISP_SELECCIONADO, new Gson().toJson(item));
+        startActivity(intent);
     }
 
     protected class GuardaCargaImagen extends AsyncTask<Void, Void, String>{
