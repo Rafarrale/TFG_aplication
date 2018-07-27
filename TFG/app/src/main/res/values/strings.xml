@@ -117,5 +117,6 @@
     <string name="interruptores">Interruptores</string>
     <string name="acercaDe">Aplicación diseñada por: Rafael Arroyo Alemán, Alumno de Ingeniería Informática de Computadores por la Universidad de Sevilla</string>
     <string name="title_activity_camara">CamaraActivity</string>
+    <string name="galer_a">Galería</string>
 
 </resources>

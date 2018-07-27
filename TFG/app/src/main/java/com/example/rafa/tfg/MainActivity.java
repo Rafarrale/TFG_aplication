@@ -1,5 +1,6 @@
 package com.example.rafa.tfg;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -8,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             MainActivity.this.finish();
         }
+
 
         //Metodo OnClickListener Registrar
         btn_registrar = findViewById(R.id.btn_registrar);

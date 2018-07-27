@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -60,17 +62,26 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".MiCasaActivity" />
-        <activity android:name=".NotificacionesActivity" />
-        <activity android:name=".clases.LogDispActivity" />
-        <activity android:name=".InterruptorActivity" />
-        <activity android:name=".JardineriaActivity" />
-        <activity android:name=".CalefaccionActivity" />
-        <activity android:name=".DispInteligentesActivity" />
-        <activity android:name=".MiInformacionUsuarioActivity" />
+        <activity android:name=".MiCasaActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".NotificacionesActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".clases.LogDispActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".InterruptorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".JardineriaActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CalefaccionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DispInteligentesActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MiInformacionUsuarioActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".CamaraActivity"
             android:label="@string/title_activity_camara"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

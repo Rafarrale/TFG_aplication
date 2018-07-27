@@ -6,6 +6,13 @@ package com.example.rafa.tfg.clases;
 
 public class Constantes {
 
+    /* Valores */
+    public static final String URL_CAMARA = "https://192.168.2.20:5000/";
+    public static final String URL_USER = "Rafa";
+    public static final String URL_PASS = "BeNq_42?";
+
+    /* Fin Valores */
+
     public static final String añadirCasa = "Añadir Casa";
     public static  final String eliminarCasa = "Eliminar Casa";
 
