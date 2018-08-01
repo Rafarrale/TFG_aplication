@@ -72,6 +72,7 @@ public class Constantes {
     public static final String PASSWORD = "Password";
     public static final String CONTRASEÑA_ACCESO = "Contraseña acceso";
     public static final String CLAVE_CASA = "Clave Casa actual";
+    public static final String CLAVE_USUARIO_ACTUAL = "Clave usuario actual";
     public static final String ADMIN = "Admin";
     public static final String EMAIL = "Email";
     public static final String SI = "si";

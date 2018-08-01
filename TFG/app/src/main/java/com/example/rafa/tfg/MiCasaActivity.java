@@ -63,6 +63,7 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
     Button btn_elimina_clave;
     EditText edt_nuevaClave;
     TextView tvMiCasa;
+    TextView tvMiClave;
     Spinner spinner;
     List<CasaPass> auxListPassCasa = new ArrayList<>();
     SharedPreferences.Editor editor;
@@ -85,13 +86,16 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
         btn_reg_clave = findViewById(R.id.bt_reg_clave);
         btn_elimina_clave = findViewById(R.id.bt_elimina_clave);
         tvMiCasa = findViewById(R.id.tvMiCasa);
+        tvMiClave = findViewById(R.id.tvMiClave);
         spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, bankDatos);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         String casaActual = getIntent().getStringExtra(Constantes.CASA_ACTUAL);
+        String claveActual = getIntent().getStringExtra(Constantes.CLAVE_USUARIO_ACTUAL);
         tvMiCasa.setText(casaActual);
+        tvMiClave.setText(claveActual);
     }
 
     public void recuperaDatos(){

@@ -38,7 +38,7 @@
             android:id="@+id/iconHome3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
+            android:layout_marginLeft="100dp"
             app:srcCompat="@drawable/ic_home_black_menu_24dp" />
     </LinearLayout>
     <LinearLayout
@@ -54,7 +54,7 @@
 
         <TextView
             android:id="@+id/textView7"
-            android:layout_marginLeft="150dp"
+            android:layout_marginLeft="100dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/key_2" />

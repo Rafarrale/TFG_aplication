@@ -14,20 +14,20 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.util.Base64;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -42,6 +42,7 @@ import com.example.rafa.tfg.adapters.CasaAdapterIni;
 import com.example.rafa.tfg.adapters.CasaAdapterView;
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.adapters.NotificacionDispHora;
+import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.clases.Casa;
 import com.example.rafa.tfg.clases.Configuracion;
 import com.example.rafa.tfg.clases.Constantes;
@@ -49,15 +50,15 @@ import com.example.rafa.tfg.clases.SharedPrefManager;
 import com.example.rafa.tfg.clases.Token;
 import com.example.rafa.tfg.clases.Utilidades;
 import com.example.rafa.tfg.fragments.CamaraFragment;
-import com.example.rafa.tfg.fragments.SeleccionAlarmaFragment;
 import com.example.rafa.tfg.fragments.ContenedorFragment;
 import com.example.rafa.tfg.fragments.DispositivosFragment;
 import com.example.rafa.tfg.fragments.RojoFragment;
-import com.example.rafa.tfg.adapters.usuAdapter;
+import com.example.rafa.tfg.fragments.SeleccionAlarmaFragment;
 import com.example.rafa.tfg.rest.RestImpl;
 import com.example.rafa.tfg.rest.RestInterface;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -74,19 +75,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.rafa.tfg.clases.Constantes.CASA_ACTUAL;
+import static com.example.rafa.tfg.clases.Constantes.CLAVE_USUARIO_ACTUAL;
 import static com.example.rafa.tfg.clases.Constantes.ESPACIO;
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_CASAS;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_NOTIFICACIONES;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_TOKEN;
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_URI_IMAGEN_NAV_HEADER;
+import static com.example.rafa.tfg.clases.Constantes.ESTADO_USUARIO;
 import static com.example.rafa.tfg.clases.Constantes.GUARDADAS;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_CASAS;
-import static com.example.rafa.tfg.clases.Constantes.PREFS_NOTIFICACIONES;
-import static com.example.rafa.tfg.clases.Constantes.PREFS_USUARIO;
-import static com.example.rafa.tfg.clases.Constantes.ESTADO_BOTON;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_KEY;
+import static com.example.rafa.tfg.clases.Constantes.PREFS_NOTIFICACIONES;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_TOKEN;
-import static com.example.rafa.tfg.clases.Constantes.ESTADO_USUARIO;
+import static com.example.rafa.tfg.clases.Constantes.PREFS_USUARIO;
 import static com.example.rafa.tfg.clases.Constantes.PRINCIPAL;
 import static com.example.rafa.tfg.clases.Constantes.VALUE_0;
 
@@ -727,6 +729,7 @@ public class NavPrincActivity extends AppCompatActivity
             if(fListCasasRes.get(PRINCIPAL) != null && fListCasasRes.size() > 0){
                 intent.putExtra(CASA_ACTUAL, fListCasasRes.get(PRINCIPAL).get(VALUE_0).getHomeUsu());
             }
+            intent.putExtra(CLAVE_USUARIO_ACTUAL, usuario.getPassCasa().get(usuario.getKeyToUse()).getKey());
             startActivity(intent);
             NavPrincActivity.this.finish();
 
