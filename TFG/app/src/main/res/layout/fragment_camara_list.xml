@@ -4,49 +4,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
-        android:padding="20dp"
-        android:id="@+id/dispInteligentesEmpty"
-        android:layout_marginTop="40dp"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="124dp"
-            android:layout_marginTop="80dp"
-            app:srcCompat="@drawable/ic_important_devices_black_24dp" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="10dp"
-            android:text="@string/no_existen_dispositivos" />
-    </LinearLayout>
-
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_refresh_layout_camara"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/recyclerCamara"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:scrollbars="vertical"
-            tools:listitem="@layout/items_dispositivos" />
+            android:orientation="vertical"
+            android:visibility="visible">
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/recyclerCamara"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:scrollbars="vertical"
+                android:visibility="visible"
+                tools:listitem="@layout/items_dispositivos"/>
 
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_gravity="center"
+                android:id="@+id/dispCamarasEmpty"
+                android:layout_marginTop="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/iv_camaras_vacio"
+                    android:layout_width="match_parent"
+                    android:layout_height="124dp"
+                    android:layout_marginTop="80dp"
+                    app:srcCompat="@drawable/ic_important_devices_black_24dp" />
+
+                <TextView
+                    android:id="@+id/tv_camaras_vacio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="10dp"
+                    android:text="@string/no_existen_camaras" />
+            </LinearLayout>
+
+        </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

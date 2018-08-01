@@ -87,6 +87,7 @@
     <string name="habitaci_n">Habitación</string>
     <string name="no_existen_dispositivos_para_a_adir">No Existen Dispositivos para añadir</string>
     <string name="no_existen_dispositivos">No existen Dispositivos</string>
+    <string name="no_existen_camaras">No existen Cámaras</string>
     <string name="email">Email</string>
     <string name="introduzca_su_email_para_recuperar_la_contrase_a">Introduzca su Email para recuperar la Contraseña</string>
     <string name="email_incorrecto">El Email introducido no es válido</string>

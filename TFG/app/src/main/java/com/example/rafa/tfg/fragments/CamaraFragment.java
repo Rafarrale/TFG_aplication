@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.rafa.tfg.NavPrincActivity;
 import com.example.rafa.tfg.R;
@@ -22,6 +23,7 @@ import com.example.rafa.tfg.rest.RestInterface;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -38,7 +40,7 @@ public class CamaraFragment extends Fragment {
     List<DispositivosAdapter> fListCasas = new ArrayList<>();
     RecyclerView recyclerViewCamaras = null;
     SwipeRefreshLayout swipeRefreshLayout = null;
-
+    LinearLayout layoutvacio = null;
 
     private OnListFragmentInteractionListener mListener;
 
@@ -53,9 +55,13 @@ public class CamaraFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         NavPrincActivity navPrincActivity = (NavPrincActivity) getActivity();
-        casa = navPrincActivity.getDataListaCasasFragment().get(Constantes.VALUE_1).get(Constantes.VALUE_0);
-        CargaCamaras cargaCamaras = new CargaCamaras();
-        cargaCamaras.execute();
+        Map<Integer, List<Casa>> mapData = navPrincActivity.getDataListaCasasFragment();
+        if(mapData.size() != 0){
+            casa = mapData.get(Constantes.VALUE_1).get(Constantes.VALUE_0);
+            CargaCamaras cargaCamaras = new CargaCamaras();
+            cargaCamaras.execute();
+        }
+
     }
 
     @Override
@@ -64,6 +70,7 @@ public class CamaraFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_camara_list, container, false);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_camara);
         recyclerViewCamaras = view.findViewById(R.id.recyclerCamara);
+        layoutvacio = view.findViewById(R.id.dispCamarasEmpty);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -120,15 +127,17 @@ public class CamaraFragment extends Fragment {
         @Override
         protected List<DispositivosAdapter> doInBackground(Void... voids) {
             RestInterface rest = RestImpl.getRestInstance();
-            Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(casa.getHomeUsu(), Constantes.DISP_CAMARA);
-            List<DispositivosAdapter> listCasasRequest = null;
-            try {
-                Response<List<DispositivosAdapter>> listCasas = response.execute();
-                if(listCasas.isSuccessful()){
-                    listCasasRequest = listCasas.body();
+            List<DispositivosAdapter> listCasasRequest = new ArrayList<>();
+            if(casa != null){
+                Call<List<DispositivosAdapter>> response = rest.getTodosDispositivos(casa.getHomeUsu(), Constantes.DISP_CAMARA);
+                try {
+                    Response<List<DispositivosAdapter>> listCasas = response.execute();
+                    if(listCasas.isSuccessful()){
+                        listCasasRequest = listCasas.body();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
             return listCasasRequest;
         }
@@ -136,9 +145,17 @@ public class CamaraFragment extends Fragment {
         @Override
         protected void onPostExecute(List<DispositivosAdapter> dispositivosAdapters) {
             fListCasas = dispositivosAdapters;
-            recyclerViewCamaras.setAdapter(new MyCamaraRecyclerViewAdapter(fListCasas, mListener));
-            recyclerViewCamaras.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
-            swipeRefreshLayout.setRefreshing(false);
+            if(dispositivosAdapters.size() != 0){
+                recyclerViewCamaras.setVisibility(View.VISIBLE);
+                layoutvacio.setVisibility(View.GONE);
+                recyclerViewCamaras.setAdapter(new MyCamaraRecyclerViewAdapter(fListCasas, mListener));
+                recyclerViewCamaras.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
+                swipeRefreshLayout.setRefreshing(false);
+            }else{
+                recyclerViewCamaras.setVisibility(View.GONE);
+                layoutvacio.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
+            }
 
         }
 

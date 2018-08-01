@@ -3,6 +3,9 @@ package com.example.rafa.tfg;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,7 +17,9 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -65,25 +70,9 @@ public class CamaraActivity extends Activity {
             // Set WebView client
             browser.setWebChromeClient(new WebChromeClient());
 
-            browser.setWebViewClient(new WebViewClient() {
+            browser.setWebViewClient(new SSLTolerentWebViewClient());
 
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    view.loadUrl(url);
-                    return true;
-                }
 
-                @Override   // TODO: Cambiar a un certificado real
-                public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                    handler.proceed();
-                }
-
-                @Override
-                public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
-                    handler.proceed(Constantes.URL_USER, Constantes.URL_PASS);
-                }
-
-            });
 
             String ultimoFichero = new ImageSaver(this).ultimoFichero();
 
@@ -97,8 +86,8 @@ public class CamaraActivity extends Activity {
             galeria.setImageBitmap(lastBitmap);
 
             // Load the webpage
-            browser.loadUrl(Constantes.URL_CAMARA + dispositivo.get_id());
-
+            //browser.loadUrl(Constantes.URL_CAMARA + dispositivo.get_id());
+        browser.loadUrl(Constantes.URL_CAMARA + dispositivo.get_id());
             galeria.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -162,4 +151,51 @@ public class CamaraActivity extends Activity {
         private void permisos(){
             ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},1);
         }
+
+    private class SSLTolerentWebViewClient extends WebViewClient {
+        public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(CamaraActivity.this);
+            AlertDialog alertDialog = builder.create();
+            String message = "SSL Certificate error.";
+            switch (error.getPrimaryError()) {
+                case SslError.SSL_UNTRUSTED:
+                    message = "The certificate authority is not trusted.";
+                    break;
+                case SslError.SSL_EXPIRED:
+                    message = "The certificate has expired.";
+                    break;
+                case SslError.SSL_IDMISMATCH:
+                    message = "The certificate Hostname mismatch.";
+                    break;
+                case SslError.SSL_NOTYETVALID:
+                    message = "The certificate is not yet valid.";
+                    break;
+            }
+
+            message += " Do you want to continue anyway?";
+            alertDialog.setTitle("SSL Certificate Error");
+            alertDialog.setMessage(message);
+            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Ignore SSL certificate errors
+                    handler.proceed();
+                }
+            });
+
+            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    handler.cancel();
+                }
+            });
+            alertDialog.show();
+        }
+
+        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+            handler.proceed("demo", "demo");
+        }
+    }
     }
