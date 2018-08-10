@@ -16,6 +16,7 @@ public class CasaAdapterIni implements Parcelable {
     private String _id;
     private String homeUsu;
     private String passCasa;
+    private String idPlaca;
     private Configuracion configuracion;
 
 
@@ -29,10 +30,12 @@ public class CasaAdapterIni implements Parcelable {
 
     }
 
+
     protected CasaAdapterIni(Parcel in) {
         _id = in.readString();
         homeUsu = in.readString();
         passCasa = in.readString();
+        idPlaca = in.readString();
         configuracion = in.readParcelable(Configuracion.class.getClassLoader());
     }
 
@@ -41,6 +44,7 @@ public class CasaAdapterIni implements Parcelable {
         dest.writeString(_id);
         dest.writeString(homeUsu);
         dest.writeString(passCasa);
+        dest.writeString(idPlaca);
         dest.writeParcelable(configuracion, flags);
     }
 
@@ -89,8 +93,18 @@ public class CasaAdapterIni implements Parcelable {
         return configuracion;
     }
 
+    public String getIdPlaca() {
+        return idPlaca;
+    }
+
+    public void setIdPlaca(String idPlaca) {
+        this.idPlaca = idPlaca;
+    }
+
     public void setConfiguracion(Configuracion configuracion) {
         this.configuracion = configuracion;
+
+
     }
 
 

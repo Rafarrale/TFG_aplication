@@ -366,7 +366,7 @@ public class NavPrincActivity extends AppCompatActivity
             if(aux.getConfiguracion() != null) {
                 confAux.setEstadoAlarma(aux.getConfiguracion().getEstadoAlarma());
             }
-            fListCasas.add(new Casa(aux.get_id(), aux.getHomeUsu(), confAux));
+            fListCasas.add(new Casa(aux.get_id(), aux.getHomeUsu(), confAux, aux.getIdPlaca()));
             fListCasasRes.put(0, fListCasas);
         }
     }
@@ -633,7 +633,7 @@ public class NavPrincActivity extends AppCompatActivity
                 if(response.isSuccessful()){
                     Toast.makeText(NavPrincActivity.this, "Casa añadida", Toast.LENGTH_SHORT).show();
                     fListCasas.add(new Casa(valor));
-                    fListCasasRes.put(1, fListCasas);
+                    fListCasasRes.put(0, fListCasas);
 
                     SharedPreferences sharedPreferences = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();

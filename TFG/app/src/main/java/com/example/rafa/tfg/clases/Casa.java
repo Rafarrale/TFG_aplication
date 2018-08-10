@@ -15,6 +15,7 @@ public class Casa implements Parcelable {
 
     private String _id;
     private String homeUsu;
+    private String idPlaca;
     private Configuracion configuracion;
     private DispositivosAdapter dispositivosAdapter;
     private Camaras camaras;
@@ -36,11 +37,12 @@ public class Casa implements Parcelable {
         this.logUsuarios = logUsuarios;
     }
 
-    public Casa(String _id, String homeUsu, Configuracion configuracion){
+    public Casa(String _id, String homeUsu, Configuracion configuracion, String idPlaca){
         super();
         this._id = _id;
         this.homeUsu = homeUsu;
         this.configuracion = configuracion;
+        this.idPlaca = idPlaca;
     }
 
     public Casa(String homeUsu){
@@ -134,6 +136,14 @@ public class Casa implements Parcelable {
 
     public void setLogUsuarios(LogUsuarios logUsuarios) {
         this.logUsuarios = logUsuarios;
+    }
+
+    public String getIdPlaca() {
+        return idPlaca;
+    }
+
+    public void setIdPlaca(String idPlaca) {
+        this.idPlaca = idPlaca;
     }
 
     @Override

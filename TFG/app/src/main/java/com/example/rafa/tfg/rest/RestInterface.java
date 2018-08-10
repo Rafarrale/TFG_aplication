@@ -53,8 +53,11 @@ public interface RestInterface {
     @GET("/casa/giveHome/todasCasas/{numSerie}")
     Call<List<CasaAdapterIni>> getCasas(@Path ("numSerie") String numSerie);
 
-    @GET("/casa/giveEstado/{homeUsu}/{estadoAlarma}")
-    Call<estadoAlarmaAdapter> estadoAlarmaCasa(@Path ("homeUsu") String homeUsu, @Path("estadoAlarma") String casaAdapterIni);
+    @GET("/casa/giveHome/casa/{nomCasa}")
+    Call<List<CasaAdapterIni>> getCasa(@Path ("nomCasa") String nomCasa);
+
+    @GET("/casa/giveEstado/{homeUsu}/{estadoAlarma}/{idPlaca}")
+    Call<estadoAlarmaAdapter> estadoAlarmaCasa(@Path ("homeUsu") String homeUsu, @Path("estadoAlarma") String casaAdapterIni, @Path("idPlaca") String idPlaca);
 
     @GET("/casa/actualizaTokenUsuario/{passCasa}/{idToken}/{usuario}")
     Call<Void> actualizaTokenUsuario(@Path("passCasa") String passCasa, @Path("idToken") String idToken, @Path("usuario") String usuario);

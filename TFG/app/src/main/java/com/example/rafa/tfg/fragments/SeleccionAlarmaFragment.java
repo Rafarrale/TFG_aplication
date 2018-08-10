@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.rafa.tfg.DispositivosActivity;
 import com.example.rafa.tfg.NavPrincActivity;
 import com.example.rafa.tfg.R;
+import com.example.rafa.tfg.adapters.CasaAdapterIni;
 import com.example.rafa.tfg.adapters.estadoAlarmaAdapter;
 import com.example.rafa.tfg.adapters.usuAdapter;
 import com.example.rafa.tfg.clases.Casa;
@@ -36,7 +37,9 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Path;
 
 import static com.example.rafa.tfg.clases.Constantes.ESTADO_CASAS;
 import static com.example.rafa.tfg.clases.Constantes.PREFS_CASAS;
@@ -310,23 +313,58 @@ public void activaBoton(Integer v){
 
         @Override
         protected estadoAlarmaAdapter doInBackground(Void... params) {
-            estadoAlarmaAdapter res = null;
-            RestInterface rest = RestImpl.getRestInstance();
+            final estadoAlarmaAdapter[] res = {null};
+            final RestInterface rest = RestImpl.getRestInstance();
+            if(fListCasasRes.get(1).get(0).getIdPlaca() == null){
+                RestInterface restCasa = RestImpl.getRestInstance();
+                Call<List<CasaAdapterIni>> callRestCasas = restCasa.getCasa(fListCasasRes.get(1).get(0).getHomeUsu());
+                callRestCasas.enqueue(new Callback<List<CasaAdapterIni>>() {
+                    @Override
+                    public void onResponse(Call<List<CasaAdapterIni>> call, Response<List<CasaAdapterIni>> response) {
+                        if(response.isSuccessful()){
+                            for(CasaAdapterIni casa : response.body()){
+                                if(casa.getHomeUsu().equals(fListCasasRes.get(1).get(0).getHomeUsu())){
+                                    fListCasasRes.get(1).get(0).setIdPlaca(casa.getIdPlaca());
+                                }
+                            }
+                            Call<estadoAlarmaAdapter> restCasas = rest.estadoAlarmaCasa(estadoAlarma, fListCasasRes.get(1).get(0).getHomeUsu(), fListCasasRes.get(1).get(0).getIdPlaca());
+                            restCasas.enqueue(new Callback<estadoAlarmaAdapter>() {
+                                @Override
+                                public void onResponse(Call<estadoAlarmaAdapter> call, Response<estadoAlarmaAdapter> response) {
+                                    if(response.isSuccessful()){
+                                        res[0] = response.body();
+                                    }
+                                }
 
-            Call<estadoAlarmaAdapter> restCasas = rest.estadoAlarmaCasa(estadoAlarma, fListCasasRes.get(1).get(0).getHomeUsu());
+                                @Override
+                                public void onFailure(Call<estadoAlarmaAdapter> call, Throwable t) {
 
-            try{
-                Response<estadoAlarmaAdapter> responseCasas = restCasas.execute();
-                if(responseCasas.isSuccessful()){
-                    res = responseCasas.body();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<CasaAdapterIni>> call, Throwable t) {
+
+                    }
+                });
+            }else{
+                try{
+                    Call<estadoAlarmaAdapter> restCasas = rest.estadoAlarmaCasa(estadoAlarma, fListCasasRes.get(1).get(0).getHomeUsu(), fListCasasRes.get(1).get(0).getIdPlaca());
+                    Response<estadoAlarmaAdapter> responseCasas = restCasas.execute();
+                    if(responseCasas.isSuccessful()){
+                        res[0] = responseCasas.body();
+
+                    }
+
+                }catch(IOException io){
 
                 }
-
-            }catch(IOException io){
-
             }
 
-            return res;
+
+            return res[0];
         }
 
         protected void onPostExecute(final estadoAlarmaAdapter estadoAlarmaCasa){
