@@ -157,22 +157,24 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
                             if(response.isSuccessful()){
                                 List<CasaPass> auxPassCasa;
                                 int indexKey = usuario.getPassCasa().indexOf(clickedAppointment);
-                                auxPassCasa = usuario.getPassCasa();
-                                auxPassCasa.remove(indexKey);
-                                usuario.setPassCasa(auxPassCasa);
-                                if(indexKey == usuario.getKeyToUse()){
-                                    usuario.setKeyToUse(VALUE_NEGATIVO_1);
-                                    resCasas = new ArrayList<>();
-                                    tvMiCasa.setText(NO_DISPONIBLE);
+                                if(indexKey != Constantes.VALUE_NEGATIVO_1){
+                                    auxPassCasa = usuario.getPassCasa();
+                                    auxPassCasa.remove(indexKey);
+                                    usuario.setPassCasa(auxPassCasa);
+                                    if(indexKey == usuario.getKeyToUse()){
+                                        usuario.setKeyToUse(VALUE_NEGATIVO_1);
+                                        resCasas = new ArrayList<>();
+                                        tvMiCasa.setText(NO_DISPONIBLE);
+                                    }
+                                    actualizarDatosLocal(false);
+                                    recargaDatos();
+                                    /** Refrescamos el sppiner*/
+                                    BaseAdapter baseAdapter = (BaseAdapter) spinner.getAdapter();
+                                    baseAdapter.notifyDataSetChanged();
+                                    /***/
+                                    alertDialogElimina.cancel();
+                                    Toast.makeText(MiCasaActivity.this, "La clave se eliminó correctamente", Toast.LENGTH_SHORT).show();
                                 }
-                                actualizarDatosLocal();
-                                recargaDatos();
-                                /** Refrescamos el sppiner*/
-                                BaseAdapter baseAdapter = (BaseAdapter) spinner.getAdapter();
-                                baseAdapter.notifyDataSetChanged();
-                                /***/
-                                alertDialogElimina.cancel();
-                                Toast.makeText(MiCasaActivity.this, "La clave se eliminó correctamente", Toast.LENGTH_SHORT).show();
                             }else{
                                 Toast.makeText(MiCasaActivity.this, "No se elimino la clave", Toast.LENGTH_SHORT).show();
                             }
@@ -194,16 +196,22 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
         }
     }
 
-    private void actualizarDatosLocal(){
-        /** Usuario*/
-        editor.putString(ESTADO_USUARIO, usuario.toJson());
-        editor.apply();
-        /** Casas*/
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
-        SharedPreferences.Editor editorCasas = sharedPreferences.edit();
-        Gson gson = new Gson();
-        editorCasas.putString(ESTADO_CASAS, gson.toJson(resCasas));
-        editorCasas.apply();
+    private void actualizarDatosLocal(boolean todo){
+        if(todo){
+            /** Usuario*/
+            editor.putString(ESTADO_USUARIO, usuario.toJson());
+            editor.apply();
+            /** Casas*/
+            SharedPreferences sharedPreferences = getSharedPreferences(PREFS_CASAS, MODE_PRIVATE);
+            SharedPreferences.Editor editorCasas = sharedPreferences.edit();
+            Gson gson = new Gson();
+            editorCasas.putString(ESTADO_CASAS, gson.toJson(resCasas));
+            editorCasas.apply();
+        }else{
+            /** Usuario*/
+            editor.putString(ESTADO_USUARIO, usuario.toJson());
+            editor.apply();
+        }
     }
 
     public void onClickAñadeKey(final View view){
@@ -231,7 +239,7 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
                         CasaPass auxCasaPass = new CasaPass(aux);
                         auxListPassCasa.add(auxCasaPass);
                         usuario.setPassCasa(auxListPassCasa);
-                        actualizarDatosLocal();
+                        actualizarDatosLocal(false);
                         HideKeyboard(view);
                         alertDialog.cancel();
                         recargaDatos();
@@ -276,7 +284,7 @@ public class MiCasaActivity extends AppCompatActivity implements AdapterView.OnI
                             public void onResponse(Call<List<CasaAdapterIni>> call, Response<List<CasaAdapterIni>> response) {
                                 if (response.isSuccessful()) {
                                     resCasas = response.body();
-                                    actualizarDatosLocal();
+                                    actualizarDatosLocal(true);
                                 }
                             }
 

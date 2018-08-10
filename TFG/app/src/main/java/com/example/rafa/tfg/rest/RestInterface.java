@@ -41,6 +41,9 @@ public interface RestInterface {
     @GET("/usuario/compruebaUser/{user}")
     Call<Void> compruebaUser(@Path("user") String user);
 
+    @GET("/usuario/compruebaEmail/{email}")
+    Call<Void> compruebaEmail(@Path("email") String email);
+
     @GET("/usuario/actualizaKeyToUse/{user}/{keyToUse}")
     Call<Void> actualizaKeyToUse(@Path("user") String user, @Path("keyToUse") Integer keyToUse);
 

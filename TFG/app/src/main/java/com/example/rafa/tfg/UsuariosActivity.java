@@ -33,6 +33,8 @@ import retrofit2.Response;
 
 /**
  * Created by Rafael on 13/03/2018.
+ * Clase para la manipulacion de los usuarios Eliminar y Actualizar
+ *
  */
 
 
@@ -60,15 +62,15 @@ public class UsuariosActivity extends AppCompatActivity {
         usuDataAdapter.setOnItemClickListener(new usuDataAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(usuAdapter clickedAppointment) {
-            //    Toast.makeText(getApplicationContext(),"hola",Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(getApplicationContext(),"hola",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelAppointment(usuAdapter canceledAppointment) {
                 final usuAdapter usuario = canceledAppointment;
-                if(usuario.get_id().equals(usuarioActual.get_id())){
+                if (usuario.get_id().equals(usuarioActual.get_id())) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(UsuariosActivity.this);
-                    View mView = getLayoutInflater().inflate(R.layout.advertencia_elimina_usuario,null);
+                    View mView = getLayoutInflater().inflate(R.layout.advertencia_elimina_usuario, null);
                     Button btElimina = mView.findViewById(R.id.btAdvertenciaUsuario);
                     alertDialog.setView(mView);
 
@@ -104,7 +106,7 @@ public class UsuariosActivity extends AppCompatActivity {
                     AlertDialog alert = alertDialog.create();
                     alert.show();
 
-                }else {
+                } else if (usuarioActual.getAdmin().equals("si")) {
                     RestInterface rest = RestImpl.getRestInstance();
                     Call<Void> restDropUsu = rest.eliminaUsuario(usuario);
                     restDropUsu.enqueue(new Callback<Void>() {
@@ -124,110 +126,130 @@ public class UsuariosActivity extends AppCompatActivity {
 
                         }
                     });
+                } else {
+                    new AlertDialog.Builder(UsuariosActivity.this)
+                            .setMessage("No tiene autorización para eso")
+                            .setPositiveButton("Confirmar", null)
+                            .setTitle("Información")
+                            .show();
+
                 }
             }
 
             @Override
             public void onModAppointment(usuAdapter ModAppointment) {
-            //    Toast.makeText(getApplicationContext(),"hola",Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(getApplicationContext(),"hola",Toast.LENGTH_SHORT).show();
 
-                final usuAdapter res = ModAppointment;
+                final usuAdapter usuario = ModAppointment;
+                boolean valUsu = usuario.get_id().equals(usuarioActual.get_id());
+                if(valUsu || usuarioActual.getAdmin().equals(Constantes.SI)){
+                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(UsuariosActivity.this);
+                    View mView = getLayoutInflater().inflate(R.layout.activity_usuario, null);
+                    final EditText edtUsuAct = mView.findViewById(R.id.tvUsuarioActualiza);
+                    final EditText edtNomAct = mView.findViewById(R.id.tvNombreUsuarioActualiza);
+                    final EditText edtApellAct = mView.findViewById(R.id.tvApellidosUsuarioActualiza);
+                    final EditText edtPassAct = mView.findViewById(R.id.tvPasswordActualiza);
+                    final RadioButton rbAdmnActSi = mView.findViewById(R.id.rbAdminUsuSi);
+                    final RadioButton rbAdmnActNo = mView.findViewById(R.id.rbAdminUsuNo);
+                    final EditText edtEmailAct = mView.findViewById(R.id.tvEmailActualiza);
+                    Button btActualiza = mView.findViewById(R.id.btUsuActualiza);
 
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(UsuariosActivity.this);
-                View mView = getLayoutInflater().inflate(R.layout.activity_usuario,null);
-                final EditText edtUsuAct = mView.findViewById(R.id.tvUsuarioActualiza);
-                final EditText edtNomAct = mView.findViewById(R.id.tvNombreUsuarioActualiza);
-                final EditText edtApellAct = mView.findViewById(R.id.tvApellidosUsuarioActualiza);
-                final EditText edtPassAct = mView.findViewById(R.id.tvPasswordActualiza);
-                final RadioButton rbAdmnActSi = mView.findViewById(R.id.rbAdminUsuSi);
-                final RadioButton rbAdmnActNo = mView.findViewById(R.id.rbAdminUsuNo);
-                final EditText edtEmailAct = mView.findViewById(R.id.tvEmailActualiza);
-                Button btActualiza = mView.findViewById(R.id.btUsuActualiza);
-
-                if(ModAppointment.getAdmin().equals(Constantes.SI)){
-                    rbAdmnActSi.setChecked(true);
-                }else if(ModAppointment.getAdmin().equals(Constantes.NO)){
-                    rbAdmnActNo.setChecked(true);
-                }
-
-
-                edtUsuAct.setText(ModAppointment.getUser());
-                edtNomAct.setText(ModAppointment.getNombre());
-                edtApellAct.setText(ModAppointment.getApellidos());
-                edtPassAct.setText(ModAppointment.getPass());
-                edtEmailAct.setText(ModAppointment.getEmail());
-
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
-                dialog.show();
-                rbAdmnActNo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(rbAdmnActSi.isChecked()){
-                            rbAdmnActSi.setChecked(false);
-                            res.setAdmin(Constantes.NO);
-                        }
-
-                        if(Utilidades.radioButton == false){
-                            Utilidades.radioButton = true;
-                            rbAdmnActSi.setChecked(false);
-                            res.setAdmin(Constantes.NO);
-                        }
+                    if(usuarioActual.getAdmin().equals(Constantes.NO)){
+                        rbAdmnActNo.setEnabled(false);
+                        rbAdmnActSi.setEnabled(false);
                     }
-                });
 
-                rbAdmnActSi.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(rbAdmnActNo.isChecked()){
-                            rbAdmnActNo.setChecked(false);
-                            res.setAdmin(Constantes.SI);
-                        }
-                        if(Utilidades.radioButton == true){
-                            Utilidades.radioButton = false;
-                            rbAdmnActNo.setChecked(false);
-                            res.setAdmin(Constantes.SI);
-                        }
+                    if (usuario.getAdmin().equals(Constantes.SI)) {
+                        rbAdmnActSi.setChecked(true);
+                    } else if (usuario.getAdmin().equals(Constantes.NO)) {
+                        rbAdmnActNo.setChecked(true);
                     }
-                });
 
-                btActualiza.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!edtUsuAct.getText().toString().isEmpty()) {
-                            res.setUser(edtUsuAct.getText().toString());
-                            res.setNombre(edtNomAct.getText().toString());
-                            res.setApellidos(edtApellAct.getText().toString());
-                            res.setPass(edtPassAct.getText().toString());
-                            res.setEmail(edtEmailAct.getText().toString());
 
-                            RestInterface rest = RestImpl.getRestInstance();
-                            Call<Void> response = rest.actualizaUsuario(res);
-                            response.enqueue(new Callback<Void>() {
-                                @Override
-                                public void onResponse(Call<Void> call, Response<Void> response) {
-                                    if(response.isSuccessful()){
-                                        Toast.makeText(UsuariosActivity.this,"Usuario actualizado correctamente", Toast.LENGTH_SHORT).show();
-                                        usuariosExecute usuariosExecute = new usuariosExecute();
-                                        usuariosExecute.execute();
-                                        dialog.hide();
-                                    }else{
-                                        Toast.makeText(UsuariosActivity.this,"No fue posible actualizar el usuario",Toast.LENGTH_SHORT).show();
+                    edtUsuAct.setText(usuario.getUser());
+                    edtNomAct.setText(usuario.getNombre());
+                    edtApellAct.setText(usuario.getApellidos());
+                    edtPassAct.setText(usuario.getPass());
+                    edtEmailAct.setText(usuario.getEmail());
+
+                    mBuilder.setView(mView);
+                    final AlertDialog dialog = mBuilder.create();
+                    dialog.show();
+                    rbAdmnActNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (rbAdmnActSi.isChecked()) {
+                                rbAdmnActSi.setChecked(false);
+                                usuario.setAdmin(Constantes.NO);
+                            }
+
+                            if (Utilidades.radioButton == false) {
+                                Utilidades.radioButton = true;
+                                rbAdmnActSi.setChecked(false);
+                                usuario.setAdmin(Constantes.NO);
+                            }
+                        }
+                    });
+
+                    rbAdmnActSi.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (rbAdmnActNo.isChecked()) {
+                                rbAdmnActNo.setChecked(false);
+                                usuario.setAdmin(Constantes.SI);
+                            }
+                            if (Utilidades.radioButton == true) {
+                                Utilidades.radioButton = false;
+                                rbAdmnActNo.setChecked(false);
+                                usuario.setAdmin(Constantes.SI);
+                            }
+                        }
+                    });
+
+                    btActualiza.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!edtUsuAct.getText().toString().isEmpty()) {
+                                usuario.setUser(edtUsuAct.getText().toString());
+                                usuario.setNombre(edtNomAct.getText().toString());
+                                usuario.setApellidos(edtApellAct.getText().toString());
+                                usuario.setPass(edtPassAct.getText().toString());
+                                usuario.setEmail(edtEmailAct.getText().toString());
+
+                                RestInterface rest = RestImpl.getRestInstance();
+                                Call<Void> response = rest.actualizaUsuario(usuario);
+                                response.enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        if (response.isSuccessful()) {
+                                            Toast.makeText(UsuariosActivity.this, "Usuario actualizado correctamente", Toast.LENGTH_SHORT).show();
+                                            usuariosExecute usuariosExecute = new usuariosExecute();
+                                            usuariosExecute.execute();
+                                            dialog.hide();
+                                        } else {
+                                            Toast.makeText(UsuariosActivity.this, "No fue posible actualizar el usuario", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(Call<Void> call, Throwable t) {
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
 
-                                }
-                            });
+                                    }
+                                });
 
-                        } else {
-                            Toast.makeText(UsuariosActivity.this, "Por favor rellena el campo vacío", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(UsuariosActivity.this, "Por favor rellena el campo vacío", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }else{
+                    new AlertDialog.Builder(UsuariosActivity.this)
+                            .setMessage("No tiene autorización para eso")
+                            .setPositiveButton("Confirmar", null)
+                            .setTitle("Información")
+                            .show();
+                }
+        }
 
         });
         mUsuariosRecycler.setAdapter(usuDataAdapter);

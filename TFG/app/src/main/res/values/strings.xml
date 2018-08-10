@@ -85,7 +85,7 @@
     <string name="conexion_de_dispositivos_a_la_red">Conexion de Dispositivos a la Red</string>
     <string name="nombre_del_dispositivo">Nombre</string>
     <string name="habitaci_n">Habitación</string>
-    <string name="no_existen_dispositivos_para_a_adir">No Existen Dispositivos para añadir</string>
+    <string name="no_existen_dispositivos_para_a_adir">No Existen más Dispositivos para añadir</string>
     <string name="no_existen_dispositivos">No existen Dispositivos</string>
     <string name="no_existen_camaras">No existen Cámaras</string>
     <string name="email">Email</string>
@@ -117,7 +117,7 @@
     <string name="conexGestion">Conexión y Gestión</string>
     <string name="accion">Acción</string>
     <string name="interruptores">Interruptores</string>
-    <string name="acercaDe">Aplicación diseñada por: Rafael Arroyo Alemán, Alumno de Ingeniería Informática de Computadores por la Universidad de Sevilla</string>
+    <string name="acercaDe">Aplicación diseñada por:\nRafael Arroyo Alemán\nAlumno de Ingeniería Informática de Computadores por la Universidad de Sevilla</string>
     <string name="title_activity_camara">CamaraActivity</string>
     <string name="galer_a">Galería</string>
 

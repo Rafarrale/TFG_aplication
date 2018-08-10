@@ -78,7 +78,7 @@ public class ContenedorFragment extends Fragment {
         SeccionesAdapter adapter = new SeccionesAdapter(getFragmentManager());
         adapter.addFragment(new SeleccionAlarmaFragment(),"Control");
         adapter.addFragment(new CamaraFragment(),"Cámaras");
-        adapter.addFragment(new RojoFragment(),"Historial Uso");
+        //adapter.addFragment(new RojoFragment(),"Historial Uso"); //TODO comletar el historial
 
 
         viewPager.setAdapter(adapter);

@@ -1,9 +1,12 @@
 package com.example.rafa.tfg;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +19,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -93,8 +98,8 @@ import static com.example.rafa.tfg.clases.Constantes.PRINCIPAL;
 import static com.example.rafa.tfg.clases.Constantes.VALUE_0;
 
 public class NavPrincActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,RojoFragment.OnFragmentInteractionListener,
-        SeleccionAlarmaFragment.OnFragmentInteractionListener,ContenedorFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener, CamaraFragment.OnListFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, RojoFragment.OnFragmentInteractionListener,
+        SeleccionAlarmaFragment.OnFragmentInteractionListener, ContenedorFragment.OnFragmentInteractionListener, DispositivosFragment.OnFragmentInteractionListener, CamaraFragment.OnListFragmentInteractionListener {
 
     private List<Casa> fListCasas = new ArrayList<>();
     private Map<Integer, List<Casa>> fListCasasRes = new HashMap<Integer, List<Casa>>();
@@ -126,8 +131,48 @@ public class NavPrincActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                final String numeros[] ={"091","062","112"};  TODO Descomentar para numeros reales y eliminar dummy below
+                final String numeros[] ={"669412755","669412756","669412757"};
+                final String nomNumeros[] = {"Policía", "Guardia Civil", "Emergencias"};
+                /** Permisos */
+                ActivityCompat.requestPermissions(NavPrincActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+
+                AlertDialog.Builder builderTelefonos = new AlertDialog.Builder(view.getContext());
+                View mViewTelefono = getLayoutInflater().inflate(R.layout.list_telefonos_emergency, null);
+                builderTelefonos.setView(mViewTelefono);
+                builderTelefonos.setTitle("Numeros Emergencia");
+                ListView telefonos = mViewTelefono.findViewById(R.id.lv_telefonos_emergency);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, nomNumeros);
+                telefonos.setAdapter(adapter);
+                final AlertDialog alertDialogTelefonos = builderTelefonos.create();
+                alertDialogTelefonos.show();
+                telefonos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                        new AlertDialog.Builder(NavPrincActivity.this)
+                            .setTitle("Confirmacion")
+                            .setMessage("Ha seleccionado: " + nomNumeros[position])
+                                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                })
+                            .setPositiveButton("Llamar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(NavPrincActivity.this, "Llamando...", Toast.LENGTH_SHORT).show();
+                                    alertDialogTelefonos.cancel();
+                                    Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + numeros[position]));
+                                    if (ActivityCompat.checkSelfPermission(NavPrincActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                        return;
+                                    }
+                                    startActivity(i);
+                                }
+                            })
+                            .show();
+                    }
+                });
             }
         });
 
@@ -701,7 +746,6 @@ public class NavPrincActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.

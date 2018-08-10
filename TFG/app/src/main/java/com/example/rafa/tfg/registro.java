@@ -30,7 +30,7 @@ public class Registro extends AppCompatActivity {
     EditText edt_apellidos;
     EditText edt_email;
     EditText edt_pass_casa;
-    private List<CasaPass> listaPass = new ArrayList<>();
+    private List<CasaPass> listaPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +50,14 @@ public class Registro extends AppCompatActivity {
         btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-
+                btnReg.setEnabled(false);
                 if(attemptLogin()) {
                     CasaPass casaPass = new CasaPass(edt_pass_casa.getText().toString());
+                    listaPass = new ArrayList<>();
                     listaPass.add(casaPass);
                     RestInterface rest = RestImpl.getRestInstance();
-                    Call<Void> restCheckUser = rest.compruebaUser(edt_usu.getText().toString());
-                    final Call<Void> restCheckCredentials = rest.addUser(new usuAdapter(edt_usu.getText().toString(), edt_nombre.getText().toString(), edt_apellidos.getText().toString()
+                    Call<Void> restCheckUser = rest.compruebaUser(edt_usu.getText().toString().toUpperCase());
+                    final Call<Void> restCheckCredentials = rest.addUser(new usuAdapter(edt_usu.getText().toString().toUpperCase(), edt_nombre.getText().toString(), edt_apellidos.getText().toString()
                             , edt_pass.getText().toString(), edt_email.getText().toString(), Integer.parseInt(Constantes.PRIMERA_CERO), listaPass));
                     restCheckUser.enqueue(new Callback<Void>() {
                         @Override
@@ -73,6 +74,7 @@ public class Registro extends AppCompatActivity {
                                         } else {
                                             Snackbar.make(v, "La clave de producto no es válida", Snackbar.LENGTH_LONG)
                                                     .setAction("Action", null).show();
+                                            btnReg.setEnabled(true);
                                         }
                                     }
 
@@ -80,11 +82,13 @@ public class Registro extends AppCompatActivity {
                                     public void onFailure(Call<Void> call, Throwable t) {
                                         Snackbar.make(v, "No se a podido realizar la operación", Snackbar.LENGTH_LONG)
                                                 .setAction("Action", null).show();
+                                        btnReg.setEnabled(true);
                                     }
                                 });
                             }else{
                                 Snackbar.make(v, "El usuario ya existe", Snackbar.LENGTH_LONG)
                                         .setAction("Action", null).show();
+                                btnReg.setEnabled(true);
                             }
                         }
 
@@ -92,6 +96,7 @@ public class Registro extends AppCompatActivity {
                         public void onFailure(Call<Void> call, Throwable t) {
                             Snackbar.make(v, "No se a podido realizar la operación", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
+                            btnReg.setEnabled(true);
                         }
                     });
                 }

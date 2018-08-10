@@ -59,7 +59,6 @@ public class CamaraActivity extends Activity {
             DispositivosAdapter dispositivo = new Gson().fromJson(jsonValue, DispositivosAdapter.class);
 
 
-            // find the WebView by name in the main.xml of step 2
             browser=(WebView)findViewById(R.id.webViewCamera);
             galeria = findViewById(R.id.imageViewCamera);
             tvHabCamara = findViewById(R.id.tvHabitCamara);

@@ -145,7 +145,7 @@ public class CamaraFragment extends Fragment {
         @Override
         protected void onPostExecute(List<DispositivosAdapter> dispositivosAdapters) {
             fListCasas = dispositivosAdapters;
-            if(dispositivosAdapters.size() != 0){
+            if(dispositivosAdapters.size() != 0 && dispositivosAdapters.get(0).get_id() != null){
                 recyclerViewCamaras.setVisibility(View.VISIBLE);
                 layoutvacio.setVisibility(View.GONE);
                 recyclerViewCamaras.setAdapter(new MyCamaraRecyclerViewAdapter(fListCasas, mListener));

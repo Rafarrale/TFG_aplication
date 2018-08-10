@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String usuario = mUsuarioView.getText().toString();
+        String usuario = mUsuarioView.getText().toString().toUpperCase();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -184,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Metodo click del login
     public void onClickLog(View view) {
-        /**Se pone esta variable a true si estando en la pantalla principal le damos a volver a esta pantalla
-         * para que aplique el contenedor Fragment*/
+        /*Se pone esta variable a true si estando en la pantalla principal le damos a volver a esta pantalla
+          para que aplique el contenedor Fragment*/
         Utilidades.validaPantalla = true;
         Utilidades.iniciaAplicacion = false;
         attemptLogin();
