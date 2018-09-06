@@ -66,17 +66,6 @@
             tools:text="Nombre y Apellidos" />
 
 
-        <TextView
-            android:id="@+id/tvPasswordUsuariosTodos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvNombreUsuariosTodos"
-            android:layout_alignStart="@+id/tvNombreUsuariosTodos"
-            android:ellipsize="end"
-            android:maxLines="1"
-            tools:text="Password" />
-
-
         <Button
             android:id="@+id/btDeleteUsuariosTodos"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
@@ -93,8 +82,8 @@
             android:id="@+id/tvAdminUsuariosTodos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tvPasswordUsuariosTodos"
-            android:layout_below="@+id/tvPasswordUsuariosTodos"
+            android:layout_below="@+id/tvNombreUsuariosTodos"
+            android:layout_alignStart="@+id/tvNombreUsuariosTodos"
             tools:text="Admin" />
 
         <TextView

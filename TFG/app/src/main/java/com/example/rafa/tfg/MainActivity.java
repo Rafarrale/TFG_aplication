@@ -335,8 +335,22 @@ public class MainActivity extends AppCompatActivity {
                                 auxListPassCasa.add(auxCasaPass);
                                 auxUsuario.setPassCasa(auxListPassCasa);
                                 auxUsuario.setKeyToUse(VALUE_0);
-                                alertDialog.cancel();
-                                actualizaCasas();
+                                RestInterface restInterface = getRestInstance();
+                                Call<Void> recovery = restInterface.actualizaKeyToUse(auxUsuario.getUser(), auxUsuario.getKeyToUse());
+                                recovery.enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        if(response.isSuccessful()){
+                                            alertDialog.cancel();
+                                            actualizaCasas();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        Toast.makeText(MainActivity.this, "Hubo problemas al registrar la clave", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }else if(response.code() == VALUE_403){
                                 Toast.makeText(MainActivity.this, "La clave no es válida", Toast.LENGTH_SHORT).show();
                                 keyEdit.setText("");

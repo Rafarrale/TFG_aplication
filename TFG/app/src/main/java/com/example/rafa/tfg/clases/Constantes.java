@@ -99,6 +99,7 @@ public class Constantes {
     public static final String ON = "on";
     public static final String OFF = "off";
     public static final String CAMARA = "Cámara";
+    public static final String HIDE_PASS = "******";
 
 
     /* Constantes numericas */

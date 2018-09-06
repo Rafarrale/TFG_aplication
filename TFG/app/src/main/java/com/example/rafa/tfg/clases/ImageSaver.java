@@ -119,7 +119,7 @@ public class ImageSaver {
         File[] files = f.listFiles();
 
         //Hacemos un Loop por cada fichero para extraer el nombre de cada uno
-        for (int i = 0; i < files.length; i++)
+        for (int i = 0; files != null && i < files.length; i++)
 
         {
             //Sacamos del array files un fichero

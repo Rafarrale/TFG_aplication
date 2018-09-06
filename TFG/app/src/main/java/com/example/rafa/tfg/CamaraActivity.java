@@ -1,44 +1,32 @@
 package com.example.rafa.tfg;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.rafa.tfg.adapters.DispositivosAdapter;
 import com.example.rafa.tfg.clases.Constantes;
 import com.example.rafa.tfg.clases.ImageSaver;
 import com.example.rafa.tfg.clases.Save;
 import com.google.gson.Gson;
-
-import java.io.FileInputStream;
-import java.io.IOException;
 
 public class CamaraActivity extends Activity {
         WebView browser;
@@ -81,8 +69,11 @@ public class CamaraActivity extends Activity {
                     setExternal(true).
                     setDirectoryName("MotiCasa").
                     load();
-
-            galeria.setImageBitmap(lastBitmap);
+            if(lastBitmap != null){
+                galeria.setImageBitmap(lastBitmap);
+            }else{
+                galeria.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ventana_galeria));
+            }
 
             // Load the webpage
             //browser.loadUrl(Constantes.URL_CAMARA + dispositivo.get_id());

@@ -87,6 +87,7 @@ import static android.support.v4.content.ContextCompat.startActivity;
 
             View statusIndicator = holder.statusIndicator;
 
+
             if(appointment != null) {
                 // estado: se colorea indicador según el estado
                 switch (appointment.getAdmin()) {
@@ -111,10 +112,6 @@ import static android.support.v4.content.ContextCompat.startActivity;
             nomApell.append(Constantes.ESPACIO);
             nomApell.append(appointment.getApellidos());
 
-            StringBuilder pass = new StringBuilder();
-            pass.append(Constantes.PASSWORD);
-            pass.append(Constantes.DOS_PUNTOS_ESPACIO);
-            pass.append(appointment.getPass());
 
             StringBuilder admin = new StringBuilder();
             admin.append(Constantes.ADMIN);
@@ -128,7 +125,6 @@ import static android.support.v4.content.ContextCompat.startActivity;
 
             holder.usuario.setText(usuario);
             holder.nomApell.setText(nomApell);
-            holder.password.setText(pass);
             holder.admin.setText(admin);
             holder.email.setText(email);
         }
@@ -141,7 +137,6 @@ import static android.support.v4.content.ContextCompat.startActivity;
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             public TextView usuario;
             public TextView nomApell;
-            public TextView password;
             public TextView admin;
             public TextView email;
             public Button deleteButton;
@@ -154,7 +149,6 @@ import static android.support.v4.content.ContextCompat.startActivity;
                 statusIndicator = itemView.findViewById(R.id.indicator_appointment_status);
                 usuario = itemView.findViewById(R.id.tvUsuarioTodos);
                 nomApell = (TextView) itemView.findViewById(R.id.tvNombreUsuariosTodos);
-                password = (TextView) itemView.findViewById(R.id.tvPasswordUsuariosTodos);
                 admin = (TextView) itemView.findViewById(R.id.tvAdminUsuariosTodos);
                 email = (TextView) itemView.findViewById(R.id.tvEmailUsuariosTodos);
                 deleteButton = (Button) itemView.findViewById(R.id.btDeleteUsuariosTodos);
